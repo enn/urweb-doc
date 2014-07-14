@@ -1,0 +1,352 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Static Semantics</TITLE>
+<META NAME="description" CONTENT="Static Semantics">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node25.html">
+<LINK REL="previous" HREF="node9.html">
+<LINK REL="up" HREF="manual.html">
+<LINK REL="next" HREF="node14.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html320"
+  HREF="node14.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html316"
+  HREF="manual.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html310"
+  HREF="node12.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html318"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html321"
+  HREF="node14.html">Kind Well-Formedness</A>
+<B> Up:</B> <A NAME="tex2html317"
+  HREF="manual.html">The Ur/Web Manual</A>
+<B> Previous:</B> <A NAME="tex2html311"
+  HREF="node12.html">Shorthands</A>
+ &nbsp; <B>  <A NAME="tex2html319"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00060000000000000000">
+Static Semantics</A>
+</H1>
+
+<P>
+In this section, we give a declarative presentation of Ur's typing rules and related judgments.  Inference is the subject of the next section; here, we assume that an oracle has filled in all wildcards with concrete values.
+
+<P>
+The notations used here are the standard ones of programming language semantics.  They are probably the most effective way to convey this information.  At the same time, most Ur/Web users can probably get by <I>without</I> knowing the contents of this section!  If you're interested in diving into the details of Ur typing but are unfamiliar with ``inference rule notation,'' I recommend the following book:
+<BLOCKQUOTE>
+Benjamin C. Pierce, <I>Types and Programming Languages</I>, MIT Press, 2002.
+
+</BLOCKQUOTE>
+
+<P>
+Since there is significant mutual recursion among the judgments, we introduce them all before beginning to give rules.  We use the same variety of contexts throughout this section, implicitly introducing new sorts of context entries as needed.
+
+<UL>
+<LI><!-- MATH
+ $\Gamma \vdash \kappa$
+ -->
+<IMG
+ WIDTH="42" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img132.png"
+ ALT="$ \Gamma \vdash \kappa$">
+ expresses kind well-formedness.
+</LI>
+<LI><!-- MATH
+ $\Gamma \vdash c :: \kappa$
+ -->
+<IMG
+ WIDTH="66" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img133.png"
+ ALT="$ \Gamma \vdash c :: \kappa$">
+ assigns a kind to a constructor in a context.
+</LI>
+<LI><!-- MATH
+ $\Gamma \vdash c \sim c$
+ -->
+<IMG
+ WIDTH="67" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img134.png"
+ ALT="$ \Gamma \vdash c \sim c$">
+ proves the disjointness of two record constructors; that is, that they share no field names.  We overload the judgment to apply to pairs of field names as well.
+</LI>
+<LI><!-- MATH
+ $\Gamma \vdash c \hookrightarrow C$
+ -->
+<IMG
+ WIDTH="78" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img135.png"
+ ALT="$ \Gamma \vdash c \hookrightarrow C$">
+ proves that record constructor <IMG
+ WIDTH="11" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img61.png"
+ ALT="$ c$">
+ decomposes into set <IMG
+ WIDTH="16" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img136.png"
+ ALT="$ C$">
+ of field names and record constructors.
+</LI>
+<LI><!-- MATH
+ $\Gamma \vdash c \equiv c$
+ -->
+<IMG
+ WIDTH="67" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img137.png"
+ ALT="$ \Gamma \vdash c \equiv c$">
+ proves the computational equivalence of two constructors.  This is often called a <I>definitional equality</I> in the world of type theory.
+</LI>
+<LI><!-- MATH
+ $\Gamma \vdash e : \tau$
+ -->
+<IMG
+ WIDTH="62" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img138.png"
+ ALT="$ \Gamma \vdash e : \tau$">
+ is a standard typing judgment.
+</LI>
+<LI><!-- MATH
+ $\Gamma \vdash p \leadsto \Gamma; \tau$
+ -->
+<IMG
+ WIDTH="91" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img139.png"
+ ALT="$ \Gamma \vdash p \leadsto \Gamma; \tau$">
+ combines typing of patterns with calculation of which new variables they bind.
+</LI>
+<LI><!-- MATH
+ $\Gamma \vdash d \leadsto \Gamma$
+ -->
+<IMG
+ WIDTH="75" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img140.png"
+ ALT="$ \Gamma \vdash d \leadsto \Gamma$">
+ expresses how a declaration modifies a context.  We overload this judgment to apply to sequences of declarations, as well as to signature items and sequences of signature items.
+</LI>
+<LI><!-- MATH
+ $\Gamma \vdash S \equiv S$
+ -->
+<IMG
+ WIDTH="75" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img141.png"
+ ALT="$ \Gamma \vdash S \equiv S$">
+ is the signature equivalence judgment.
+</LI>
+<LI><!-- MATH
+ $\Gamma \vdash S \leq S$
+ -->
+<IMG
+ WIDTH="75" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img142.png"
+ ALT="$ \Gamma \vdash S \leq S$">
+ is the signature compatibility judgment.  We write <!-- MATH
+ $\Gamma \vdash S$
+ -->
+<IMG
+ WIDTH="43" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img143.png"
+ ALT="$ \Gamma \vdash S$">
+ as shorthand for <!-- MATH
+ $\Gamma \vdash S \leq S$
+ -->
+<IMG
+ WIDTH="75" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img142.png"
+ ALT="$ \Gamma \vdash S \leq S$">
+.
+</LI>
+<LI><!-- MATH
+ $\Gamma \vdash M : S$
+ -->
+<IMG
+ WIDTH="74" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img144.png"
+ ALT="$ \Gamma \vdash M : S$">
+ is the module signature checking judgment.
+</LI>
+<LI><!-- MATH
+ $\mathsf{proj}(M, \overline{s}, V)$
+ -->
+<IMG
+ WIDTH="92" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img145.png"
+ ALT="$ \mathsf{proj}(M, \overline{s}, V)$">
+ is a partial function for projecting a signature item from <!-- MATH
+ $\overline{s}$
+ -->
+<IMG
+ WIDTH="11" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img146.png"
+ ALT="$ \overline{s}$">
+, given the module <IMG
+ WIDTH="21" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img41.png"
+ ALT="$ M$">
+ that we project from.  <IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img147.png"
+ ALT="$ V$">
+ may be <!-- MATH
+ $\mathsf{con} \; x$
+ -->
+<IMG
+ WIDTH="41" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img148.png"
+ ALT="$ \mathsf{con} \; x$">
+, <!-- MATH
+ $\mathsf{datatype} \; x$
+ -->
+<IMG
+ WIDTH="75" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img149.png"
+ ALT="$ \mathsf{datatype} \; x$">
+, <!-- MATH
+ $\mathsf{val} \; x$
+ -->
+<IMG
+ WIDTH="36" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img150.png"
+ ALT="$ \mathsf{val} \; x$">
+, <!-- MATH
+ $\mathsf{signature} \; X$
+ -->
+<IMG
+ WIDTH="83" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img151.png"
+ ALT="$ \mathsf{signature} \; X$">
+, or <!-- MATH
+ $\mathsf{structure} \; X$
+ -->
+<IMG
+ WIDTH="82" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img152.png"
+ ALT="$ \mathsf{structure} \; X$">
+.  The parameter <IMG
+ WIDTH="21" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img41.png"
+ ALT="$ M$">
+ is needed because the projected signature item may refer to other items from <!-- MATH
+ $\overline{s}$
+ -->
+<IMG
+ WIDTH="11" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img146.png"
+ ALT="$ \overline{s}$">
+.
+</LI>
+<LI><!-- MATH
+ $\mathsf{selfify}(M, \overline{s})$
+ -->
+<IMG
+ WIDTH="85" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img153.png"
+ ALT="$ \mathsf{selfify}(M, \overline{s})$">
+ adds information to signature items <!-- MATH
+ $\overline{s}$
+ -->
+<IMG
+ WIDTH="11" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img146.png"
+ ALT="$ \overline{s}$">
+ to reflect the fact that we are concerned with the particular module <IMG
+ WIDTH="21" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img41.png"
+ ALT="$ M$">
+.  This function is overloaded to work over individual signature items as well.
+</LI>
+</UL>
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html322"
+  HREF="node14.html">Kind Well-Formedness</A>
+<LI><A NAME="tex2html323"
+  HREF="node15.html">Kinding</A>
+<LI><A NAME="tex2html324"
+  HREF="node16.html">Record Disjointness</A>
+<LI><A NAME="tex2html325"
+  HREF="node17.html">Definitional Equality</A>
+<LI><A NAME="tex2html326"
+  HREF="node18.html">Expression Typing</A>
+<LI><A NAME="tex2html327"
+  HREF="node19.html">Pattern Typing</A>
+<LI><A NAME="tex2html328"
+  HREF="node20.html">Declaration Typing</A>
+<LI><A NAME="tex2html329"
+  HREF="node21.html">Signature Item Typing</A>
+<LI><A NAME="tex2html330"
+  HREF="node22.html">Signature Compatibility</A>
+<LI><A NAME="tex2html331"
+  HREF="node23.html">Module Typing</A>
+<LI><A NAME="tex2html332"
+  HREF="node24.html">Module Projection</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html320"
+  HREF="node14.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html316"
+  HREF="manual.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html310"
+  HREF="node12.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html318"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html321"
+  HREF="node14.html">Kind Well-Formedness</A>
+<B> Up:</B> <A NAME="tex2html317"
+  HREF="manual.html">The Ur/Web Manual</A>
+<B> Previous:</B> <A NAME="tex2html311"
+  HREF="node12.html">Shorthands</A>
+ &nbsp; <B>  <A NAME="tex2html319"
+  HREF="node1.html">Contents</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

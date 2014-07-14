@@ -1,0 +1,485 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Signature Compatibility</TITLE>
+<META NAME="description" CONTENT="Signature Compatibility">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node23.html">
+<LINK REL="previous" HREF="node21.html">
+<LINK REL="up" HREF="node13.html">
+<LINK REL="next" HREF="node23.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html439"
+  HREF="node23.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html435"
+  HREF="node13.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html429"
+  HREF="node21.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html437"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html440"
+  HREF="node23.html">Module Typing</A>
+<B> Up:</B> <A NAME="tex2html436"
+  HREF="node13.html">Static Semantics</A>
+<B> Previous:</B> <A NAME="tex2html430"
+  HREF="node21.html">Signature Item Typing</A>
+ &nbsp; <B>  <A NAME="tex2html438"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00069000000000000000">
+Signature Compatibility</A>
+</H2>
+
+<P>
+To simplify the judgments in this section, we assume that all signatures are alpha-varied as necessary to avoid including multiple bindings for the same identifier.  This is in addition to the usual alpha-variation of locally bound variables.
+
+<P>
+We rely on a judgment <!-- MATH
+ $\Gamma \vdash \overline{s} \leq s'$
+ -->
+<IMG
+ WIDTH="73" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img248.png"
+ ALT="$ \Gamma \vdash \overline{s} \leq s'$">
+, which expresses the occurrence in signature items <!-- MATH
+ $\overline{s}$
+ -->
+<IMG
+ WIDTH="11" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img146.png"
+ ALT="$ \overline{s}$">
+ of an item compatible with <IMG
+ WIDTH="16" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img249.png"
+ ALT="$ s'$">
+.  We also use a judgment <!-- MATH
+ $\Gamma \vdash \overline{dc} \leq \overline{dc}$
+ -->
+<IMG
+ WIDTH="84" HEIGHT="38" ALIGN="MIDDLE" BORDER="0"
+ SRC="img250.png"
+ ALT="$ \Gamma \vdash \overline{dc} \leq \overline{dc}$">
+, which expresses compatibility of datatype definitions.
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash S \equiv S}{}
+\quad \infer{\Gamma \vdash S_1 \equiv S_2}{
+  \Gamma \vdash S_2 \equiv S_1
+}
+\quad \infer{\Gamma \vdash X \equiv S}{
+  X = S \in \Gamma
+}
+\quad \infer{\Gamma \vdash M.X \equiv S}{
+  \Gamma \vdash M : \mathsf{sig} \; \overline{s} \; \mathsf{end}
+  & \mathsf{proj}(M, \overline{s}, \mathsf{signature} \; X) = S
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="600" HEIGHT="76" ALIGN="MIDDLE" BORDER="0"
+ SRC="img251.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash S \equiv S}{}
+\quad \infer{\Gamma \vdash S_1...
+...; \mathsf{end}
+&amp; \mathsf{proj}(M, \overline{s}, \mathsf{signature} \; X) = S
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash S \; \mathsf{where} \; \mathsf{con} \; x = c \equiv \mathsf{sig} \; \overline{s^1} \; \mathsf{con} \; x :: \kappa = c \; \overline{s_2} \; \mathsf{end}}{
+  \Gamma \vdash S \equiv \mathsf{sig} \; \overline{s^1} \; \mathsf{con} \; x :: \kappa \; \overline{s_2} \; \mathsf{end}
+  & \Gamma \vdash c :: \kappa
+}
+\quad \infer{\Gamma \vdash \mathsf{sig} \; \overline{s^1} \; \mathsf{include} \; S \; \overline{s^2} \; \mathsf{end} \equiv \mathsf{sig} \; \overline{s^1} \; \overline{s} \; \overline{s^2} \; \mathsf{end}}{
+  \Gamma \vdash S \equiv \mathsf{sig} \; \overline{s} \; \mathsf{end}
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="667" HEIGHT="88" ALIGN="MIDDLE" BORDER="0"
+ SRC="img252.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash S \; \mathsf{where} \; \mathsf{con} \; x = c...
+...f{end}}{
+\Gamma \vdash S \equiv \mathsf{sig} \; \overline{s} \; \mathsf{end}
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash S_1 \leq S_2}{
+  \Gamma \vdash S_1 \equiv S_2
+}
+\quad \infer{\Gamma \vdash \mathsf{sig} \; \overline{s} \; \mathsf{end} \leq \mathsf{sig} \; \mathsf{end}}{}
+\quad \infer{\Gamma \vdash \mathsf{sig} \; \overline{s} \; \mathsf{end} \leq \mathsf{sig} \; s' \; \overline{s'} \; \mathsf{end}}{
+  \Gamma \vdash \overline{s} \leq s'
+  & \Gamma \vdash s' \leadsto \Gamma'
+  & \Gamma' \vdash \mathsf{sig} \; \overline{s} \; \mathsf{end} \leq \mathsf{sig} \; \overline{s'} \; \mathsf{end}
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="627" HEIGHT="84" ALIGN="MIDDLE" BORDER="0"
+ SRC="img253.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash S_1 \leq S_2}{
+\Gamma \vdash S_1 \equiv S_2...
+...verline{s} \; \mathsf{end} \leq \mathsf{sig} \; \overline{s'} \; \mathsf{end}
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash s \; \overline{s} \leq s'}{
+  \Gamma \vdash s \leq s'
+}
+\quad \infer{\Gamma \vdash s \; \overline{s} \leq s'}{
+  \Gamma \vdash s \leadsto \Gamma'
+  & \Gamma' \vdash \overline{s} \leq s'
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="265" HEIGHT="74" ALIGN="MIDDLE" BORDER="0"
+ SRC="img254.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash s \; \overline{s} \leq s'}{
+\Gamma \vdash s...
+...s'}{
+\Gamma \vdash s \leadsto \Gamma'
+&amp; \Gamma' \vdash \overline{s} \leq s'
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{functor} (X : S_1) : S_2 \leq \mathsf{functor} (X : S'_1) : S'_2}{
+  \Gamma \vdash S'_1 \leq S_1
+  & \Gamma, X : S'_1 \vdash S_2 \leq S'_2
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="322" HEIGHT="78" ALIGN="MIDDLE" BORDER="0"
+ SRC="img255.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{functor} (X : S_1) : S_2 \leq \maths...
+... S'_2}{
+\Gamma \vdash S'_1 \leq S_1
+&amp; \Gamma, X : S'_1 \vdash S_2 \leq S'_2
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{con} \; x :: \kappa \leq \mathsf{con} \; x :: \kappa}{}
+\quad \infer{\Gamma \vdash \mathsf{con} \; x :: \kappa = c \leq \mathsf{con} \; x :: \kappa}{}
+\quad \infer{\Gamma \vdash \mathsf{datatype} \; x \; \overline{y} = \overline{dc} \leq \mathsf{con} \; x :: \mathsf{Type}^{\mathsf{len}(\overline y)} \to \mathsf{Type}}{}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="763" HEIGHT="53" ALIGN="MIDDLE" BORDER="0"
+ SRC="img256.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{con} \; x :: \kappa \leq \mathsf{con...
+...hsf{con} \; x :: \mathsf{Type}^{\mathsf{len}(\overline y)} \to \mathsf{Type}}{}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{datatype} \; x = \mathsf{datatype} \; M.z \leq \mathsf{con} \; x :: \mathsf{Type}^{\mathsf{len}(y)} \to \mathsf{Type}}{
+  \Gamma \vdash M : \mathsf{sig} \; \overline{s} \; \mathsf{end}
+  & \mathsf{proj}(M, \overline{s}, \mathsf{datatype} \; z) = (\overline{y}, \overline{dc})
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="413" HEIGHT="91" ALIGN="MIDDLE" BORDER="0"
+ SRC="img257.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{datatype} \; x = \mathsf{datatype} \...
+...roj}(M, \overline{s}, \mathsf{datatype} \; z) = (\overline{y}, \overline{dc})
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{class} \; x :: \kappa \leq \mathsf{con} \; x :: \kappa}{}
+\quad \infer{\Gamma \vdash \mathsf{class} \; x :: \kappa = c \leq \mathsf{con} \; x :: \kappa}{}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="417" HEIGHT="44" ALIGN="MIDDLE" BORDER="0"
+ SRC="img258.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{class} \; x :: \kappa \leq \mathsf{c...
+...ma \vdash \mathsf{class} \; x :: \kappa = c \leq \mathsf{con} \; x :: \kappa}{}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{con} \; x :: \kappa = c_1 \leq \mathsf{con} \; x :: \mathsf{\kappa} = c_2}{
+  \Gamma \vdash c_1 \equiv c_2
+}
+\quad \infer{\Gamma \vdash \mathsf{class} \; x :: \kappa = c_1 \leq \mathsf{con} \; x :: \kappa = c_2}{
+  \Gamma \vdash c_1 \equiv c_2
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="522" HEIGHT="71" ALIGN="MIDDLE" BORDER="0"
+ SRC="img259.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{con} \; x :: \kappa = c_1 \leq \math...
+... = c_1 \leq \mathsf{con} \; x :: \kappa = c_2}{
+\Gamma \vdash c_1 \equiv c_2
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{datatype} \; x \; \overline{y} = \overline{dc} \leq \mathsf{datatype} \; x \; \overline{y} = \overline{dc'}}{
+  \Gamma, \overline{y :: \mathsf{Type}} \vdash \overline{dc} \leq \overline{dc'}
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="299" HEIGHT="85" ALIGN="MIDDLE" BORDER="0"
+ SRC="img260.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{datatype} \; x \; \overline{y} = \ov...
+...Gamma, \overline{y :: \mathsf{Type}} \vdash \overline{dc} \leq \overline{dc'}
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{datatype} \; x = \mathsf{datatype} \; M.z \leq \mathsf{datatype} \; x \; \overline{y} = \overline{dc'}}{
+  \Gamma \vdash M : \mathsf{sig} \; \overline{s} \; \mathsf{end}
+  & \mathsf{proj}(M, \overline{s}, \mathsf{datatype} \; z) = (\overline{y}, \overline{dc})
+  & \Gamma, \overline{y :: \mathsf{Type}} \vdash \overline{dc} \leq \overline{dc'}
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="513" HEIGHT="87" ALIGN="MIDDLE" BORDER="0"
+ SRC="img261.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{datatype} \; x = \mathsf{datatype} \...
+...Gamma, \overline{y :: \mathsf{Type}} \vdash \overline{dc} \leq \overline{dc'}
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \cdot \leq \cdot}{}
+\quad \infer{\Gamma \vdash X; \overline{dc} \leq X; \overline{dc'}}{
+  \Gamma \vdash \overline{dc} \leq \overline{dc'}
+}
+\quad \infer{\Gamma \vdash X \; \mathsf{of} \; \tau_1; \overline{dc} \leq X \; \mathsf{of} \; \tau_2; \overline{dc'}}{
+  \Gamma \vdash \tau_1 \equiv \tau_2
+  & \Gamma \vdash \overline{dc} \leq \overline{dc'}
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="423" HEIGHT="84" ALIGN="MIDDLE" BORDER="0"
+ SRC="img262.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \cdot \leq \cdot}{}
+\quad \infer{\Gamma \vda...
+...vdash \tau_1 \equiv \tau_2
+&amp; \Gamma \vdash \overline{dc} \leq \overline{dc'}
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{datatype} \; x = \mathsf{datatype} \; M.z \leq \mathsf{datatype} \; x = \mathsf{datatype} \; M'.z'}{
+  \Gamma \vdash M.z \equiv M'.z'
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="430" HEIGHT="70" ALIGN="MIDDLE" BORDER="0"
+ SRC="img263.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{datatype} \; x = \mathsf{datatype} \...
+...datatype} \; x = \mathsf{datatype} \; M'.z'}{
+\Gamma \vdash M.z \equiv M'.z'
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{val} \; x : \tau_1 \leq \mathsf{val} \; x : \tau_2}{
+  \Gamma \vdash \tau_1 \equiv \tau_2
+}
+\quad \infer{\Gamma \vdash \mathsf{structure} \; X : S_1 \leq \mathsf{structure} \; X : S_2}{
+  \Gamma \vdash S_1 \leq S_2
+}
+\quad \infer{\Gamma \vdash \mathsf{signature} \; X = S_1 \leq \mathsf{signature} \; X = S_2}{
+  \Gamma \vdash S_1 \leq S_2
+  & \Gamma \vdash S_2 \leq S_1
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="754" HEIGHT="71" ALIGN="MIDDLE" BORDER="0"
+ SRC="img264.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{val} \; x : \tau_1 \leq \mathsf{val}...
+...ature} \; X = S_2}{
+\Gamma \vdash S_1 \leq S_2
+&amp; \Gamma \vdash S_2 \leq S_1
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{constraint} \; c_1 \sim c_2 \leq \mathsf{constraint} \; c'_1 \sim c'_2}{
+  \Gamma \vdash c_1 \equiv c'_1
+  & \Gamma \vdash c_2 \equiv c'_2
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="293" HEIGHT="78" ALIGN="MIDDLE" BORDER="0"
+ SRC="img265.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{constraint} \; c_1 \sim c_2 \leq \ma...
+...1 \sim c'_2}{
+\Gamma \vdash c_1 \equiv c'_1
+&amp; \Gamma \vdash c_2 \equiv c'_2
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{class} \; x :: \kappa \leq \mathsf{class} \; x :: \kappa}{}
+\quad \infer{\Gamma \vdash \mathsf{class} \; x :: \kappa = c \leq \mathsf{class} \; x :: \kappa}{}
+\quad \infer{\Gamma \vdash \mathsf{class} \; x :: \kappa = c_1 \leq \mathsf{class} \; x :: \kappa = c_2}{
+  \Gamma \vdash c_1 \equiv c_2
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="709" HEIGHT="71" ALIGN="MIDDLE" BORDER="0"
+ SRC="img266.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{class} \; x :: \kappa \leq \mathsf{c...
+... c_1 \leq \mathsf{class} \; x :: \kappa = c_2}{
+\Gamma \vdash c_1 \equiv c_2
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{con} \; x :: \kappa \leq \mathsf{class} \; x :: \kappa}{}
+\quad \infer{\Gamma \vdash \mathsf{con} \; x :: \kappa = c \leq \mathsf{class} \; x :: \kappa}{}
+\quad \infer{\Gamma \vdash \mathsf{con} \; x :: \kappa = c_1 \leq \mathsf{class} \; x :: \kappa = c_2}{
+  \Gamma \vdash c_1 \equiv c_2
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="686" HEIGHT="71" ALIGN="MIDDLE" BORDER="0"
+ SRC="img267.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{con} \; x :: \kappa \leq \mathsf{cla...
+... c_1 \leq \mathsf{class} \; x :: \kappa = c_2}{
+\Gamma \vdash c_1 \equiv c_2
+}$">
+</DIV><P>
+</P>
+
+<P>
+<BR><HR>
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

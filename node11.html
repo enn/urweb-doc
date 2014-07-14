@@ -1,0 +1,453 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Core Syntax</TITLE>
+<META NAME="description" CONTENT="Core Syntax">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node12.html">
+<LINK REL="previous" HREF="node10.html">
+<LINK REL="up" HREF="node9.html">
+<LINK REL="next" HREF="node12.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html298"
+  HREF="node12.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html294"
+  HREF="node9.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html288"
+  HREF="node10.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html296"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html299"
+  HREF="node12.html">Shorthands</A>
+<B> Up:</B> <A NAME="tex2html295"
+  HREF="node9.html">Ur Syntax</A>
+<B> Previous:</B> <A NAME="tex2html289"
+  HREF="node10.html">Lexical Conventions</A>
+ &nbsp; <B>  <A NAME="tex2html297"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00052000000000000000"></A><A NAME="core"></A>
+<BR>
+Core Syntax
+</H2>
+
+<P>
+<I>Kinds</I> classify types and other compile-time-only entities.  Each kind in the grammar is listed with a description of the sort of data it classifies.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{rrcll}
+  \textrm{Kinds} & \kappa &::=& \mathsf{Type} & \textrm{proper types} \\
+  &&& \mathsf{Unit} & \textrm{the trivial constructor} \\
+  &&& \mathsf{Name} & \textrm{field names} \\
+  &&& \kappa \to \kappa & \textrm{type-level functions} \\
+  &&& \{\kappa\} & \textrm{type-level records} \\
+  &&& (\kappa\times^+) & \textrm{type-level tuples} \\
+  &&& X & \textrm{variable} \\
+  &&& X \longrightarrow \kappa & \textrm{kind-polymorphic type-level function} \\
+  &&& \_\_ & \textrm{wildcard} \\
+  &&& (\kappa) & \textrm{explicit precedence} \\
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="450" HEIGHT="207" BORDER="0"
+ SRC="img26.png"
+ ALT="\begin{displaymath}\begin{array}{rrcll}
+\textrm{Kinds} &amp; \kappa &amp;::=&amp; \mathsf{T...
+...\
+&amp;&amp;&amp; (\kappa) &amp; \textrm{explicit precedence} \\
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+Ur supports several different notions of functions that take types as arguments.  These arguments can be either implicit, causing them to be inferred at use sites; or explicit, forcing them to be specified manually at use sites.  There is a common explicitness annotation convention applied at the definitions of and in the types of such functions.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{rrcll}
+  \textrm{Explicitness} & ? &::=& :: & \textrm{explicit} \\
+  &&& ::: & \textrm{implicit}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="242" HEIGHT="54" BORDER="0"
+ SRC="img27.png"
+ ALT="\begin{displaymath}\begin{array}{rrcll}
+\textrm{Explicitness} &amp; ? &amp;::=&amp; :: &amp; \textrm{explicit} \\
+&amp;&amp;&amp; ::: &amp; \textrm{implicit}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+<I>Constructors</I> are the main class of compile-time-only data.  They include proper types and are classified by kinds.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{rrcll}
+  \textrm{Constructors} & c, \tau &::=& (c) :: \kappa & \textrm{kind annotation} \\
+  &&& \hat{x} & \textrm{constructor variable} \\
+  \\
+  &&& \tau \to \tau & \textrm{function type} \\
+  &&& x \; ? \; \kappa \to \tau & \textrm{polymorphic function type} \\
+  &&& X \longrightarrow \tau & \textrm{kind-polymorphic function type} \\
+  &&& \$ c & \textrm{record type} \\
+  \\
+  &&& c \; c & \textrm{type-level function application} \\
+  &&& \lambda x \; :: \; \kappa \Rightarrow c & \textrm{type-level function abstraction} \\
+  \\
+  &&& X \Longrightarrow c & \textrm{type-level kind-polymorphic function abstraction} \\
+  &&& c [\kappa] & \textrm{type-level kind-polymorphic function application} \\
+  \\
+  &&& () & \textrm{type-level unit} \\
+  &&& \#X & \textrm{field name} \\
+  \\
+  &&& [(c = c)^*] & \textrm{known-length type-level record} \\
+  &&& c + \hspace{-.075in} + \;c & \textrm{type-level record concatenation} \\
+  &&& \mathsf{map} & \textrm{type-level record map} \\
+  \\
+  &&& (c,^+) & \textrm{type-level tuple} \\
+  &&& c.n & \textrm{type-level tuple projection ($n \in \mathbb{N}^+$)} \\
+  \\
+  &&& [c \sim c] \Rightarrow \tau & \textrm{guarded type} \\
+  \\
+  &&& \_ :: \kappa & \textrm{wildcard} \\
+  &&& (c) & \textrm{explicit precedence} \\
+  \\
+  \textrm{Qualified uncapitalized variables} & \hat{x} &::=& x & \textrm{not from a module} \\
+  &&& M.x & \textrm{projection from a module} \\
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="758" HEIGHT="598" BORDER="0"
+ SRC="img28.png"
+ ALT="\begin{displaymath}\begin{array}{rrcll}
+\textrm{Constructors} &amp; c, \tau &amp;::=&amp; (...
+...\
+&amp;&amp;&amp; M.x &amp; \textrm{projection from a module} \\
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+We include both abstraction and application for kind polymorphism, but applications are only inferred internally; they may not be written explicitly in source programs.  Also, in the ``known-length type-level record'' form, in <IMG
+ WIDTH="53" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img29.png"
+ ALT="$ c_1 = c_2$">
+ terms, the parser currently only allows <IMG
+ WIDTH="18" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img30.png"
+ ALT="$ c_1$">
+ to be of the forms <IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.png"
+ ALT="$ X$">
+ (as a shorthand for <IMG
+ WIDTH="32" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img31.png"
+ ALT="$ \char93 X$">
+) or <IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.png"
+ ALT="$ x$">
+, or a natural number to stand for the corresponding field name (e.g., for tuples).
+
+<P>
+Modules of the module system are described by <I>signatures</I>.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{rrcll}
+  \textrm{Signatures} & S &::=& \mathsf{sig} \; s^* \; \mathsf{end} & \textrm{constant} \\
+  &&& X & \textrm{variable} \\
+  &&& \mathsf{functor}(X : S) : S & \textrm{functor} \\
+  &&& S \; \mathsf{where} \; \mathsf{con} \; x = c & \textrm{concretizing an abstract constructor} \\
+  &&& M.X & \textrm{projection from a module} \\
+  \\
+  \textrm{Signature items} & s &::=& \mathsf{con} \; x :: \kappa & \textrm{abstract constructor} \\
+  &&& \mathsf{con} \; x :: \kappa = c & \textrm{concrete constructor} \\
+  &&& \mathsf{datatype} \; x \; x^* = dc\mid^+ & \textrm{algebraic datatype definition} \\
+  &&& \mathsf{datatype} \; x = \mathsf{datatype} \; M.x & \textrm{algebraic datatype import} \\
+  &&& \mathsf{val} \; x : \tau & \textrm{value} \\
+  &&& \mathsf{structure} \; X : S & \textrm{sub-module} \\
+  &&& \mathsf{signature} \; X = S & \textrm{sub-signature} \\
+  &&& \mathsf{include} \; S & \textrm{signature inclusion} \\
+  &&& \mathsf{constraint} \; c \sim c & \textrm{record disjointness constraint} \\
+  &&& \mathsf{class} \; x :: \kappa & \textrm{abstract constructor class} \\
+  &&& \mathsf{class} \; x :: \kappa = c & \textrm{concrete constructor class} \\
+  \\
+  \textrm{Datatype constructors} & dc &::=& X & \textrm{nullary constructor} \\
+  &&& X \; \mathsf{of} \; \tau & \textrm{unary constructor} \\
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="691" HEIGHT="388" BORDER="0"
+ SRC="img32.png"
+ ALT="\begin{displaymath}\begin{array}{rrcll}
+\textrm{Signatures} &amp; S &amp;::=&amp; \mathsf{s...
+...mathsf{of} \; \tau &amp; \textrm{unary constructor} \\
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+<I>Patterns</I> are used to describe structural conditions on expressions, such that expressions may be tested against patterns, generating assignments to pattern variables if successful.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{rrcll}
+  \textrm{Patterns} & p &::=& \_ & \textrm{wildcard} \\
+  &&& x & \textrm{variable} \\
+  &&& \ell & \textrm{constant} \\
+  &&& \hat{X} & \textrm{nullary constructor} \\
+  &&& \hat{X} \; p & \textrm{unary constructor} \\
+  &&& \{(x = p,)^*\} & \textrm{rigid record pattern} \\
+  &&& \{(x = p,)^+, \ldots\} & \textrm{flexible record pattern} \\
+  &&& p : \tau & \textrm{type annotation} \\
+  &&& (p) & \textrm{explicit precedence} \\
+  \\
+  \textrm{Qualified capitalized variables} & \hat{X} &::=& X & \textrm{not from a module} \\
+  &&& M.X & \textrm{projection from a module} \\
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="594" HEIGHT="241" BORDER="0"
+ SRC="img33.png"
+ ALT="\begin{displaymath}\begin{array}{rrcll}
+\textrm{Patterns} &amp; p &amp;::=&amp; \_ &amp; \textr...
+...\
+&amp;&amp;&amp; M.X &amp; \textrm{projection from a module} \\
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+<I>Expressions</I> are the main run-time entities, corresponding to both ``expressions'' and ``statements'' in mainstream imperative languages.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{rrcll}
+  \textrm{Expressions} & e &::=& e : \tau & \textrm{type annotation} \\
+  &&& \hat{x} & \textrm{variable} \\
+  &&& \hat{X} & \textrm{datatype constructor} \\
+  &&& \ell & \textrm{constant} \\
+  \\
+  &&& e \; e & \textrm{function application} \\
+  &&& \lambda x : \tau \Rightarrow e & \textrm{function abstraction} \\
+  &&& e [c] & \textrm{polymorphic function application} \\
+  &&& \lambda [x \; ? \; \kappa] \Rightarrow e & \textrm{polymorphic function abstraction} \\
+  &&& e [\kappa] & \textrm{kind-polymorphic function application} \\
+  &&& X \Longrightarrow e & \textrm{kind-polymorphic function abstraction} \\
+  \\
+  &&& \{(c = e,)^*\} & \textrm{known-length record} \\
+  &&& e.c & \textrm{record field projection} \\
+  &&& e + \hspace{-.075in} + \;e & \textrm{record concatenation} \\
+  &&& e \; \texttt{- -} \;c & \textrm{removal of a single record field} \\
+  &&& e \; \texttt{- - -} \;c & \textrm{removal of multiple record fields} \\
+  \\
+  &&& \mathsf{let} \; ed^* \; \mathsf{in} \; e \; \mathsf{end} & \textrm{local definitions} \\
+  \\
+  &&& \mathsf{case} \; e \; \mathsf{of} \; (p \Rightarrow e|)^+ & \textrm{pattern matching} \\
+  \\
+  &&& \lambda [c \sim c] \Rightarrow e & \textrm{guarded expression abstraction} \\
+  &&& e \; ! & \textrm{guarded expression application} \\
+  \\
+  &&& \_ & \textrm{wildcard} \\
+  &&& (e) & \textrm{explicit precedence} \\
+  \\
+  \textrm{Local declarations} & ed &::=& \texttt{val} \; x : \tau = e & \textrm{non-recursive value} \\
+  &&& \texttt{val} \; \texttt{rec} \; (x : \tau = e \; \texttt{and})^+ & \textrm{mutually recursive values} \\
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="666" HEIGHT="581" BORDER="0"
+ SRC="img34.png"
+ ALT="\begin{displaymath}\begin{array}{rrcll}
+\textrm{Expressions} &amp; e &amp;::=&amp; e : \tau...
+...tt{and})^+ &amp; \textrm{mutually recursive values} \\
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+As with constructors, we include both abstraction and application for kind polymorphism, but applications are only inferred internally.
+
+<P>
+<I>Declarations</I> primarily bring new symbols into context.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{rrcll}
+  \textrm{Declarations} & d &::=& \mathsf{con} \; x :: \kappa = c & \textrm{constructor synonym} \\
+  &&& \mathsf{datatype} \; x \; x^* = dc\mid^+ & \textrm{algebraic datatype definition} \\
+  &&& \mathsf{datatype} \; x = \mathsf{datatype} \; M.x & \textrm{algebraic datatype import} \\
+  &&& \mathsf{val} \; x : \tau = e & \textrm{value} \\
+  &&& \mathsf{val} \; \texttt{rec} \; (x : \tau = e \; \mathsf{and})^+ & \textrm{mutually recursive values} \\
+  &&& \mathsf{structure} \; X : S = M & \textrm{module definition} \\
+  &&& \mathsf{signature} \; X = S & \textrm{signature definition} \\
+  &&& \mathsf{open} \; M & \textrm{module inclusion} \\
+  &&& \mathsf{constraint} \; c \sim c & \textrm{record disjointness constraint} \\
+  &&& \mathsf{open} \; \mathsf{constraints} \; M & \textrm{inclusion of just the constraints from a module} \\
+  &&& \mathsf{table} \; x : c & \textrm{SQL table} \\
+  &&& \mathsf{view} \; x = e & \textrm{SQL view} \\
+  &&& \mathsf{sequence} \; x & \textrm{SQL sequence} \\
+  &&& \mathsf{cookie} \; x : \tau & \textrm{HTTP cookie} \\
+  &&& \mathsf{style} \; x : \tau & \textrm{CSS class} \\
+  &&& \mathsf{task} \; e = e & \textrm{recurring task} \\
+  \\
+  \textrm{Modules} & M &::=& \mathsf{struct} \; d^* \; \mathsf{end} & \textrm{constant} \\
+  &&& X & \textrm{variable} \\
+  &&& M.X & \textrm{projection} \\
+  &&& M(M) & \textrm{functor application} \\
+  &&& \mathsf{functor}(X : S) : S = M & \textrm{functor abstraction} \\
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="699" HEIGHT="427" BORDER="0"
+ SRC="img35.png"
+ ALT="\begin{displaymath}\begin{array}{rrcll}
+\textrm{Declarations} &amp; d &amp;::=&amp; \mathsf...
+...}(X : S) : S = M &amp; \textrm{functor abstraction} \\
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+There are two kinds of Ur files.  A file named <!-- MATH
+ $M\texttt{.ur}$
+ -->
+<IMG
+ WIDTH="46" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img36.png"
+ ALT="$ M\texttt{.ur}$">
+ is an <I>implementation file</I>, and it should contain a sequence of declarations <IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img37.png"
+ ALT="$ d^*$">
+.  A file named <!-- MATH
+ $M\texttt{.urs}$
+ -->
+<IMG
+ WIDTH="54" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img38.png"
+ ALT="$ M\texttt{.urs}$">
+ is an <I>interface file</I>; it must always have a matching <!-- MATH
+ $M\texttt{.ur}$
+ -->
+<IMG
+ WIDTH="46" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img36.png"
+ ALT="$ M\texttt{.ur}$">
+ and should contain a sequence of signature items <IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img39.png"
+ ALT="$ s^*$">
+.  When both files are present, the overall effect is the same as a monolithic declaration <!-- MATH
+ $\mathsf{structure} \; M : \mathsf{sig} \; s^* \; \mathsf{end} = \mathsf{struct} \; d^* \; \mathsf{end}$
+ -->
+<IMG
+ WIDTH="270" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img40.png"
+ ALT="$ \mathsf{structure} \; M : \mathsf{sig} \; s^* \; \mathsf{end} = \mathsf{struct} \; d^* \; \mathsf{end}$">
+.  When no interface file is included, the overall effect is similar, with a signature for module <IMG
+ WIDTH="21" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img41.png"
+ ALT="$ M$">
+ being inferred rather than just checked against an interface.
+
+<P>
+We omit some extra possibilities in <!-- MATH
+ $\mathsf{table}$
+ -->
+<IMG
+ WIDTH="36" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img42.png"
+ ALT="$ \mathsf{table}$">
+ syntax, deferring them to Section <A HREF="node50.html#tables">9.1.1</A>.  The concrete syntax of <!-- MATH
+ $\mathsf{view}$
+ -->
+<IMG
+ WIDTH="33" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img43.png"
+ ALT="$ \mathsf{view}$">
+ declarations is also more complex than shown in the table above, with details deferred to Section <A HREF="node50.html#tables">9.1.1</A>.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html298"
+  HREF="node12.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html294"
+  HREF="node9.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html288"
+  HREF="node10.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html296"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html299"
+  HREF="node12.html">Shorthands</A>
+<B> Up:</B> <A NAME="tex2html295"
+  HREF="node9.html">Ur Syntax</A>
+<B> Previous:</B> <A NAME="tex2html289"
+  HREF="node10.html">Lexical Conventions</A>
+ &nbsp; <B>  <A NAME="tex2html297"
+  HREF="node1.html">Contents</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

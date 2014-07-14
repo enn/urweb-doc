@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Compiler Phases</TITLE>
+<META NAME="description" CONTENT="Compiler Phases">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node86.html">
+<LINK REL="previous" HREF="node56.html">
+<LINK REL="up" HREF="manual.html">
+<LINK REL="next" HREF="node62.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html931"
+  HREF="node62.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html927"
+  HREF="manual.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html921"
+  HREF="node60.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html929"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html932"
+  HREF="node62.html">Parse</A>
+<B> Up:</B> <A NAME="tex2html928"
+  HREF="manual.html">The Ur/Web Manual</A>
+<B> Previous:</B> <A NAME="tex2html922"
+  HREF="node60.html">The Less Safe FFI</A>
+ &nbsp; <B>  <A NAME="tex2html930"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION000130000000000000000">
+Compiler Phases</A>
+</H1>
+
+<P>
+The Ur/Web compiler is unconventional in that it relies on a kind of <I>heuristic compilation</I>.  Not all valid programs will compile successfully.  Informally, programs fail to compile when they are ``too higher order.''  Compiler phases do their best to eliminate different kinds of higher order-ness, but some programs just won't compile.  This is a trade-off for producing very efficient executables.  Compiled Ur/Web programs use native C representations and require no garbage collection.
+
+<P>
+In this section, we step through the main phases of compilation, noting what consequences each phase has for effective programming.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html933"
+  HREF="node62.html">Parse</A>
+<LI><A NAME="tex2html934"
+  HREF="node63.html">Elaborate</A>
+<LI><A NAME="tex2html935"
+  HREF="node64.html">Unnest</A>
+<LI><A NAME="tex2html936"
+  HREF="node65.html">Corify</A>
+<LI><A NAME="tex2html937"
+  HREF="node66.html">Especialize</A>
+<LI><A NAME="tex2html938"
+  HREF="node67.html">Untangle</A>
+<LI><A NAME="tex2html939"
+  HREF="node68.html">Shake</A>
+<LI><A NAME="tex2html940"
+  HREF="node69.html">Rpcify</A>
+<LI><A NAME="tex2html941"
+  HREF="node70.html">Untangle, Shake</A>
+<LI><A NAME="tex2html942"
+  HREF="node71.html">Tag</A>
+<LI><A NAME="tex2html943"
+  HREF="node72.html">Reduce</A>
+<LI><A NAME="tex2html944"
+  HREF="node73.html">Unpoly</A>
+<LI><A NAME="tex2html945"
+  HREF="node74.html">Specialize</A>
+<LI><A NAME="tex2html946"
+  HREF="node75.html">Shake</A>
+<LI><A NAME="tex2html947"
+  HREF="node76.html">Monoize</A>
+<LI><A NAME="tex2html948"
+  HREF="node77.html">MonoOpt</A>
+<LI><A NAME="tex2html949"
+  HREF="node78.html">MonoUntangle</A>
+<LI><A NAME="tex2html950"
+  HREF="node79.html">MonoReduce</A>
+<LI><A NAME="tex2html951"
+  HREF="node80.html">MonoShake, MonoOpt</A>
+<LI><A NAME="tex2html952"
+  HREF="node81.html">Fuse</A>
+<LI><A NAME="tex2html953"
+  HREF="node82.html">MonoUntangle, MonoShake</A>
+<LI><A NAME="tex2html954"
+  HREF="node83.html">Pathcheck</A>
+<LI><A NAME="tex2html955"
+  HREF="node84.html">Cjrize</A>
+<LI><A NAME="tex2html956"
+  HREF="node85.html">C Compilation and Linking</A>
+</UL>
+<!--End of Table of Child-Links-->
+<BR><HR>
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,189 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Writing C FFI Code</TITLE>
+<META NAME="description" CONTENT="Writing C FFI Code">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node58.html">
+<LINK REL="previous" HREF="node56.html">
+<LINK REL="up" HREF="node56.html">
+<LINK REL="next" HREF="node58.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html885"
+  HREF="node58.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html881"
+  HREF="node56.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html875"
+  HREF="node56.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html883"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html886"
+  HREF="node58.html">Writing JavaScript FFI Code</A>
+<B> Up:</B> <A NAME="tex2html882"
+  HREF="node56.html">The Foreign Function Interface</A>
+<B> Previous:</B> <A NAME="tex2html876"
+  HREF="node56.html">The Foreign Function Interface</A>
+ &nbsp; <B>  <A NAME="tex2html884"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000121000000000000000">
+Writing C FFI Code</A>
+</H2>
+
+<P>
+C source files connecting to the Ur/Web FFI should include <TT>urweb.h</TT>, and C++ source files should include <TT>urweb_cpp.h</TT>.
+
+<P>
+A server-side FFI type or value <TT>Module.ident</TT> must have a corresponding type or value definition <TT>uw_Module_ident</TT> in C code.  With the current Ur/Web version, it's not generally possible to work with Ur records or complex datatypes in C code, but most other kinds of types are fair game.
+
+<P>
+
+<UL>
+<LI>Primitive types defined in <TT>Basis</TT> are themselves using the standard FFI interface, so you may refer to them like <TT>uw_Basis_t</TT>.  See <TT>include/urweb/types.h</TT> for their definitions.
+</LI>
+<LI>Enumeration datatypes, which have only constructors that take no arguments, should be defined using C <TT>enum</TT>s.  The type is named as for any other type identifier, and each constructor <TT>c</TT> gets an enumeration constant named <TT>uw_Module_c</TT>.
+</LI>
+<LI>A datatype <TT>dt</TT> (such as <TT>Basis.option</TT>) that has one non-value-carrying constructor <TT>NC</TT> and one value-carrying constructor <TT>C</TT> gets special treatment.  Where <TT>T</TT> is the type of <TT>C</TT>'s argument, and where we represent <TT>T</TT> as <TT>t</TT> in C, we represent <TT>NC</TT> with <TT>NULL</TT>.  The representation of <TT>C</TT> depends on whether we're sure that we don't need to use <TT>NULL</TT> to represent <TT>t</TT> values; this condition holds only for strings and complex datatypes.  For such types, <TT>C v</TT> is represented with the C encoding of <TT>v</TT>, such that the translation of <TT>dt</TT> is <TT>t</TT>.  For other types, <TT>C v</TT> is represented with a pointer to the C encoding of v, such that the translation of <TT>dt</TT> is <TT>t*</TT>.
+</LI>
+<LI>Ur/Web involves many types of program syntax, such as for HTML and SQL code.  All of these types are implemented with normal C strings, and you may take advantage of that encoding to manipulate code as strings in C FFI code.  Be mindful that, in writing such code, it is your responsibility to maintain the appropriate code invariants, or you may reintroduce the code injection vulnerabilities that Ur/Web rules out.  The most convenient way to extend Ur/Web with functions that, e.g., use natively unsupported HTML tags is to generate the HTML code with the FFI.
+</LI>
+</UL>
+
+<P>
+The C FFI version of a Ur function with type <TT>T1 -&gt; ... -&gt; TN -&gt; R</TT> or <TT>T1 -&gt; ... -&gt; TN -&gt; transaction R</TT> has a C prototype like <TT>R uw_Module_ident(uw_context, T1, ..., TN)</TT>.  Only functions with types of the second form may have side effects.  <TT>uw_context</TT> is the type of state that persists across handling a client request.  Many functions that operate on contexts are prototyped in <TT>include/urweb/urweb_cpp.h</TT>.  Most should only be used internally by the compiler.  A few are useful in general FFI implementation:
+
+<UL>
+<LI><PRE>
+void uw_error(uw_context, failure_kind, const char *fmt, ...);
+</PRE>
+  Abort the current request processing, giving a <TT>printf</TT>-style format string and arguments for generating an error message.  The <TT>failure_kind</TT> argument can be <TT>FATAL</TT>, to abort the whole execution; <TT>BOUNDED_RETRY</TT>, to try processing the request again from the beginning, but failing if this happens too many times; or <TT>UNLIMITED_RETRY</TT>, to repeat processing, with no cap on how many times this can recur.
+
+<P>
+All pointers to the context-local heap (see description below of <TT>uw_malloc()</TT>) become invalid at the start and end of any execution of a main entry point function of an application.  For example, if the request handler is restarted because of a <TT>uw_error()</TT> call with <TT>BOUNDED_RETRY</TT> or for any other reason, it is unsafe to access any local heap pointers that may have been stashed somewhere beforehand.
+
+<P>
+</LI>
+<LI><PRE>
+void uw_set_error_message(uw_context, const char *fmt, ...);
+</PRE>
+  This simpler form of <TT>uw_error()</TT> saves an error message without immediately aborting execution.
+
+<P>
+</LI>
+<LI><PRE>
+void uw_push_cleanup(uw_context, void (*func)(void *), void *arg);
+void uw_pop_cleanup(uw_context);
+</PRE>
+  Manipulate a stack of actions that should be taken if any kind of error condition arises.  Calling the ``pop'' function both removes an action from the stack and executes it.  It is a bug to let a page request handler finish successfully with unpopped cleanup actions.
+
+<P>
+Pending cleanup actions aren't intended to have any complex relationship amongst themselves, so, upon request handler abort, pending actions are executed in first-in-first-out order.
+
+<P>
+</LI>
+<LI><PRE>
+void *uw_malloc(uw_context, size_t);
+</PRE>
+  A version of <TT>malloc()</TT> that allocates memory inside a context's heap, which is managed with region allocation.  Thus, there is no <TT>uw_free()</TT>, but you need to be careful not to keep ad-hoc C pointers to this area of memory.  In general, <TT>uw_malloc()</TT>ed memory should only be used in ways compatible with the computation model of pure Ur.  This means it is fine to allocate and return a value that could just as well have been built with core Ur code.  In contrast, it is almost never safe to store <TT>uw_malloc()</TT>ed pointers in global variables, including when the storage happens implicitly by registering a callback that would take the pointer as an argument.
+
+<P>
+For performance and correctness reasons, it is usually preferable to use <TT>uw_malloc()</TT> instead of <TT>malloc()</TT>.  The former manipulates a local heap that can be kept allocated across page requests, while the latter uses global data structures that may face contention during concurrent execution.  However, we emphasize again that <TT>uw_malloc()</TT> should never be used to implement some logic that couldn't be implemented trivially by a constant-valued expression in Ur.
+
+<P>
+</LI>
+<LI><PRE>
+typedef void (*uw_callback)(void *);
+typedef void (*uw_callback_with_retry)(void *, int will_retry);
+int uw_register_transactional(uw_context, void *data, uw_callback commit,
+                              uw_callback rollback, uw_callback_with_retry free);
+</PRE>
+  All side effects in Ur/Web programs need to be compatible with transactions, such that any set of actions can be undone at any time.  Thus, you should not perform actions with non-local side effects directly; instead, register handlers to be called when the current transaction is committed or rolled back.  The arguments here give an arbitary piece of data to be passed to callbacks, a function to call on commit, a function to call on rollback, and a function to call afterward in either case to clean up any allocated resources.  A rollback handler may be called after the associated commit handler has already been called, if some later part of the commit process fails.  A free handler is told whether the runtime system expects to retry the current page request after rollback finishes.  The return value of <TT>uw_register_transactional()</TT> is 0 on success and nonzero on failure (where failure currently only happens when exceeding configured limits on number of transactionals).
+
+<P>
+Any of the callbacks may be <TT>NULL</TT>.  To accommodate some stubbornly non-transactional real-world actions like sending an e-mail message, Ur/Web treats <TT>NULL</TT> <TT>rollback</TT> callbacks specially.  When a transaction commits, all <TT>commit</TT> actions that have non-<TT>NULL</TT> rollback actions are tried before any <TT>commit</TT> actions that have <TT>NULL</TT> rollback actions.  Furthermore, an SQL <TT>COMMIT</TT> is also attempted in between the two phases, so the nicely transactional actions have a chance to influence whether data are committed to the database, while <TT>NULL</TT>-rollback actions only get run in the first place after committing data.  The reason for all this is that it is <I>expected</I> that concurrency interactions will cause database commits to fail in benign ways that call for transaction restart.  A truly non-undoable action should only be run after we are sure the database transaction will commit.
+
+<P>
+When a request handler ends with multiple pending transactional actions, their handlers are run in a first-in-last-out stack-like order, wherever the order would otherwise be ambiguous.
+
+<P>
+It is not safe for any of these handlers to access a context-local heap through a pointer returned previously by <TT>uw_malloc()</TT>, nor should any new calls to that function be made.  Think of the context-local heap as meant for use by the Ur/Web code itself, while transactional handlers execute after the Ur/Web code has finished.
+
+<P>
+A handler may signal an error by calling <TT>uw_set_error_message()</TT>, but it is not safe to call <TT>uw_error()</TT> from a handler.  Signaling an error in a commit handler will cause the runtime system to switch to aborting the transaction, immediately after the current commit handler returns.
+
+<P>
+</LI>
+<LI><PRE>
+void *uw_get_global(uw_context, char *name);
+void uw_set_global(uw_context, char *name, void *data, uw_callback free);
+</PRE>
+  Different FFI-based extensions may want to associate their own pieces of data with contexts.  The global interface provides a way of doing that, where each extension must come up with its own unique key.  The <TT>free</TT> argument to <TT>uw_set_global()</TT> explains how to deallocate the saved data.  It is never safe to store <TT>uw_malloc()</TT>ed pointers in global variable slots.
+
+<P>
+</LI>
+</UL>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html885"
+  HREF="node58.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html881"
+  HREF="node56.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html875"
+  HREF="node56.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html883"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html886"
+  HREF="node58.html">Writing JavaScript FFI Code</A>
+<B> Up:</B> <A NAME="tex2html882"
+  HREF="node56.html">The Foreign Function Interface</A>
+<B> Previous:</B> <A NAME="tex2html876"
+  HREF="node56.html">The Foreign Function Interface</A>
+ &nbsp; <B>  <A NAME="tex2html884"
+  HREF="node1.html">Contents</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

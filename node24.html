@@ -1,0 +1,555 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Module Projection</TITLE>
+<META NAME="description" CONTENT="Module Projection">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="previous" HREF="node23.html">
+<LINK REL="up" HREF="node13.html">
+<LINK REL="next" HREF="node25.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html461"
+  HREF="node25.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html457"
+  HREF="node13.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html453"
+  HREF="node23.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html459"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html462"
+  HREF="node25.html">Type Inference</A>
+<B> Up:</B> <A NAME="tex2html458"
+  HREF="node13.html">Static Semantics</A>
+<B> Previous:</B> <A NAME="tex2html454"
+  HREF="node23.html">Module Typing</A>
+ &nbsp; <B>  <A NAME="tex2html460"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000611000000000000000">
+Module Projection</A>
+</H2>
+
+<P>
+<BR>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ \begin{eqnarray*}
+\mathsf{proj}(M, \mathsf{con} \; x :: \kappa \; \overline{s}, \mathsf{con} \; x) &=& \kappa \\
+  \mathsf{proj}(M, \mathsf{con} \; x :: \kappa = c \; \overline{s}, \mathsf{con} \; x) &=& (\kappa, c) \\
+  \mathsf{proj}(M, \mathsf{datatype} \; x \; \overline{y} = \overline{dc} \; \overline{s}, \mathsf{con} \; x) &=& \mathsf{Type}^{\mathsf{len}(\overline{y})} \to \mathsf{Type} \\
+  \mathsf{proj}(M, \mathsf{datatype} \; x = \mathsf{datatype} \; M'.z \; \overline{s}, \mathsf{con} \; x) &=& (\mathsf{Type}^{\mathsf{len}(\overline{y})} \to \mathsf{Type}, M'.z) \textrm{ (where $\Gamma \vdash M' : \mathsf{sig} \; \overline{s'} \; \mathsf{end}$} \\
+  && \textrm{and $\mathsf{proj}(M', \overline{s'}, \mathsf{datatype} \; z) = (\overline{y}, \overline{dc})$)} \\
+  \mathsf{proj}(M, \mathsf{class} \; x :: \kappa \; \overline{s}, \mathsf{con} \; x) &=& \kappa \to \mathsf{Type} \\
+  \mathsf{proj}(M, \mathsf{class} \; x :: \kappa = c \; \overline{s}, \mathsf{con} \; x) &=& (\kappa \to \mathsf{Type}, c) \\
+  \\
+  \mathsf{proj}(M, \mathsf{datatype} \; x \; \overline{y} = \overline{dc} \; \overline{s}, \mathsf{datatype} \; x) &=& (\overline{y}, \overline{dc}) \\
+  \mathsf{proj}(M, \mathsf{datatype} \; x = \mathsf{datatype} \; M'.z \; \overline{s}, \mathsf{con} \; x) &=& \mathsf{proj}(M', \overline{s'}, \mathsf{datatype} \; z) \textrm{ (where $\Gamma \vdash M' : \mathsf{sig} \; \overline{s'} \; \mathsf{end}$)} \\
+  \\
+  \mathsf{proj}(M, \mathsf{val} \; x : \tau \; \overline{s}, \mathsf{val} \; x) &=& \tau \\
+  \mathsf{proj}(M, \mathsf{datatype} \; x \; \overline{y} = \overline{dc} \; \overline{s}, \mathsf{val} \; X) &=& \overline{y ::: \mathsf{Type}} \to M.x \; \overline y \textrm{ (where $X \in \overline{dc}$)} \\
+  \mathsf{proj}(M, \mathsf{datatype} \; x \; \overline{y} = \overline{dc} \; \overline{s}, \mathsf{val} \; X) &=& \overline{y ::: \mathsf{Type}} \to \tau \to M.x \; \overline y \textrm{ (where $X \; \mathsf{of} \; \tau \in \overline{dc}$)} \\
+  \mathsf{proj}(M, \mathsf{datatype} \; x = \mathsf{datatype} \; M'.z, \mathsf{val} \; X) &=& \overline{y ::: \mathsf{Type}} \to M.x \; \overline y \textrm{ (where $\Gamma \vdash M' : \mathsf{sig} \; \overline{s'} \; \mathsf{end}$} \\
+  && \textrm{and $\mathsf{proj}(M', \overline{s'}, \mathsf{datatype} \; z = (\overline{y}, \overline{dc})$\  and $X \in \overline{dc}$)} \\
+  \mathsf{proj}(M, \mathsf{datatype} \; x = \mathsf{datatype} \; M'.z, \mathsf{val} \; X) &=& \overline{y ::: \mathsf{Type}} \to \tau \to M.x \; \overline y \textrm{ (where $\Gamma \vdash M' : \mathsf{sig} \; \overline{s'} \; \mathsf{end}$} \\
+  && \textrm{and $\mathsf{proj}(M', \overline{s'}, \mathsf{datatype} \; z = (\overline{y}, \overline{dc})$\  and $X \; \mathsf{of} \; \tau \in \overline{dc}$)} \\
+  \\
+  \mathsf{proj}(M, \mathsf{structure} \; X : S \; \overline{s}, \mathsf{structure} \; X) &=& S \\
+  \\
+  \mathsf{proj}(M, \mathsf{signature} \; X = S \; \overline{s}, \mathsf{signature} \; X) &=& S \\
+  \\
+  \mathsf{proj}(M, \mathsf{con} \; x :: \kappa \; \overline{s}, V) &=& [x \mapsto M.x]\mathsf{proj}(M, \overline{s}, V) \\
+  \mathsf{proj}(M, \mathsf{con} \; x :: \kappa = c \; \overline{s}, V) &=& [x \mapsto M.x]\mathsf{proj}(M, \overline{s}, V) \\
+  \mathsf{proj}(M, \mathsf{datatype} \; x \; \overline{y} = \overline{dc} \; \overline{s}, V) &=& [x \mapsto M.x]\mathsf{proj}(M, \overline{s}, V) \\
+  \mathsf{proj}(M, \mathsf{datatype} \; x = \mathsf{datatype} \; M'.z \; \overline{s}, V) &=& [x \mapsto M.x]\mathsf{proj}(M, \overline{s}, V) \\
+  \mathsf{proj}(M, \mathsf{val} \; x : \tau \; \overline{s}, V) &=& \mathsf{proj}(M, \overline{s}, V) \\
+  \mathsf{proj}(M, \mathsf{structure} \; X : S \; \overline{s}, V) &=& [X \mapsto M.X]\mathsf{proj}(M, \overline{s}, V) \\
+  \mathsf{proj}(M, \mathsf{signature} \; X = S \; \overline{s}, V) &=& [X \mapsto M.X]\mathsf{proj}(M, \overline{s}, V) \\
+  \mathsf{proj}(M, \mathsf{include} \; S \; \overline{s}, V) &=& \mathsf{proj}(M, \overline{s'} \; \overline{s}, V) \textrm{ (where $\Gamma \vdash S \equiv \mathsf{sig} \; \overline{s'} \; \mathsf{end}$)} \\
+  \mathsf{proj}(M, \mathsf{constraint} \; c_1 \sim c_2 \; \overline{s}, V) &=& \mathsf{proj}(M, \overline{s}, V) \\
+  \mathsf{proj}(M, \mathsf{class} \; x :: \kappa \; \overline{s}, V) &=& [x \mapsto M.x]\mathsf{proj}(M, \overline{s}, V) \\
+  \mathsf{proj}(M, \mathsf{class} \; x :: \kappa = c \; \overline{s}, V) &=& [x \mapsto M.x]\mathsf{proj}(M, \overline{s}, V) \\
+\end{eqnarray*}
+ -->
+<TABLE CELLPADDING="0" ALIGN="CENTER" WIDTH="100%">
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT"><IMG
+ WIDTH="184" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img327.png"
+ ALT="$\displaystyle \mathsf{proj}(M, \mathsf{con} \; x :: \kappa \; \overline{s}, \mathsf{con} \; x)$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img273.png"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP><IMG
+ WIDTH="13" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img328.png"
+ ALT="$\displaystyle \kappa$"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT"><IMG
+ WIDTH="212" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img329.png"
+ ALT="$\displaystyle \mathsf{proj}(M, \mathsf{con} \; x :: \kappa = c \; \overline{s}, \mathsf{con} \; x)$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img273.png"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP><IMG
+ WIDTH="39" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img330.png"
+ ALT="$\displaystyle (\kappa, c)$"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT"><IMG
+ WIDTH="241" HEIGHT="38" ALIGN="MIDDLE" BORDER="0"
+ SRC="img331.png"
+ ALT="$\displaystyle \mathsf{proj}(M, \mathsf{datatype} \; x \; \overline{y} = \overline{dc} \; \overline{s}, \mathsf{con} \; x)$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img273.png"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP><IMG
+ WIDTH="126" HEIGHT="39" ALIGN="MIDDLE" BORDER="0"
+ SRC="img332.png"
+ ALT="$\displaystyle \mathsf{Type}^{\mathsf{len}(\overline{y})} \to \mathsf{Type}$"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT"><IMG
+ WIDTH="309" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
+ SRC="img333.png"
+ ALT="$\displaystyle \mathsf{proj}(M, \mathsf{datatype} \; x = \mathsf{datatype} \; M'.z \; \overline{s}, \mathsf{con} \; x)$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img273.png"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP><IMG
+ WIDTH="362" HEIGHT="39" ALIGN="MIDDLE" BORDER="0"
+ SRC="img334.png"
+ ALT="$\displaystyle (\mathsf{Type}^{\mathsf{len}(\overline{y})} \to \mathsf{Type}, M'...
+...trm{ (where $\Gamma \vdash M' : \mathsf{sig} \; \overline{s'} \; \mathsf{end}$}$"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT">&nbsp;</TD>
+<TD>&nbsp;</TD>
+<TD ALIGN="LEFT" NOWRAP><IMG
+ WIDTH="261" HEIGHT="38" ALIGN="MIDDLE" BORDER="0"
+ SRC="img335.png"
+ ALT="$\displaystyle \textrm{and $\mathsf{proj}(M', \overline{s'}, \mathsf{datatype} \; z) = (\overline{y}, \overline{dc})$)}$"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT"><IMG
+ WIDTH="192" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img336.png"
+ ALT="$\displaystyle \mathsf{proj}(M, \mathsf{class} \; x :: \kappa \; \overline{s}, \mathsf{con} \; x)$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img273.png"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP><IMG
+ WIDTH="70" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img337.png"
+ ALT="$\displaystyle \kappa \to \mathsf{Type}$"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT"><IMG
+ WIDTH="220" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img338.png"
+ ALT="$\displaystyle \mathsf{proj}(M, \mathsf{class} \; x :: \kappa = c \; \overline{s}, \mathsf{con} \; x)$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img273.png"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP><IMG
+ WIDTH="97" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img339.png"
+ ALT="$\displaystyle (\kappa \to \mathsf{Type}, c)$"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT">&nbsp;</TD>
+<TD>&nbsp;</TD>
+<TD>&nbsp;</TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT"><IMG
+ WIDTH="275" HEIGHT="38" ALIGN="MIDDLE" BORDER="0"
+ SRC="img340.png"
+ ALT="$\displaystyle \mathsf{proj}(M, \mathsf{datatype} \; x \; \overline{y} = \overline{dc} \; \overline{s}, \mathsf{datatype} \; x)$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img273.png"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP><IMG
+ WIDTH="47" HEIGHT="38" ALIGN="MIDDLE" BORDER="0"
+ SRC="img341.png"
+ ALT="$\displaystyle (\overline{y}, \overline{dc})$"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT"><IMG
+ WIDTH="309" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
+ SRC="img333.png"
+ ALT="$\displaystyle \mathsf{proj}(M, \mathsf{datatype} \; x = \mathsf{datatype} \; M'.z \; \overline{s}, \mathsf{con} \; x)$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img273.png"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP><IMG
+ WIDTH="349" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img342.png"
+ ALT="$\displaystyle \mathsf{proj}(M', \overline{s'}, \mathsf{datatype} \; z) \textrm{ (where $\Gamma \vdash M' : \mathsf{sig} \; \overline{s'} \; \mathsf{end}$)}$"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT">&nbsp;</TD>
+<TD>&nbsp;</TD>
+<TD>&nbsp;</TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT"><IMG
+ WIDTH="171" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img343.png"
+ ALT="$\displaystyle \mathsf{proj}(M, \mathsf{val} \; x : \tau \; \overline{s}, \mathsf{val} \; x)$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img273.png"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP><IMG
+ WIDTH="13" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img344.png"
+ ALT="$\displaystyle \tau$"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT"><IMG
+ WIDTH="242" HEIGHT="38" ALIGN="MIDDLE" BORDER="0"
+ SRC="img345.png"
+ ALT="$\displaystyle \mathsf{proj}(M, \mathsf{datatype} \; x \; \overline{y} = \overline{dc} \; \overline{s}, \mathsf{val} \; X)$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img273.png"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP><IMG
+ WIDTH="247" HEIGHT="38" ALIGN="MIDDLE" BORDER="0"
+ SRC="img346.png"
+ ALT="$\displaystyle \overline{y ::: \mathsf{Type}} \to M.x \; \overline y \textrm{ (where $X \in \overline{dc}$)}$"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT"><IMG
+ WIDTH="242" HEIGHT="38" ALIGN="MIDDLE" BORDER="0"
+ SRC="img345.png"
+ ALT="$\displaystyle \mathsf{proj}(M, \mathsf{datatype} \; x \; \overline{y} = \overline{dc} \; \overline{s}, \mathsf{val} \; X)$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img273.png"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP><IMG
+ WIDTH="312" HEIGHT="38" ALIGN="MIDDLE" BORDER="0"
+ SRC="img347.png"
+ ALT="$\displaystyle \overline{y ::: \mathsf{Type}} \to \tau \to M.x \; \overline y \textrm{ (where $X \; \mathsf{of} \; \tau \in \overline{dc}$)}$"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT"><IMG
+ WIDTH="298" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
+ SRC="img348.png"
+ ALT="$\displaystyle \mathsf{proj}(M, \mathsf{datatype} \; x = \mathsf{datatype} \; M'.z, \mathsf{val} \; X)$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img273.png"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP><IMG
+ WIDTH="317" HEIGHT="38" ALIGN="MIDDLE" BORDER="0"
+ SRC="img349.png"
+ ALT="$\displaystyle \overline{y ::: \mathsf{Type}} \to M.x \; \overline y \textrm{ (where $\Gamma \vdash M' : \mathsf{sig} \; \overline{s'} \; \mathsf{end}$}$"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT">&nbsp;</TD>
+<TD>&nbsp;</TD>
+<TD ALIGN="LEFT" NOWRAP><IMG
+ WIDTH="340" HEIGHT="38" ALIGN="MIDDLE" BORDER="0"
+ SRC="img350.png"
+ ALT="$\displaystyle \textrm{and $\mathsf{proj}(M', \overline{s'}, \mathsf{datatype} \; z = (\overline{y}, \overline{dc})$\ and $X \in \overline{dc}$)}$"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT"><IMG
+ WIDTH="298" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
+ SRC="img348.png"
+ ALT="$\displaystyle \mathsf{proj}(M, \mathsf{datatype} \; x = \mathsf{datatype} \; M'.z, \mathsf{val} \; X)$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img273.png"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP><IMG
+ WIDTH="351" HEIGHT="38" ALIGN="MIDDLE" BORDER="0"
+ SRC="img351.png"
+ ALT="$\displaystyle \overline{y ::: \mathsf{Type}} \to \tau \to M.x \; \overline y \textrm{ (where $\Gamma \vdash M' : \mathsf{sig} \; \overline{s'} \; \mathsf{end}$}$"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT">&nbsp;</TD>
+<TD>&nbsp;</TD>
+<TD ALIGN="LEFT" NOWRAP><IMG
+ WIDTH="371" HEIGHT="38" ALIGN="MIDDLE" BORDER="0"
+ SRC="img352.png"
+ ALT="$\displaystyle \textrm{and $\mathsf{proj}(M', \overline{s'}, \mathsf{datatype} \...
+...verline{y}, \overline{dc})$\ and $X \; \mathsf{of} \; \tau \in \overline{dc}$)}$"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT">&nbsp;</TD>
+<TD>&nbsp;</TD>
+<TD>&nbsp;</TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT"><IMG
+ WIDTH="264" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img353.png"
+ ALT="$\displaystyle \mathsf{proj}(M, \mathsf{structure} \; X : S \; \overline{s}, \mathsf{structure} \; X)$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img273.png"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP><IMG
+ WIDTH="15" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img354.png"
+ ALT="$\displaystyle S$"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT">&nbsp;</TD>
+<TD>&nbsp;</TD>
+<TD>&nbsp;</TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT"><IMG
+ WIDTH="274" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img355.png"
+ ALT="$\displaystyle \mathsf{proj}(M, \mathsf{signature} \; X = S \; \overline{s}, \mathsf{signature} \; X)$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img273.png"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP><IMG
+ WIDTH="15" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img354.png"
+ ALT="$\displaystyle S$"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT">&nbsp;</TD>
+<TD>&nbsp;</TD>
+<TD>&nbsp;</TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT"><IMG
+ WIDTH="160" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img356.png"
+ ALT="$\displaystyle \mathsf{proj}(M, \mathsf{con} \; x :: \kappa \; \overline{s}, V)$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img273.png"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP><IMG
+ WIDTH="165" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img357.png"
+ ALT="$\displaystyle [x \mapsto M.x]\mathsf{proj}(M, \overline{s}, V)$"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT"><IMG
+ WIDTH="189" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img358.png"
+ ALT="$\displaystyle \mathsf{proj}(M, \mathsf{con} \; x :: \kappa = c \; \overline{s}, V)$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img273.png"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP><IMG
+ WIDTH="165" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img357.png"
+ ALT="$\displaystyle [x \mapsto M.x]\mathsf{proj}(M, \overline{s}, V)$"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT"><IMG
+ WIDTH="217" HEIGHT="38" ALIGN="MIDDLE" BORDER="0"
+ SRC="img359.png"
+ ALT="$\displaystyle \mathsf{proj}(M, \mathsf{datatype} \; x \; \overline{y} = \overline{dc} \; \overline{s}, V)$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img273.png"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP><IMG
+ WIDTH="165" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img357.png"
+ ALT="$\displaystyle [x \mapsto M.x]\mathsf{proj}(M, \overline{s}, V)$"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT"><IMG
+ WIDTH="285" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
+ SRC="img360.png"
+ ALT="$\displaystyle \mathsf{proj}(M, \mathsf{datatype} \; x = \mathsf{datatype} \; M'.z \; \overline{s}, V)$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img273.png"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP><IMG
+ WIDTH="165" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img357.png"
+ ALT="$\displaystyle [x \mapsto M.x]\mathsf{proj}(M, \overline{s}, V)$"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT"><IMG
+ WIDTH="151" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img361.png"
+ ALT="$\displaystyle \mathsf{proj}(M, \mathsf{val} \; x : \tau \; \overline{s}, V)$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img273.png"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP><IMG
+ WIDTH="92" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img362.png"
+ ALT="$\displaystyle \mathsf{proj}(M, \overline{s}, V)$"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT"><IMG
+ WIDTH="199" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img363.png"
+ ALT="$\displaystyle \mathsf{proj}(M, \mathsf{structure} \; X : S \; \overline{s}, V)$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img273.png"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP><IMG
+ WIDTH="176" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img364.png"
+ ALT="$\displaystyle [X \mapsto M.X]\mathsf{proj}(M, \overline{s}, V)$"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT"><IMG
+ WIDTH="208" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img365.png"
+ ALT="$\displaystyle \mathsf{proj}(M, \mathsf{signature} \; X = S \; \overline{s}, V)$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img273.png"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP><IMG
+ WIDTH="176" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img364.png"
+ ALT="$\displaystyle [X \mapsto M.X]\mathsf{proj}(M, \overline{s}, V)$"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT"><IMG
+ WIDTH="158" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img366.png"
+ ALT="$\displaystyle \mathsf{proj}(M, \mathsf{include} \; S \; \overline{s}, V)$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img273.png"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP><IMG
+ WIDTH="295" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img367.png"
+ ALT="$\displaystyle \mathsf{proj}(M, \overline{s'} \; \overline{s}, V) \textrm{ (where $\Gamma \vdash S \equiv \mathsf{sig} \; \overline{s'} \; \mathsf{end}$)}$"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT"><IMG
+ WIDTH="216" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img368.png"
+ ALT="$\displaystyle \mathsf{proj}(M, \mathsf{constraint} \; c_1 \sim c_2 \; \overline{s}, V)$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img273.png"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP><IMG
+ WIDTH="92" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img362.png"
+ ALT="$\displaystyle \mathsf{proj}(M, \overline{s}, V)$"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT"><IMG
+ WIDTH="168" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img369.png"
+ ALT="$\displaystyle \mathsf{proj}(M, \mathsf{class} \; x :: \kappa \; \overline{s}, V)$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img273.png"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP><IMG
+ WIDTH="165" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img357.png"
+ ALT="$\displaystyle [x \mapsto M.x]\mathsf{proj}(M, \overline{s}, V)$"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT"><IMG
+ WIDTH="196" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img370.png"
+ ALT="$\displaystyle \mathsf{proj}(M, \mathsf{class} \; x :: \kappa = c \; \overline{s}, V)$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img273.png"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP><IMG
+ WIDTH="165" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img357.png"
+ ALT="$\displaystyle [x \mapsto M.x]\mathsf{proj}(M, \overline{s}, V)$"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+&nbsp;</TD></TR>
+</TABLE></DIV>
+<BR CLEAR="ALL">
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html461"
+  HREF="node25.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html457"
+  HREF="node13.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html453"
+  HREF="node23.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html459"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html462"
+  HREF="node25.html">Type Inference</A>
+<B> Up:</B> <A NAME="tex2html458"
+  HREF="node13.html">Static Semantics</A>
+<B> Previous:</B> <A NAME="tex2html454"
+  HREF="node23.html">Module Typing</A>
+ &nbsp; <B>  <A NAME="tex2html460"
+  HREF="node1.html">Contents</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

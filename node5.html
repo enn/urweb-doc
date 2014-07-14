@@ -1,0 +1,263 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Project Files</TITLE>
+<META NAME="description" CONTENT="Project Files">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node4.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html225"
+  HREF="node6.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html221"
+  HREF="node4.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html215"
+  HREF="node4.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html223"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html226"
+  HREF="node6.html">Building an Application</A>
+<B> Up:</B> <A NAME="tex2html222"
+  HREF="node4.html">Command-Line Compiler</A>
+<B> Previous:</B> <A NAME="tex2html216"
+  HREF="node4.html">Command-Line Compiler</A>
+ &nbsp; <B>  <A NAME="tex2html224"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00041000000000000000"></A><A NAME="cl"></A>
+<BR>
+Project Files
+</H2>
+
+<P>
+The basic inputs to the <TT>urweb</TT> compiler are project files, which have the extension <TT>.urp</TT>.  Here is a sample <TT>.urp</TT> file.
+
+<P>
+<PRE>
+database dbname=test
+sql crud1.sql
+
+crud
+crud1
+</PRE>
+
+<P>
+The <TT>database</TT> line gives the database information string to pass to libpq.  In this case, the string only says to connect to a local database named <TT>test</TT>.
+
+<P>
+The <TT>sql</TT> line asks for an SQL source file to be generated, giving the commands to run to create the tables and sequences that this application expects to find.  After building this <TT>.urp</TT> file, the following commands could be used to initialize the database, assuming that the current UNIX user exists as a Postgres user with database creation privileges:
+
+<P>
+<PRE>
+createdb test
+psql -f crud1.sql test
+</PRE>
+
+<P>
+A blank line separates the named directives from a list of modules to include in the project.  Any line may contain a shell-script-style comment, where any suffix of a line starting at a hash character <TT>#</TT> is ignored.
+
+<P>
+For each entry <TT>M</TT> in the module list, the file <TT>M.urs</TT> is included in the project if it exists, and the file <TT>M.ur</TT> must exist and is always included.
+
+<P>
+Here is the complete list of directive forms.  ``FFI'' stands for ``foreign function interface,'' Ur's facility for interaction between Ur programs and C and JavaScript libraries.
+
+<UL>
+<LI><TT>[allow|deny] [url|mime|requestHeader|responseHeader|env] PATTERN</TT> registers a rule governing which URLs, MIME types, HTTP request headers, HTTP response headers, or environment variable names are allowed to appear explicitly in this application.  The first such rule to match a name determines the verdict.  If <TT>PATTERN</TT> ends in <TT>*</TT>, it is interpreted as a prefix rule.  Otherwise, a string must match it exactly.
+</LI>
+<LI><TT>alwaysInline PATH</TT> requests that every call to the referenced function be inlined.  Section <A HREF="node54.html#structure">10</A> explains how functions are assigned path strings.
+</LI>
+<LI><TT>benignEffectful Module.ident</TT> registers an FFI function or transaction as having side effects.  The optimizer avoids removing, moving, or duplicating calls to such functions.  Every effectful FFI function must be registered, or the optimizer may make invalid transformations.  This version of the <TT>effectful</TT> directive registers that this function only has side effects that remain local to a single page generation.
+</LI>
+<LI><TT>clientOnly Module.ident</TT> registers an FFI function or transaction that may only be run in client browsers.
+</LI>
+<LI><TT>clientToServer Module.ident</TT> adds FFI type <TT>Module.ident</TT> to the list of types that are OK to marshal from clients to servers.  Values like XML trees and SQL queries are hard to marshal without introducing expensive validity checks, so it's easier to ensure that the server never trusts clients to send such values.  The file <TT>include/urweb/urweb_cpp.h</TT> shows examples of the C support functions that are required of any type that may be marshalled.  These include <TT>attrify</TT>, <TT>urlify</TT>, and <TT>unurlify</TT> functions.
+</LI>
+<LI><TT>coreInline TREESIZE</TT> sets how many nodes the AST of a function definition may have before the optimizer stops trying hard to inline calls to that function.  (This is one of two options for one of two intermediate languages within the compiler.)
+</LI>
+<LI><TT>database DBSTRING</TT> sets the string to pass to libpq to open a database connection.
+</LI>
+<LI><TT>debug</TT> saves some intermediate C files, which is mostly useful to help in debugging the compiler itself.
+</LI>
+<LI><TT>effectful Module.ident</TT> registers an FFI function or transaction as having side effects.  The optimizer avoids removing, moving, or duplicating calls to such functions.  This is the default behavior for <TT>transaction</TT>-based types.
+</LI>
+<LI><TT>exe FILENAME</TT> sets the filename to which to write the output executable.  The default for file <TT>P.urp</TT> is <TT>P.exe</TT>.  
+</LI>
+<LI><TT>ffi FILENAME</TT> reads the file <TT>FILENAME.urs</TT> to determine the interface to a new FFI module.  The name of the module is calculated from <TT>FILENAME</TT> in the same way as for normal source files.  See the files <TT>include/urweb/urweb_cpp.h</TT> and <TT>src/c/urweb.c</TT> for examples of C headers and implementations for FFI modules.  In general, every type or value <TT>Module.ident</TT> becomes <TT>uw_Module_ident</TT> in C.
+</LI>
+<LI><TT>html5</TT> activates work-in-progress support for generating HTML5 instead of XHTML.  For now, this option only affects the first few tokens on any page, which are always the same.
+</LI>
+<LI><TT>include FILENAME</TT> adds <TT>FILENAME</TT> to the list of files to be <TT>#include</TT>d in C sources.  This is most useful for interfacing with new FFI modules.
+</LI>
+<LI><TT>jsFunc Module.ident=name</TT> gives the JavaScript name of an FFI value.
+</LI>
+<LI><TT>library FILENAME</TT> parses <TT>FILENAME.urp</TT> and merges its contents with the rest of the current file's contents.  If <TT>FILENAME.urp</TT> doesn't exist, the compiler also tries <TT>FILENAME/lib.urp</TT>.
+</LI>
+<LI><TT>limit class num</TT> sets a resource usage limit for generated applications.  The limit <TT>class</TT> will be set to the non-negative integer <TT>num</TT>.  The classes are:
+  
+<UL>
+<LI><TT>cleanup</TT>: maximum number of cleanup operations (e.g., entries recording the need to deallocate certain temporary objects) that may be active at once per request
+</LI>
+<LI><TT>clients</TT>: maximum number of simultaneous connections to one application by web clients waiting for new asynchronous messages sent with <TT>Basis.send</TT>
+</LI>
+<LI><TT>database</TT>: maximum size of a database file (currently only used by SQLite, which interprets the parameter as a number of pages, where page size is itself a quantity configurable in SQLite)
+</LI>
+<LI><TT>deltas</TT>: maximum number of messages sendable in a single request handler with <TT>Basis.send</TT>
+</LI>
+<LI><TT>globals</TT>: maximum number of global variables that FFI libraries may set in a single request context
+</LI>
+<LI><TT>headers</TT>: maximum size (in bytes) of per-request buffer used to hold HTTP headers for generated pages
+</LI>
+<LI><TT>heap</TT>: maximum size (in bytes) of per-request heap for dynamically allocated data
+</LI>
+<LI><TT>inputs</TT>: maximum number of top-level form fields per request
+</LI>
+<LI><TT>messages</TT>: maximum size (in bytes) of per-request buffer used to hold a single outgoing message sent with <TT>Basis.send</TT>
+</LI>
+<LI><TT>page</TT>: maximum size (in bytes) of per-request buffer used to hold HTML content of generated pages
+</LI>
+<LI><TT>script</TT>: maximum size (in bytes) of per-request buffer used to hold JavaScript content of generated pages
+</LI>
+<LI><TT>subinputs</TT>: maximum number of form fields per request, excluding top-level fields
+</LI>
+<LI><TT>time</TT>: maximum running time of a single page request, in units of approximately 0.1 seconds
+</LI>
+<LI><TT>transactionals</TT>: maximum number of custom transactional actions (e.g., sending an e-mail) that may be run in a single page generation
+  
+</LI>
+</UL>
+</LI>
+<LI><TT>link FILENAME</TT> adds <TT>FILENAME</TT> to the list of files to be passed to the linker at the end of compilation.  This is most useful for importing extra libraries needed by new FFI modules.
+</LI>
+<LI><TT>linker CMD</TT> sets <TT>CMD</TT> as the command line prefix to use for linking C object files.  The command line will be completed with a space-separated list of <TT>.o</TT> and <TT>.a</TT> files, <TT>-L</TT> and <TT>-l</TT> flags, and finally with a <TT>-o</TT> flag to set the location where the executable should be written.
+</LI>
+<LI><TT>minHeap NUMBYTES</TT> sets the initial size for thread-local heaps used in handling requests.  These heaps grow automatically as needed (up to any maximum set with <TT>limit</TT>), but each regrow requires restarting the request handling process.
+</LI>
+<LI><TT>monoInline TREESIZE</TT> sets how many nodes the AST of a function definition may have before the optimizer stops trying hard to inline calls to that function.  (This is one of two options for one of two intermediate languages within the compiler.)
+</LI>
+<LI><TT>neverInline PATH</TT> requests that no call to the referenced function be inlined.  Section <A HREF="node54.html#structure">10</A> explains how functions are assigned path strings.
+</LI>
+<LI><TT>noMangleSql</TT> avoids adding a <TT>uw_</TT> prefix in front of each identifier in SQL.  With this experimental feature, the burden is on the programmer to avoid naming tables or columns after SQL keywords!
+</LI>
+<LI><TT>noXsrfProtection URIPREFIX</TT> turns off automatic cross-site request forgery protection for the page handler identified by the given URI prefix.  This will avoid checking cryptographic signatures on cookies, which is generally a reasonable idea for some pages, such as login pages that are going to discard all old cookie values, anyway.
+</LI>
+<LI><TT>onError Module.var</TT> changes the handling of fatal application errors.  Instead of displaying a default, ugly error 500 page, the error page will be generated by calling function <TT>Module.var</TT> on a piece of XML representing the error message.  The error handler should have type <!-- MATH
+ $\mathsf{xbody} \to \mathsf{transaction} \; \mathsf{page}$
+ -->
+<IMG
+ WIDTH="178" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$ \mathsf{xbody} \to \mathsf{transaction} \; \mathsf{page}$">
+.  Note that the error handler <I>cannot</I> be in the application's main module, since that would register it as explicitly callable via URLs.
+</LI>
+<LI><TT>path NAME=VALUE</TT> creates a mapping from <TT>NAME</TT> to <TT>VALUE</TT>.  This mapping may be used at the beginnings of filesystem paths given to various other configuration directives.  A path like <TT>$NAME/rest</TT> is expanded to <TT>VALUE/rest</TT>.  There is an initial mapping from the empty name (for paths like <TT>$/list</TT>) to the directory where the Ur/Web standard library is installed.  If you accept the default <TT>configure</TT> options, this directory is <TT>/usr/local/lib/urweb/ur</TT>.
+</LI>
+<LI><TT>prefix PREFIX</TT> sets the prefix included before every URI within the generated application.  The default is <TT>/</TT>.
+</LI>
+<LI><TT>profile</TT> generates an executable that may be used with gprof.
+</LI>
+<LI><TT>rewrite KIND FROM TO</TT> gives a rule for rewriting canonical module paths.  For instance, the canonical path of a page may be <TT>Mod1.Mod2.mypage</TT>, while you would rather the page were accessed via a URL containing only <TT>page</TT>.  The directive <TT>rewrite url Mod1/Mod2/mypage page</TT> would accomplish that.  The possible values of <TT>KIND</TT> determine which kinds of objects are affected.  The kind <TT>all</TT> matches any object, and <TT>url</TT> matches page URLs.  The kinds <TT>table</TT>, <TT>sequence</TT>, and <TT>view</TT> match those sorts of SQL entities, and <TT>relation</TT> matches any of those three.  <TT>cookie</TT> matches HTTP cookies, and <TT>style</TT> matches CSS class names.  If <TT>FROM</TT> ends in <TT>/*</TT>, it is interpreted as a prefix matching rule, and rewriting occurs by replacing only the appropriate prefix of a path with <TT>TO</TT>.  The <TT>TO</TT> field may be left empty to express the idea of deleting a prefix.  For instance, <TT>rewrite url Main/*</TT> will strip all <TT>Main/</TT> prefixes from URLs.  While the actual external names of relations and styles have parts separated by underscores instead of slashes, all rewrite rules must be written in terms of slashes.  An optional suffix of <TT>[-]</TT> for a <TT>rewrite</TT> directive asks to additionally replace all <TT>_</TT> characters with <TT>-</TT> characters, which can be handy for, e.g., interfacing with an off-the-shelf CSS library that prefers hyphens over underscores.
+</LI>
+<LI><TT>safeGet URI</TT> asks to allow the page handler assigned this canonical URI prefix to cause persistent side effects, even if accessed via an HTTP <TT>GET</TT> request.
+</LI>
+<LI><TT>script URL</TT> adds <TT>URL</TT> to the list of extra JavaScript files to be included at the beginning of any page that uses JavaScript.  This is most useful for importing JavaScript versions of functions found in new FFI modules.
+</LI>
+<LI><TT>serverOnly Module.ident</TT> registers an FFI function or transaction that may only be run on the server.
+</LI>
+<LI><TT>sigfile PATH</TT> sets a path where your application should look for a key to use in cryptographic signing.  This is used to prevent cross-site request forgery attacks for any form handler that both reads a cookie and creates side effects.  If the referenced file doesn't exist, an application will create it and read its saved data on future invocations.  You can also initialize the file manually with any contents at least 16 bytes long; the first 16 bytes will be treated as the key.
+</LI>
+<LI><TT>sql FILENAME</TT> sets where to write an SQL file with the commands to create the expected database schema.  The default is not to create such a file.
+</LI>
+<LI><TT>timeFormat FMT</TT> accepts a time format string, as processed by the POSIX C function <TT>strftime()</TT>.  This controls the default rendering of <!-- MATH
+ $\mathsf{time}$
+ -->
+<IMG
+ WIDTH="33" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$ \mathsf{time}$">
+ values, via the <!-- MATH
+ $\mathsf{show}$
+ -->
+<IMG
+ WIDTH="37" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$ \mathsf{show}$">
+ instance for <!-- MATH
+ $\mathsf{time}$
+ -->
+<IMG
+ WIDTH="33" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$ \mathsf{time}$">
+.
+</LI>
+<LI><TT>timeout N</TT> sets to <TT>N</TT> seconds the amount of time that the generated server will wait after the last contact from a client before determining that that client has exited the application.  Clients that remain active will take the timeout setting into account in determining how often to ping the server, so it only makes sense to set a high timeout to cope with browser and network delays and failures.  Higher timeouts can lead to more unnecessary client information taking up memory on the server.  The timeout goes unused by any page that doesn't involve the <TT>recv</TT> function, since the server only needs to store per-client information for clients that receive asynchronous messages.
+</LI>
+</UL>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html225"
+  HREF="node6.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html221"
+  HREF="node4.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html215"
+  HREF="node4.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html223"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html226"
+  HREF="node6.html">Building an Application</A>
+<B> Up:</B> <A NAME="tex2html222"
+  HREF="node4.html">Command-Line Compiler</A>
+<B> Previous:</B> <A NAME="tex2html216"
+  HREF="node4.html">Command-Line Compiler</A>
+ &nbsp; <B>  <A NAME="tex2html224"
+  HREF="node1.html">Contents</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

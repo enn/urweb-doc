@@ -1,0 +1,332 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Building an Application</TITLE>
+<META NAME="description" CONTENT="Building an Application">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node7.html">
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="node4.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html237"
+  HREF="node7.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html233"
+  HREF="node4.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html227"
+  HREF="node5.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html235"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html238"
+  HREF="node7.html">Tutorial Formatting</A>
+<B> Up:</B> <A NAME="tex2html234"
+  HREF="node4.html">Command-Line Compiler</A>
+<B> Previous:</B> <A NAME="tex2html228"
+  HREF="node5.html">Project Files</A>
+ &nbsp; <B>  <A NAME="tex2html236"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00042000000000000000">
+Building an Application</A>
+</H2>
+
+<P>
+To compile project <TT>P.urp</TT>, simply run
+<PRE>
+urweb P
+</PRE>
+The output executable is a standalone web server.  Run it with the command-line argument <TT>-h</TT> to see which options it takes.  If the project file lists a database, the web server will attempt to connect to that database on startup.  See Section <A HREF="node54.html#structure">10</A> for an explanation of the URI mapping convention, which determines how each page of your application may be accessed via URLs.
+
+<P>
+To time how long the different compiler phases run, without generating an executable, run
+<PRE>
+urweb -timing P
+</PRE>
+
+<P>
+To stop the compilation process after type-checking, run
+<PRE>
+urweb -tc P
+</PRE>
+It is often worthwhile to run <TT>urweb</TT> in this mode, because later phases of compilation can take significantly longer than type-checking alone, and the type checker catches many errors that would traditionally be found through debugging a running application.
+
+<P>
+A related option is <TT>-dumpTypes</TT>, which, as long as parsing succeeds, outputs to stdout a summary of the kinds of all identifiers declared with <TT>con</TT> and the types of all identifiers declared with <TT>val</TT> or <TT>val rec</TT>.  This information is dumped even if there are errors during type inference.  Compiler error messages go to stderr, not stdout, so it is easy to distinguish the two kinds of output programmatically.  A refined version of this option is <TT>-dumpTypesOnError</TT>, which only has an effect when there are compilation errors.
+
+<P>
+It may be useful to combine another option <TT>-unifyMore</TT> with <TT>-dumpTypes</TT>.  Ur/Web type inference proceeds in a series of stages, where the first is standard Hindley-Milner type inference as in ML, and the later phases add more complex aspects.  By default, an error detected in one phase cuts off the execution of later phases.  However, the later phases might still determine more values of unification variables.  These value choices might be ``misguided,'' since earlier phases have not come up with reasonable types at a coarser detail level; but the unification decisions may still be useful for debugging and program understanding.  So, if a run with <TT>-dumpTypes</TT> leaves unification variables undetermined in positions where you would like to see best-effort guesses instead, consider <TT>-unifyMore</TT>.  Note that <TT>-unifyMore</TT> has no effect when type inference succeeds fully, but it may lead to many more error messages when inference fails.
+
+<P>
+To output information relevant to CSS stylesheets (and not finish regular compilation), run
+<PRE>
+urweb -css P
+</PRE>
+The first output line is a list of categories of CSS properties that would be worth setting on the document body.  The remaining lines are space-separated pairs of CSS class names and categories of properties that would be worth setting for that class.  The category codes are divided into two varieties.  Codes that reveal properties of a tag or its (recursive) children are <TT>B</TT> for block-level elements, <TT>C</TT> for table captions, <TT>D</TT> for table cells, <TT>L</TT> for lists, and <TT>T</TT> for tables.  Codes that reveal properties of the precise tag that uses a class are <TT>b</TT> for block-level elements, <TT>t</TT> for tables, <TT>d</TT> for table cells, <TT>-</TT> for table rows, <TT>H</TT> for the possibility to set a height, <TT>N</TT> for non-replaced inline-level elements, <TT>R</TT> for replaced inline elements, and <TT>W</TT> for the possibility to set a width.
+
+<P>
+Ur/Web type inference can take a significant amount of time, so it can be helpful to cache type-inferred versions of source files.  This mode can be activated by running
+<PRE>
+urweb daemon start
+</PRE>
+Further <TT>urweb</TT> invocations in the same working directory will send requests to a background daemon process that reuses type inference results whenever possible, tracking source file dependencies and modification times.  To stop the background daemon, run
+<PRE>
+urweb daemon stop
+</PRE>
+Communication happens via a UNIX domain socket in file <TT>.urweb_daemon</TT> in the working directory.
+
+<P>
+
+<P>
+<BR>
+
+<P>
+Some other command-line parameters are accepted:
+
+<UL>
+<LI><TT>-boot</TT>: Run Ur/Web from a build tree (and not from a system install).  This is useful if you're testing the compiler and don't want to install it.  It forces generation of statically linked executables.
+
+<P>
+</LI>
+<LI><TT>-ccompiler &lt;PROGRAM&gt;</TT>: Select an alternative C compiler to call with command lines in compiling Ur/Web applications.  (It's possible to set the default compiler as part of the <TT>configure</TT> process, but it may sometimes be useful to override the default.)
+
+<P>
+</LI>
+<LI><TT>-db &lt;DBSTRING&gt;</TT>: Set database connection information, using the format expected by Postgres's <TT>PQconnectdb()</TT>, which is <TT>name1=value1 ... nameN=valueN</TT>.  The same format is also parsed and used to discover connection parameters for MySQL and SQLite.  The only significant settings for MySQL are <TT>host</TT>, <TT>hostaddr</TT>, <TT>port</TT>, <TT>dbname</TT>, <TT>user</TT>, and <TT>password</TT>.  The only significant setting for SQLite is <TT>dbname</TT>, which is interpreted as the filesystem path to the database.  Additionally, when using SQLite, a database string may be just a file path.
+
+<P>
+</LI>
+<LI><TT>-dbms [postgres|mysql|sqlite]</TT>: Sets the database backend to use.
+  
+<UL>
+<LI><TT>postgres</TT>: This is PostgreSQL, the default.  Among the supported engines, Postgres best matches the design philosophy behind Ur, with a focus on consistent views of data, even in the face of much concurrency.  Different database engines have different quirks of SQL syntax.  Ur/Web tends to use Postgres idioms where there are choices to be made, though the compiler translates SQL as needed to support other backends.
+
+<P>
+A command sequence like this can initialize a Postgres database, using a file <TT>app.sql</TT> generated by the compiler:
+    <PRE>
+createdb app
+psql -f app.sql app
+</PRE>
+
+<P>
+</LI>
+<LI><TT>mysql</TT>: This is MySQL, another popular relational database engine that uses persistent server processes.  Ur/Web needs transactions to function properly.  Many installations of MySQL use non-transactional storage engines by default.  Ur/Web generates table definitions that try to use MySQL's InnoDB engine, which supports transactions.  You can edit the first line of a generated <TT>.sql</TT> file to change this behavior, but it really is true that Ur/Web applications will exhibit bizarre behavior if you choose an engine that ignores transaction commands.
+
+<P>
+A command sequence like this can initialize a MySQL database:
+    <PRE>
+echo "CREATE DATABASE app" | mysql
+mysql -D app &lt;app.sql
+</PRE>
+
+<P>
+</LI>
+<LI><TT>sqlite</TT>: This is SQLite, a simple filesystem-based transactional database engine.  With this backend, Ur/Web applications can run without any additional server processes.  The other engines are generally preferred for large-workload performance and full admin feature sets, while SQLite is popular for its low resource footprint and ease of set-up.
+
+<P>
+A command like this can initialize an SQLite database:
+    <PRE>
+sqlite3 path/to/database/file &lt;app.sql
+</PRE>
+</LI>
+</UL>
+
+<P>
+</LI>
+<LI><TT>-dumpSource</TT>: When compilation fails, output to stderr the complete source code of the last intermediate program before the compilation phase that signaled the error.  (Warning: these outputs can be very long and aren't especially optimized for readability!)
+
+<P>
+</LI>
+<LI><TT>-explainEmbed</TT>: Trigger more verbose error messages about inability to embed server-side values in client-side code.
+
+<P>
+</LI>
+<LI><TT>-limit class num</TT>: Equivalent to the <TT>limit</TT> directive from <TT>.urp</TT> files
+
+<P>
+</LI>
+<LI><TT>-moduleOf FILENAME</TT>: Prints the Ur/Web module name corresponding to source file <TT>FILENAME</TT>, exiting immediately afterward.
+
+<P>
+</LI>
+<LI><TT>-output FILENAME</TT>: Set where the application executable is written.
+
+<P>
+</LI>
+<LI><TT>-path NAME VALUE</TT>: Set the value of path variable <TT>$NAME</TT> to <TT>VALUE</TT>, for use in <TT>.urp</TT> files.
+
+<P>
+</LI>
+<LI><TT>-prefix PREFIX</TT>: Equivalent to the <TT>prefix</TT> directive from <TT>.urp</TT> files
+
+<P>
+</LI>
+<LI><TT>-print-ccompiler</TT>: Print the C compiler being used.
+
+<P>
+</LI>
+<LI><TT>-print-cinclude</TT>: Print the name of the directory where C/C++ header files are installed.
+
+<P>
+</LI>
+<LI><TT>-protocol [http|cgi|fastcgi|static]</TT>: Set the protocol that the generated application speaks.
+  
+<UL>
+<LI><TT>http</TT>: This is the default.  It is for building standalone web servers that can be accessed by web browsers directly.
+
+<P>
+</LI>
+<LI><TT>cgi</TT>: This is the classic protocol that web servers use to generate dynamic content by spawning new processes.  While Ur/Web programs may in general use message-passing with the <TT>send</TT> and <TT>recv</TT> functions, that functionality is not yet supported in CGI, since CGI needs a fresh process for each request, and message-passing needs to use persistent sockets to deliver messages.
+
+<P>
+Since Ur/Web treats paths in an unusual way, a configuration line like this one can be used to configure an application that was built with URL prefix <TT>/Hello</TT>:
+    <PRE>
+ScriptAlias /Hello /path/to/hello.exe
+</PRE>
+
+<P>
+A different method can be used for, e.g., a shared host, where you can only configure Apache via <TT>.htaccess</TT> files.  Drop the generated executable into your web space and mark it as CGI somehow.  For instance, if the script ends in <TT>.exe</TT>, you might put this in <TT>.htaccess</TT> in the directory containing the script:
+    <PRE>
+Options +ExecCGI
+AddHandler cgi-script .exe
+</PRE>
+
+<P>
+Additionally, make sure that Ur/Web knows the proper URI prefix for your script.  For instance, if the script is accessed via <TT>http://somewhere/dir/script.exe</TT>, then include this line in your <TT>.urp</TT> file:
+    <PRE>
+prefix /dir/script.exe/
+</PRE>
+
+<P>
+To access the <TT>foo</TT> function in the <TT>Bar</TT> module, you would then hit <TT>http://somewhere/dir/script.exe/Bar/foo</TT>.
+
+<P>
+If your application contains form handlers that read cookies before causing side effects, then you will need to use the <TT>sigfile</TT> <TT>.urp</TT> directive, too.
+
+<P>
+</LI>
+<LI><TT>fastcgi</TT>: This is a newer protocol inspired by CGI, wherein web servers can start and reuse persistent external processes to generate dynamic content.  Ur/Web doesn't implement the whole protocol, but Ur/Web's support has been tested to work with the <TT>mod_fastcgi</TT>s of Apache and lighttpd.
+
+<P>
+To configure a FastCGI program with Apache, one could combine the above <TT>ScriptAlias</TT> line with a line like this:
+    <PRE>
+FastCgiServer /path/to/hello.exe -idle-timeout 99999
+</PRE>
+    The idle timeout is only important for applications that use message-passing.  Client connections may go long periods without receiving messages, and Apache tries to be helpful and garbage collect them in such cases.  To prevent that behavior, we specify how long a connection must be idle to be collected.
+
+<P>
+Also see the discussion of the <TT>prefix</TT> directive for CGI above; similar configuration is likely to be necessary for FastCGI.  An Ur/Web application won't generally run correctly if it doesn't have a unique URI prefix assigned to it and configured with <TT>prefix</TT>.
+
+<P>
+Here is some lighttpd configuration for the same application.
+    <PRE>
+fastcgi.server = (
+  "/Hello/" =&gt;
+  (( "bin-path" =&gt; "/path/to/hello.exe",
+  "socket" =&gt; "/tmp/hello",
+  "check-local" =&gt; "disable",
+  "docroot" =&gt; "/",
+  "max-procs" =&gt; "1"
+  ))
+)
+</PRE>
+    The least obvious requirement is setting <TT>max-procs</TT> to 1, so that lighttpd doesn't try to multiplex requests across multiple external processes.  This is required for message-passing applications, where a single database of client connections is maintained within a multi-threaded server process.  Multiple processes may, however, be used safely with applications that don't use message-passing.
+
+<P>
+A FastCGI process reads the environment variable <TT>URWEB_NUM_THREADS</TT> to determine how many threads to spawn for handling client requests.  The default is 1.
+
+<P>
+</LI>
+<LI><TT>static</TT>: This protocol may be used to generate static web pages from Ur/Web code.  The output executable expects a single command-line argument, giving the URI of a page to generate.  For instance, this argument might be <TT>/main</TT>, in which case a static HTTP response for that page will be written to stdout.
+  
+</LI>
+</UL>
+
+<P>
+</LI>
+<LI><TT>-root Name PATH</TT>: Trigger an alternate module convention for all source files found in directory <TT>PATH</TT> or any of its subdirectories.  Any file <TT>PATH/foo.ur</TT> defines a module <TT>Name.Foo</TT> instead of the usual <TT>Foo</TT>.  Any file <TT>PATH/subdir/foo.ur</TT> defines a module <TT>Name.Subdir.Foo</TT>, and so on for arbitrary nesting of subdirectories.
+
+<P>
+</LI>
+<LI><TT>-sigfile PATH</TT>: Same as the <TT>sigfile</TT> directive in <TT>.urp</TT> files
+
+<P>
+</LI>
+<LI><TT>-sql FILENAME</TT>: Set where a database set-up SQL script is written.
+
+<P>
+</LI>
+<LI><TT>-static</TT>: Link the runtime system statically.  The default is to link against dynamic libraries.
+
+<P>
+</LI>
+<LI><TT>-stop PHASE</TT>: Stop compilation after the named phase, printing the intermediate program to stderr.  This flag is mainly useful for debugging the Ur/Web compiler itself.
+</LI>
+</UL>
+
+<P>
+There is an additional convenience method for invoking <TT>urweb</TT>.  If the main argument is <TT>FOO</TT>, and <TT>FOO.ur</TT> exists but <TT>FOO.urp</TT> doesn't, then the invocation is interpreted as if called on a <TT>.urp</TT> file containing <TT>FOO</TT> as its only main entry, with an additional <TT>rewrite all FOO/*</TT> directive.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html237"
+  HREF="node7.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html233"
+  HREF="node4.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html227"
+  HREF="node5.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html235"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html238"
+  HREF="node7.html">Tutorial Formatting</A>
+<B> Up:</B> <A NAME="tex2html234"
+  HREF="node4.html">Command-Line Compiler</A>
+<B> Previous:</B> <A NAME="tex2html228"
+  HREF="node5.html">Project Files</A>
+ &nbsp; <B>  <A NAME="tex2html236"
+  HREF="node1.html">Contents</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

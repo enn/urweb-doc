@@ -1,0 +1,279 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Definitional Equality</TITLE>
+<META NAME="description" CONTENT="Definitional Equality">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node18.html">
+<LINK REL="previous" HREF="node16.html">
+<LINK REL="up" HREF="node13.html">
+<LINK REL="next" HREF="node18.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html379"
+  HREF="node18.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html375"
+  HREF="node13.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html369"
+  HREF="node16.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html377"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html380"
+  HREF="node18.html">Expression Typing</A>
+<B> Up:</B> <A NAME="tex2html376"
+  HREF="node13.html">Static Semantics</A>
+<B> Previous:</B> <A NAME="tex2html370"
+  HREF="node16.html">Record Disjointness</A>
+ &nbsp; <B>  <A NAME="tex2html378"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00064000000000000000"></A><A NAME="definitional"></A>
+<BR>
+Definitional Equality
+</H2>
+
+<P>
+We use <!-- MATH
+ $\mathcal C$
+ -->
+<IMG
+ WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img172.png"
+ ALT="$ \mathcal C$">
+ to stand for a one-hole context that, when filled, yields a constructor.  The notation <!-- MATH
+ $\mathcal C[c]$
+ -->
+<IMG
+ WIDTH="29" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img173.png"
+ ALT="$ \mathcal C[c]$">
+ plugs <IMG
+ WIDTH="11" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img61.png"
+ ALT="$ c$">
+ into <!-- MATH
+ $\mathcal C$
+ -->
+<IMG
+ WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img172.png"
+ ALT="$ \mathcal C$">
+.  We omit the standard definition of one-hole contexts.  We write <!-- MATH
+ $[x \mapsto c_1]c_2$
+ -->
+<IMG
+ WIDTH="75" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img174.png"
+ ALT="$ [x \mapsto c_1]c_2$">
+ for capture-avoiding substitution of <IMG
+ WIDTH="18" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img30.png"
+ ALT="$ c_1$">
+ for <IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.png"
+ ALT="$ x$">
+ in <IMG
+ WIDTH="18" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img175.png"
+ ALT="$ c_2$">
+, with analogous notation for substituting a kind in a constructor.
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash c \equiv c}{}
+\quad \infer{\Gamma \vdash c_1 \equiv c_2}{
+  \Gamma \vdash c_2 \equiv c_1
+}
+\quad \infer{\Gamma \vdash c_1 \equiv c_3}{
+  \Gamma \vdash c_1 \equiv c_2
+  & \Gamma \vdash c_2 \equiv c_3
+}
+\quad \infer{\Gamma \vdash \mathcal C[c_1] \equiv \mathcal C[c_2]}{
+  \Gamma \vdash c_1 \equiv c_2
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="478" HEIGHT="73" ALIGN="MIDDLE" BORDER="0"
+ SRC="img176.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash c \equiv c}{}
+\quad \infer{\Gamma \vdash c_1...
+...\vdash \mathcal C[c_1] \equiv \mathcal C[c_2]}{
+\Gamma \vdash c_1 \equiv c_2
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash x \equiv c}{
+  x :: \kappa = c \in \Gamma
+}
+\quad \infer{\Gamma \vdash M.x \equiv c}{
+  \Gamma \vdash M : \mathsf{sig} \; \overline{s} \; \mathsf{end}
+  & \mathsf{proj}(M, \overline{s}, \mathsf{con} \; x) = (\kappa, c)
+}
+\quad \infer{\Gamma \vdash (\overline c).i \equiv c_i}{}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="522" HEIGHT="76" ALIGN="MIDDLE" BORDER="0"
+ SRC="img177.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash x \equiv c}{
+x :: \kappa = c \in \Gamma
+}
+\...
+... \; x) = (\kappa, c)
+}
+\quad \infer{\Gamma \vdash (\overline c).i \equiv c_i}{}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash (\lambda x :: \kappa \Rightarrow c) \; c' \equiv [x \mapsto c'] c}{}
+\quad \infer{\Gamma \vdash (X \Longrightarrow c) [\kappa] \equiv [X \mapsto \kappa] c}{}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="435" HEIGHT="46" ALIGN="MIDDLE" BORDER="0"
+ SRC="img178.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash (\lambda x :: \kappa \Rightarrow c) \; c' \e...
+...fer{\Gamma \vdash (X \Longrightarrow c) [\kappa] \equiv [X \mapsto \kappa] c}{}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash c_1 + \hspace{-.075in} + \;c_2 \equiv c_2 + \hspace{-.075in} + \;c_1}{}
+\quad \infer{\Gamma \vdash c_1 + \hspace{-.075in} + \;(c_2 + \hspace{-.075in} + \;c_3) \equiv (c_1 + \hspace{-.075in} + \;c_2) + \hspace{-.075in} + \;c_3}{}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="450" HEIGHT="46" ALIGN="MIDDLE" BORDER="0"
+ SRC="img179.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash c_1 + \hspace{-.075in} + \;c_2 \equiv c_2 + ...
+... + \;c_3) \equiv (c_1 + \hspace{-.075in} + \;c_2) + \hspace{-.075in} + \;c_3}{}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash [] + \hspace{-.075in} + \;c \equiv c}{}
+\quad \infer{\Gamma \vdash [\overline{c_1 = c'_1}] + \hspace{-.075in} + \;[\overline{c_2 = c'_2}] \equiv [\overline{c_1 = c'_1}, \overline{c_2 = c'_2}]}{}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="428" HEIGHT="52" ALIGN="MIDDLE" BORDER="0"
+ SRC="img180.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash [] + \hspace{-.075in} + \;c \equiv c}{}
+\qua...
+...\overline{c_2 = c'_2}] \equiv [\overline{c_1 = c'_1}, \overline{c_2 = c'_2}]}{}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{map} \; f \; [] \equiv []}{}
+\quad \infer{\Gamma \vdash \mathsf{map} \; f \; ([c_1 = c_2] + \hspace{-.075in} + \;c) \equiv [c_1 = f \; c_2] + \hspace{-.075in} + \;\mathsf{map} \; f \; c}{}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="489" HEIGHT="46" ALIGN="MIDDLE" BORDER="0"
+ SRC="img181.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{map} \; f \; [] \equiv []}{}
+\quad \...
+...+ \;c) \equiv [c_1 = f \; c_2] + \hspace{-.075in} + \;\mathsf{map} \; f \; c}{}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{map} \; (\lambda x \Rightarrow x) \; c \equiv c}{}
+\quad \infer{\Gamma \vdash \mathsf{map} \; f \; (\mathsf{map} \; f' \; c)
+  \equiv \mathsf{map} \; (\lambda x \Rightarrow f \; (f' \; x)) \; c}{}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="506" HEIGHT="46" ALIGN="MIDDLE" BORDER="0"
+ SRC="img182.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{map} \; (\lambda x \Rightarrow x) \;...
+...f' \; c)
+\equiv \mathsf{map} \; (\lambda x \Rightarrow f \; (f' \; x)) \; c}{}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{map} \; f \; (c_1 + \hspace{-.075in} + \;c_2) \equiv \mathsf{map} \; f \; c_1 + \hspace{-.075in} + \;\mathsf{map} \; f \; c_2}{}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="318" HEIGHT="46" ALIGN="MIDDLE" BORDER="0"
+ SRC="img183.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{map} \; f \; (c_1 + \hspace{-.075in}...
+...uiv \mathsf{map} \; f \; c_1 + \hspace{-.075in} + \;\mathsf{map} \; f \; c_2}{}$">
+</DIV><P>
+</P>
+
+<P>
+<BR><HR>
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

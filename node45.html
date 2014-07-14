@@ -1,0 +1,285 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Functional-Reactive Page Generation</TITLE>
+<META NAME="description" CONTENT="Functional-Reactive Page Generation">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node46.html">
+<LINK REL="previous" HREF="node44.html">
+<LINK REL="up" HREF="node42.html">
+<LINK REL="next" HREF="node46.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html736"
+  HREF="node46.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html732"
+  HREF="node42.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html726"
+  HREF="node44.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html734"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html737"
+  HREF="node46.html">Remote Procedure Calls</A>
+<B> Up:</B> <A NAME="tex2html733"
+  HREF="node42.html">Client-Side Programming</A>
+<B> Previous:</B> <A NAME="tex2html727"
+  HREF="node44.html">Node IDs</A>
+ &nbsp; <B>  <A NAME="tex2html735"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00096300000000000000"></A><A NAME="signals"></A>
+<BR>
+Functional-Reactive Page Generation
+</H3>
+
+<P>
+Most approaches to ``AJAX''-style coding involve imperative manipulation of the DOM tree representing an HTML document's structure.  Ur/Web follows the <I>functional-reactive</I> approach instead.  Programs may allocate mutable <I>sources</I> of arbitrary types, and an HTML page is effectively a pure function over the latest values of the sources.  The page is not mutated directly, but rather it changes automatically as the sources are mutated.
+
+<P>
+More operationally, you can think of a source as a mutable cell with facilities for subscription to change notifications.  That level of detail is hidden behind a monadic facility to be described below.  First, there are three primitive operations for working with sources just as if they were ML <TT>ref</TT> cells, corresponding to ML's <TT>ref</TT>, <TT>:=</TT>, and <TT>!</TT> operations.
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{con} \; \mathsf{source} :: \mathsf{Type} \to \mathsf{Type} \\
+  \mathsf{val} \; \mathsf{source} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{t} \to \mathsf{transaction} \; (\mathsf{source} \; \mathsf{t}) \\
+  \mathsf{val} \; \mathsf{set} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{source} \; \mathsf{t} \to \mathsf{t} \to \mathsf{transaction} \; \mathsf{unit} \\
+  \mathsf{val} \; \mathsf{get} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{source} \; \mathsf{t} \to \mathsf{transaction} \; \mathsf{t}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="352" HEIGHT="92" BORDER="0"
+ SRC="img520.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{con} \; \mathsf{source} :: \mathsf{...
+...; \mathsf{t} \to \mathsf{transaction} \; \mathsf{t}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+Only source creation and setting are supported server-side, as a convenience to help in setting up a page, where you may wish to allocate many sources that will be referenced through the page.  All server-side storage of values inside sources uses string serializations of values, while client-side storage uses normal JavaScript values.
+
+<P>
+Pure functions over arbitrary numbers of sources are represented in a monad of <I>signals</I>, which may only be used in client-side code.  This is presented to the programmer in the form of a monad <!-- MATH
+ $\mathsf{signal}$
+ -->
+<IMG
+ WIDTH="41" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img503.png"
+ ALT="$ \mathsf{signal}$">
+, each of whose values represents (conceptually) some pure function over all sources that may be allocated in the course of program execution.  A monad operation <!-- MATH
+ $\mathsf{signal}$
+ -->
+<IMG
+ WIDTH="41" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img503.png"
+ ALT="$ \mathsf{signal}$">
+ denotes the identity function over a particular source.  By using <!-- MATH
+ $\mathsf{signal}$
+ -->
+<IMG
+ WIDTH="41" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img503.png"
+ ALT="$ \mathsf{signal}$">
+ on a source, you implicitly subscribe to change notifications for that source.  That is, your signal will automatically be recomputed as that source changes.  The usual monad operators make it possible to build up complex signals that depend on multiple sources; automatic updating upon source-value changes still happens automatically.  There is also an operator for computing a signal's current value within a transaction.
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{con} \; \mathsf{signal} :: \mathsf{Type} \to \mathsf{Type} \\
+  \mathsf{val} \; \mathsf{signal\_monad} : \mathsf{monad} \; \mathsf{signal} \\
+  \mathsf{val} \; \mathsf{signal} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{source} \; \mathsf{t} \to \mathsf{signal} \; \mathsf{t} \\
+  \mathsf{val} \; \mathsf{current} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{signal} \; \mathsf{t} \to \mathsf{transaction} \; \mathsf{t}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="325" HEIGHT="92" BORDER="0"
+ SRC="img521.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{con} \; \mathsf{signal} :: \mathsf{...
+...; \mathsf{t} \to \mathsf{transaction} \; \mathsf{t}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+A reactive portion of an HTML page is injected with a <!-- MATH
+ $\mathsf{dyn}$
+ -->
+<IMG
+ WIDTH="28" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img522.png"
+ ALT="$ \mathsf{dyn}$">
+ tag, which has a signal-valued attribute <!-- MATH
+ $\mathsf{Signal}$
+ -->
+<IMG
+ WIDTH="44" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img523.png"
+ ALT="$ \mathsf{Signal}$">
+.
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{dyn} : \mathsf{ctx} ::: \{\mathsf{Unit}\} \to \mathsf{use} ::: \{\mathsf{Type}\} \to \mathsf{bind} ::: \{\mathsf{Type}\} \to [\mathsf{ctx} \sim [\mathsf{Dyn}]] \Rightarrow \mathsf{unit} \\
+  \hspace{.1in} \to \mathsf{tag} \; [\mathsf{Signal} = \mathsf{signal} \; (\mathsf{xml} \; ([\mathsf{Dyn}] + \hspace{-.075in} + \;\mathsf{ctx}) \; \mathsf{use} \; \mathsf{bind})] \; ([\mathsf{Dyn}] + \hspace{-.075in} + \;\mathsf{ctx}) \; [] \; \mathsf{use} \; \mathsf{bind}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="550" HEIGHT="45" BORDER="0"
+ SRC="img524.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{dyn} : \mathsf{ctx}...
+...mathsf{ctx}) \; [] \; \mathsf{use} \; \mathsf{bind}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+The semantics of <TT>&lt;dyn&gt;</TT> tags is somewhat subtle.  When the signal associated with such a tag changes value, the associated subtree of the HTML page is recreated.  Some properties of the subtree, such as attributes and client-side widget values, are specified explicitly in the signal value, so these may be counted on to remain the same after recreation.  Other properties, like focus and cursor position within textboxes, are <I>not</I> specified by signal values, and these properties will be <I>reset</I> upon subtree regeneration.  Furthermore, user interaction with widgets may not work properly during regeneration.  For instance, clicking a button while it is being regenerated may not trigger its <TT>onclick</TT> event code.
+
+<P>
+Currently, the only way to avoid undesired resets is to avoid regeneration of containing subtrees.  There are two main strategies for achieving that goal.  First, when changes to a subtree can be confined to CSS classes of tags, the <TT>dynClass</TT> pseudo-attribute may be used instead (see Section <A HREF="node41.html#xml">8.5</A>), as it does not regenerate subtrees.  Second, a single <TT>&lt;dyn&gt;</TT> tag may be broken into multiple tags, in a way that makes finer-grained dependency structure explicit.  This latter strategy can avoid ``spurious'' regenerations that are not actually required to achieve the intended semantics.
+
+<P>
+Transactions can be run on the client by including them in attributes like the <!-- MATH
+ $\mathsf{Onclick}$
+ -->
+<IMG
+ WIDTH="53" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img525.png"
+ ALT="$ \mathsf{Onclick}$">
+ attribute of <!-- MATH
+ $\mathsf{button}$
+ -->
+<IMG
+ WIDTH="48" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img526.png"
+ ALT="$ \mathsf{button}$">
+, and GUI widgets like <!-- MATH
+ $\mathsf{ctextbox}$
+ -->
+<IMG
+ WIDTH="60" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img527.png"
+ ALT="$ \mathsf{ctextbox}$">
+ have <!-- MATH
+ $\mathsf{Source}$
+ -->
+<IMG
+ WIDTH="48" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img528.png"
+ ALT="$ \mathsf{Source}$">
+ attributes that can be used to connect them to sources, so that their values can be read by code running because of, e.g., an <!-- MATH
+ $\mathsf{Onclick}$
+ -->
+<IMG
+ WIDTH="53" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img525.png"
+ ALT="$ \mathsf{Onclick}$">
+ event.  It is also possible to create an ``active'' HTML fragment that runs a <!-- MATH
+ $\mathsf{transaction}$
+ -->
+<IMG
+ WIDTH="77" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img402.png"
+ ALT="$ \mathsf{transaction}$">
+ to determine its content, possibly allocating some sources in the process:
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{active} : \mathsf{unit} \to \mathsf{tag} \; [\mathsf{Code} = \mathsf{transaction} \; \mathsf{xbody}] \; \mathsf{body} \; [] \; [] \; []
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="409" HEIGHT="39" BORDER="0"
+ SRC="img529.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{active} : \mathsf{u...
+... \mathsf{xbody}] \; \mathsf{body} \; [] \; [] \; []
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html736"
+  HREF="node46.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html732"
+  HREF="node42.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html726"
+  HREF="node44.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html734"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html737"
+  HREF="node46.html">Remote Procedure Calls</A>
+<B> Up:</B> <A NAME="tex2html733"
+  HREF="node42.html">Client-Side Programming</A>
+<B> Previous:</B> <A NAME="tex2html727"
+  HREF="node44.html">Node IDs</A>
+ &nbsp; <B>  <A NAME="tex2html735"
+  HREF="node1.html">Contents</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

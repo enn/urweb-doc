@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Node IDs</TITLE>
+<META NAME="description" CONTENT="Node IDs">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node45.html">
+<LINK REL="previous" HREF="node43.html">
+<LINK REL="up" HREF="node42.html">
+<LINK REL="next" HREF="node45.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html724"
+  HREF="node45.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html720"
+  HREF="node42.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html714"
+  HREF="node43.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html722"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html725"
+  HREF="node45.html">Functional-Reactive Page Generation</A>
+<B> Up:</B> <A NAME="tex2html721"
+  HREF="node42.html">Client-Side Programming</A>
+<B> Previous:</B> <A NAME="tex2html715"
+  HREF="node43.html">The Basics</A>
+ &nbsp; <B>  <A NAME="tex2html723"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00096200000000000000">
+Node IDs</A>
+</H3>
+
+<P>
+There is an abstract type of node IDs that may be assigned to <TT>id</TT> attributes of most HTML tags.
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{type} \; \mathsf{id} \\
+  \mathsf{val} \; \mathsf{fresh} : \mathsf{transaction} \; \mathsf{id}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="157" HEIGHT="54" BORDER="0"
+ SRC="img518.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{type} \; \mathsf{id} \\
+\mathsf{v...
+...mathsf{fresh} : \mathsf{transaction} \; \mathsf{id}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+The <TT>fresh</TT> function is allowed on both server and client, but there is no other way to create IDs, which includes lack of a way to force an ID to match a particular string.  The main semantic importance of IDs within Ur/Web is in uses of the HTML <TT>&lt;label&gt;</TT> tag.  IDs play a much more central role in mainstream JavaScript programming, but Ur/Web uses a very different model to enable changes to particular nodes of a page tree, as the next manual subsection explains.  IDs may still be useful in interfacing with JavaScript code (for instance, through Ur/Web's FFI).
+
+<P>
+One further use of IDs is as handles for requesting that <I>focus</I> be given to specific tags.
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{giveFocus} : \mathsf{id} \to \mathsf{transaction} \; \mathsf{unit}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="242" HEIGHT="39" BORDER="0"
+ SRC="img519.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{giveFocus} : \mathsf{id} \to \mathsf{transaction} \; \mathsf{unit}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+<BR><HR>
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

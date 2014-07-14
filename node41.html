@@ -1,0 +1,348 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>XML</TITLE>
+<META NAME="description" CONTENT="XML">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node42.html">
+<LINK REL="previous" HREF="node36.html">
+<LINK REL="up" HREF="node32.html">
+<LINK REL="next" HREF="node42.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html685"
+  HREF="node42.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html681"
+  HREF="node32.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html675"
+  HREF="node40.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html683"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html686"
+  HREF="node42.html">Client-Side Programming</A>
+<B> Up:</B> <A NAME="tex2html682"
+  HREF="node32.html">The Ur/Web Standard Library</A>
+<B> Previous:</B> <A NAME="tex2html676"
+  HREF="node40.html">Sequences</A>
+ &nbsp; <B>  <A NAME="tex2html684"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00095000000000000000"></A><A NAME="xml"></A>
+<BR>
+XML
+</H2>
+
+<P>
+Ur/Web's library contains an encoding of XML syntax and semantic constraints.  We make no effort to follow the standards governing XML schemas.  Rather, XML fragments are viewed more as values of ML datatypes, and we only track which tags are allowed inside which other tags.  The Ur/Web standard library encodes a very loose version of XHTML, where it is very easy to produce documents which are invalid XHTML, but which still display properly in all major browsers.  The main purposes of the invariants that are enforced are first, to provide some documentation about the places where it would make sense to insert XML fragments; and second, to rule out code injection attacks and other abstraction violations related to HTML syntax.
+
+<P>
+The basic XML type family has arguments respectively indicating the <I>context</I> of a fragment, the fields that the fragment expects to be bound on entry (and their types), and the fields that the fragment will bind (and their types).  Contexts are a record-based ``poor man's subtyping'' encoding, with each possible set of valid tags corresponding to a different context record.  For instance, the context for the <TT>&lt;td&gt;</TT> tag is <!-- MATH
+ $[\mathsf{Dyn}, \mathsf{MakeForm}, \mathsf{Tr}]$
+ -->
+<IMG
+ WIDTH="139" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img493.png"
+ ALT="$ [\mathsf{Dyn}, \mathsf{MakeForm}, \mathsf{Tr}]$">
+, to indicate nesting inside a <TT>&lt;tr&gt;</TT> tag with the ability to nest <TT>&lt;form&gt;</TT> and <TT>&lt;dyn&gt;</TT> tags (see below).  Contexts are maintained in a somewhat ad-hoc way; the only definitive reference for their meanings is the types of the tag values in <TT>basis.urs</TT>.  The arguments dealing with field binding are only relevant to HTML forms.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{con} \; \mathsf{xml} :: \{\mathsf{Unit}\} \to \{\mathsf{Type}\} \to \{\mathsf{Type}\} \to \mathsf{Type}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="318" HEIGHT="39" BORDER="0"
+ SRC="img494.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{con} \; \mathsf{xml} :: \{\mathsf{U...
+...hsf{Type}\} \to \{\mathsf{Type}\} \to \mathsf{Type}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+We also have a type family of XML tags, indexed respectively by the record of optional attributes accepted by the tag, the context in which the tag may be placed, the context required of children of the tag, which form fields the tag uses, and which fields the tag defines.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{con} \; \mathsf{tag} :: \{\mathsf{Type}\} \to \{\mathsf{Unit}\} \to \{\mathsf{Unit}\} \to \{\mathsf{Type}\} \to \{\mathsf{Type}\} \to \mathsf{Type}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="458" HEIGHT="39" BORDER="0"
+ SRC="img495.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{con} \; \mathsf{tag} :: \{\mathsf{T...
+...hsf{Type}\} \to \{\mathsf{Type}\} \to \mathsf{Type}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+Literal text may be injected into XML as ``CDATA.''
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{cdata} : \mathsf{ctx} ::: \{\mathsf{Unit}\} \to \mathsf{use} ::: \{\mathsf{Type}\} \to \mathsf{string} \to \mathsf{xml} \; \mathsf{ctx} \; \mathsf{use} \; []
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="449" HEIGHT="39" BORDER="0"
+ SRC="img496.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{cdata} : \mathsf{ct...
+... \mathsf{xml} \; \mathsf{ctx} \; \mathsf{use} \; []
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+There is also a function to insert the literal value of a character.  Since Ur/Web uses the UTF-8 text encoding, the <!-- MATH
+ $\mathsf{cdata}$
+ -->
+<IMG
+ WIDTH="40" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img497.png"
+ ALT="$ \mathsf{cdata}$">
+ function is only sufficient to encode characters with ASCII codes below 128.  Higher codes have alternate meanings in UTF-8 than in usual ASCII, so this alternate function should be used with them.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{cdataChar} : \mathsf{ctx} ::: \{\mathsf{Unit}\} \to \mathsf{use} ::: \{\mathsf{Type}\} \to \mathsf{char} \to \mathsf{xml} \; \mathsf{ctx} \; \mathsf{use} \; []
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="471" HEIGHT="39" BORDER="0"
+ SRC="img498.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{cdataChar} : \maths...
+... \mathsf{xml} \; \mathsf{ctx} \; \mathsf{use} \; []
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+There is a function for producing an XML tree with a particular tag at its root.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{tag} : \mathsf{attrsGiven} ::: \{\mathsf{Type}\} \to \mathsf{attrsAbsent} ::: \{\mathsf{Type}\} \to \mathsf{ctxOuter} ::: \{\mathsf{Unit}\} \to \mathsf{ctxInner} ::: \{\mathsf{Unit}\} \\
+  \hspace{.1in} \to \mathsf{useOuter} ::: \{\mathsf{Type}\} \to \mathsf{useInner} ::: \{\mathsf{Type}\} \to \mathsf{bindOuter} ::: \{\mathsf{Type}\} \to \mathsf{bindInner} ::: \{\mathsf{Type}\} \\
+  \hspace{.1in} \to [\mathsf{attrsGiven} \sim \mathsf{attrsAbsent}] \Rightarrow [\mathsf{useOuter} \sim \mathsf{useInner}] \Rightarrow [\mathsf{bindOuter} \sim \mathsf{bindInner}] \\
+  \hspace{.1in} \Rightarrow \mathsf{css\_class} \\
+  \hspace{.1in} \to \mathsf{option} \; (\mathsf{signal} \; \mathsf{css\_class}) \\
+  \hspace{.1in} \to \mathsf{css\_style} \\
+  \hspace{.1in} \to \mathsf{option} \; (\mathsf{signal} \; \mathsf{css\_style}) \\
+  \hspace{.1in} \to \$\mathsf{attrsGiven} \\
+  \hspace{.1in} \to \mathsf{tag} \; (\mathsf{attrsGiven} + \hspace{-.075in} + \;\mathsf{attrsAbsent}) \; \mathsf{ctxOuter} \; \mathsf{ctxInner} \; \mathsf{useOuter} \; \mathsf{bindOuter} \\
+  \hspace{.1in} \to \mathsf{xml} \; \mathsf{ctxInner} \; \mathsf{useInner} \; \mathsf{bindInner} \to \mathsf{xml} \; \mathsf{ctxOuter} \; (\mathsf{useOuter} + \hspace{-.075in} + \;\mathsf{useInner}) \; (\mathsf{bindOuter} + \hspace{-.075in} + \;\mathsf{bindInner})
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="683" HEIGHT="197" BORDER="0"
+ SRC="img499.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{tag} : \mathsf{attr...
+...ndOuter} + \hspace{-.075in} + \;\mathsf{bindInner})
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+Note that any tag may be assigned a CSS class, or left without a class by passing <!-- MATH
+ $\mathsf{Basis.null}$
+ -->
+<IMG
+ WIDTH="67" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img500.png"
+ ALT="$ \mathsf{Basis.null}$">
+ as the first value-level argument.  This is the sole way of making use of the values produced by <!-- MATH
+ $\mathsf{style}$
+ -->
+<IMG
+ WIDTH="33" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img501.png"
+ ALT="$ \mathsf{style}$">
+ declarations.  The function <!-- MATH
+ $\mathsf{Basis.classes}$
+ -->
+<IMG
+ WIDTH="86" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img502.png"
+ ALT="$ \mathsf{Basis.classes}$">
+ can be used to specify a list of CSS classes for a single tag.  Stylesheets to assign properties to the classes can be linked via URL's with <TT>link</TT> tags.  Ur/Web makes it easy to calculate upper bounds on usage of CSS classes through program analysis, with the <TT>-css</TT> command-line flag.
+
+<P>
+Also note that two different arguments are available for setting CSS classes: the first, associated with the <TT>class</TT> pseudo-attribute syntactic sugar, fixes the class of a tag for the duration of the tag's life; while the second, associated with the <TT>dynClass</TT> pseudo-attribute, allows the class to vary over the tag's life.  See Section <A HREF="node45.html#signals">8.6.3</A> for an introduction to the <!-- MATH
+ $\mathsf{signal}$
+ -->
+<IMG
+ WIDTH="41" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img503.png"
+ ALT="$ \mathsf{signal}$">
+ type family.
+
+<P>
+The third and fourth value-level arguments makes it possible to generate HTML <TT>style</TT> attributes, either with fixed content (<TT>style</TT> attribute) or dynamic content (<TT>dynStyle</TT> pseudo-attribute).
+
+<P>
+Two XML fragments may be concatenated.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{join} : \mathsf{ctx} ::: \{\mathsf{Unit}\} \to \mathsf{use_1} ::: \{\mathsf{Type}\} \to \mathsf{bind_1} ::: \{\mathsf{Type}\} \to \mathsf{bind_2} ::: \{\mathsf{Type}\} \\
+  \hspace{.1in} \to [\mathsf{use_1} \sim \mathsf{bind_1}] \Rightarrow [\mathsf{bind_1} \sim \mathsf{bind_2}] \\
+  \hspace{.1in} \Rightarrow \mathsf{xml} \; \mathsf{ctx} \; \mathsf{use_1} \; \mathsf{bind_1} \to \mathsf{xml} \; \mathsf{ctx} \; (\mathsf{use_1} + \hspace{-.075in} + \;\mathsf{bind_1}) \; \mathsf{bind_2} \to \mathsf{xml} \; \mathsf{ctx} \; \mathsf{use_1} \; (\mathsf{bind_1} + \hspace{-.075in} + \;\mathsf{bind_2})
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="592" HEIGHT="64" BORDER="0"
+ SRC="img504.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{join} : \mathsf{ctx...
+...hsf{bind_1} + \hspace{-.075in} + \;\mathsf{bind_2})
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+Finally, any XML fragment may be updated to ``claim'' to use more form fields than it does.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{useMore} : \mathsf{ctx} ::: \{\mathsf{Unit}\} \to \mathsf{use_1} ::: \{\mathsf{Type}\} \to \mathsf{use_2} ::: \{\mathsf{Type}\} \to \mathsf{bind} ::: \{\mathsf{Type}\} \to [\mathsf{use_1} \sim \mathsf{use_2}] \\
+  \hspace{.1in} \Rightarrow \mathsf{xml} \; \mathsf{ctx} \; \mathsf{use_1} \; \mathsf{bind} \to \mathsf{xml} \; \mathsf{ctx} \; (\mathsf{use_1} + \hspace{-.075in} + \;\mathsf{use_2}) \; \mathsf{bind}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="659" HEIGHT="45" BORDER="0"
+ SRC="img505.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{useMore} : \mathsf{...
+...space{-.075in} + \;\mathsf{use_2}) \; \mathsf{bind}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+We will not list here the different HTML tags and related functions from the standard library.  They should be easy enough to understand from the code in <TT>basis.urs</TT>.  The set of tags in the library is not yet claimed to be complete for HTML standards.  Also note that there is currently no way for the programmer to add his own tags, without using the foreign function interface (Section <A HREF="node56.html#ffi">11</A>).
+
+<P>
+Some tags support HTML5 <TT>data-*</TT> attributes, which in Ur/Web are encoded as a single attribute <!-- MATH
+ $\mathsf{Data}$
+ -->
+<IMG
+ WIDTH="36" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img506.png"
+ ALT="$ \mathsf{Data}$">
+ with type <!-- MATH
+ $\mathsf{data\_attrs}$
+ -->
+<IMG
+ WIDTH="70" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img507.png"
+ ALT="$ \mathsf{data\_attrs}$">
+ encoding one or more attributes of this kind.  See <TT>basis.urs</TT> for details.  The usual HTML5 syntax for these attributes is supported by the Ur/Web parser as syntactic sugar.
+
+<P>
+One last useful function is for aborting any page generation, returning some XML as an error message.  This function takes the place of some uses of a general exception mechanism.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{error} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{xbody} \to \mathsf{t}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="224" HEIGHT="39" BORDER="0"
+ SRC="img508.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{error} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{xbody} \to \mathsf{t}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html685"
+  HREF="node42.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html681"
+  HREF="node32.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html675"
+  HREF="node40.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html683"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html686"
+  HREF="node42.html">Client-Side Programming</A>
+<B> Up:</B> <A NAME="tex2html682"
+  HREF="node32.html">The Ur/Web Standard Library</A>
+<B> Previous:</B> <A NAME="tex2html676"
+  HREF="node40.html">Sequences</A>
+ &nbsp; <B>  <A NAME="tex2html684"
+  HREF="node1.html">Contents</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

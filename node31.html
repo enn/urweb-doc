@@ -1,0 +1,365 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>The Ur Standard Library</TITLE>
+<META NAME="description" CONTENT="The Ur Standard Library">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node32.html">
+<LINK REL="previous" HREF="node25.html">
+<LINK REL="up" HREF="manual.html">
+<LINK REL="next" HREF="node32.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html548"
+  HREF="node32.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html544"
+  HREF="manual.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html538"
+  HREF="node30.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html546"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html549"
+  HREF="node32.html">The Ur/Web Standard Library</A>
+<B> Up:</B> <A NAME="tex2html545"
+  HREF="manual.html">The Ur/Web Manual</A>
+<B> Previous:</B> <A NAME="tex2html539"
+  HREF="node30.html">Implicit Arguments in Functor</A>
+ &nbsp; <B>  <A NAME="tex2html547"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00080000000000000000">
+The Ur Standard Library</A>
+</H1>
+
+<P>
+The built-in parts of the Ur/Web standard library are described by the signature in <TT>lib/basis.urs</TT> in the distribution.  A module <!-- MATH
+ $\mathsf{Basis}$
+ -->
+<IMG
+ WIDTH="38" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img100.png"
+ ALT="$ \mathsf{Basis}$">
+ ascribing to that signature is available in the initial environment, and every program is implicitly prefixed by <!-- MATH
+ $\mathsf{open} \; \mathsf{Basis}$
+ -->
+<IMG
+ WIDTH="74" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img376.png"
+ ALT="$ \mathsf{open} \; \mathsf{Basis}$">
+.
+
+<P>
+Additionally, other common functions that are definable within Ur are included in <TT>lib/top.urs</TT> and <TT>lib/top.ur</TT>.  This <!-- MATH
+ $\mathsf{Top}$
+ -->
+<IMG
+ WIDTH="30" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img377.png"
+ ALT="$ \mathsf{Top}$">
+ module is also opened implicitly.
+
+<P>
+The idea behind Ur is to serve as the ideal host for embedded domain-specific languages.  For now, however, the ``generic'' functionality is intermixed with Ur/Web-specific functionality, including in these two library modules.  We hope that these generic library components have types that speak for themselves.  The next section introduces the Ur/Web-specific elements.  Here, we only give the type declarations from the beginning of <!-- MATH
+ $\mathsf{Basis}$
+ -->
+<IMG
+ WIDTH="38" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img100.png"
+ ALT="$ \mathsf{Basis}$">
+.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{type} \; \mathsf{int} \\
+  \mathsf{type} \; \mathsf{float} \\
+  \mathsf{type} \; \mathsf{char} \\
+  \mathsf{type} \; \mathsf{string} \\
+  \mathsf{type} \; \mathsf{time} \\
+  \mathsf{type} \; \mathsf{blob} \\
+  \\
+  \mathsf{type} \; \mathsf{unit} = \{\} \\
+  \\
+  \mathsf{datatype} \; \mathsf{bool} = \mathsf{False} \mid \mathsf{True} \\
+  \\
+  \mathsf{datatype} \; \mathsf{option} \; \mathsf{t} = \mathsf{None} \mid \mathsf{Some} \; \mathsf{of} \; \mathsf{t} \\
+  \\
+  \mathsf{datatype} \; \mathsf{list} \; \mathsf{t} = \mathsf{Nil} \mid \mathsf{Cons} \; \mathsf{of} \; \mathsf{t} \times \mathsf{list} \; \mathsf{t}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="255" HEIGHT="283" BORDER="0"
+ SRC="img378.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{type} \; \mathsf{int} \\
+\mathsf{...
+...f} \; \mathsf{t} \times \mathsf{list} \; \mathsf{t}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+The only unusual element of this list is the <!-- MATH
+ $\mathsf{blob}$
+ -->
+<IMG
+ WIDTH="32" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img379.png"
+ ALT="$ \mathsf{blob}$">
+ type, which stands for binary sequences.  Simple blobs can be created from strings via <!-- MATH
+ $\mathsf{Basis.textBlob}$
+ -->
+<IMG
+ WIDTH="99" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img380.png"
+ ALT="$ \mathsf{Basis.textBlob}$">
+.  Blobs will also be generated from HTTP file uploads.
+
+<P>
+Ur also supports <I>polymorphic variants</I>, a dual to extensible records that has been popularized by OCaml.  A type <!-- MATH
+ $\mathsf{variant} \; r$
+ -->
+<IMG
+ WIDTH="61" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img381.png"
+ ALT="$ \mathsf{variant} \; r$">
+ represents an <IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img382.png"
+ ALT="$ n$">
+-ary sum type, with one constructor for each field of record <IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img383.png"
+ ALT="$ r$">
+.  Each constructor <IMG
+ WIDTH="11" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img61.png"
+ ALT="$ c$">
+ takes an argument of type <IMG
+ WIDTH="22" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img384.png"
+ ALT="$ r.c$">
+; the type <IMG
+ WIDTH="20" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img56.png"
+ ALT="$ \{\}$">
+ can be used to ``simulate'' a nullary constructor.  The <TT>make</TT> function builds a variant value, while <TT>match</TT> implements pattern-matching, with match cases represented as records of functions.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{con} \; \mathsf{variant} :: \{\mathsf{Type}\} \to \mathsf{Type} \\
+  \mathsf{val} \; \mathsf{make} : \mathsf{nm} :: \mathsf{Name} \to \mathsf{t} ::: \mathsf{Type} \to \mathsf{ts} ::: \{\mathsf{Type}\} \to [[\mathsf{nm}] \sim \mathsf{ts}] \Rightarrow \mathsf{t} \to \mathsf{variant} \; ([\mathsf{nm} = \mathsf{t}] + \hspace{-.075in} + \;\mathsf{ts}) \\
+  \mathsf{val} \; \mathsf{match} : \mathsf{ts} ::: \{\mathsf{Type}\} \to \mathsf{t} ::: \mathsf{Type} \to \mathsf{variant} \; \mathsf{ts} \to \$(\mathsf{map} \; (\lambda \mathsf{t'} \Rightarrow \mathsf{t'} \to \mathsf{t}) \; \mathsf{ts}) \to \mathsf{t}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="650" HEIGHT="64" BORDER="0"
+ SRC="img385.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{con} \; \mathsf{variant} :: \{\math...
+...{t'} \to \mathsf{t}) \; \mathsf{ts}) \to \mathsf{t}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+Another important generic Ur element comes at the beginning of <TT>top.urs</TT>.
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{con} \; \mathsf{folder} :: \mathsf{K} \longrightarrow \{\mathsf{K}\} \to \mathsf{Type} \\
+  \\
+  \mathsf{val} \; \mathsf{fold} : \mathsf{K} \longrightarrow \mathsf{tf} :: (\{\mathsf{K}\} \to \mathsf{Type}) \\
+  \hspace{.1in} \to (\mathsf{nm} :: \mathsf{Name} \to \mathsf{v} :: \mathsf{K} \to \mathsf{r} :: \{\mathsf{K}\} \to [[\mathsf{nm}] \sim \mathsf{r}] \Rightarrow \\
+  \hspace{.2in} \mathsf{tf} \; \mathsf{r} \to \mathsf{tf} \; ([\mathsf{nm} = \mathsf{v}] + \hspace{-.075in} + \;\mathsf{r})) \\
+  \hspace{.1in} \to \mathsf{tf} \; [] \\
+  \hspace{.1in} \to \mathsf{r} :: \{\mathsf{K}\} \to \mathsf{folder} \; \mathsf{r} \to \mathsf{tf} \; \mathsf{r}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="361" HEIGHT="150" BORDER="0"
+ SRC="img386.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{con} \; \mathsf{folder} :: \mathsf{...
+...folder} \; \mathsf{r} \to \mathsf{tf} \; \mathsf{r}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+For a type-level record <!-- MATH
+ $\mathsf{r}$
+ -->
+<IMG
+ WIDTH="10" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img387.png"
+ ALT="$ \mathsf{r}$">
+, a <!-- MATH
+ $\mathsf{folder} \; \mathsf{r}$
+ -->
+<IMG
+ WIDTH="52" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img388.png"
+ ALT="$ \mathsf{folder} \; \mathsf{r}$">
+ encodes a permutation of <!-- MATH
+ $\mathsf{r}$
+ -->
+<IMG
+ WIDTH="10" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img387.png"
+ ALT="$ \mathsf{r}$">
+'s elements.  The <!-- MATH
+ $\mathsf{fold}$
+ -->
+<IMG
+ WIDTH="29" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img389.png"
+ ALT="$ \mathsf{fold}$">
+ function can be called on a <!-- MATH
+ $\mathsf{folder}$
+ -->
+<IMG
+ WIDTH="41" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img390.png"
+ ALT="$ \mathsf{folder}$">
+ to iterate over the elements of <!-- MATH
+ $\mathsf{r}$
+ -->
+<IMG
+ WIDTH="10" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img387.png"
+ ALT="$ \mathsf{r}$">
+ in that order.  <!-- MATH
+ $\mathsf{fold}$
+ -->
+<IMG
+ WIDTH="29" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img389.png"
+ ALT="$ \mathsf{fold}$">
+ is parameterized on a type-level function to be used to calculate the type of each intermediate result of folding.  After processing a subset <!-- MATH
+ $\mathsf{r'}$
+ -->
+<IMG
+ WIDTH="14" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img391.png"
+ ALT="$ \mathsf{r'}$">
+ of <!-- MATH
+ $\mathsf{r}$
+ -->
+<IMG
+ WIDTH="10" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img387.png"
+ ALT="$ \mathsf{r}$">
+'s entries, the type of the accumulator should be <!-- MATH
+ $\mathsf{tf} \; \mathsf{r'}$
+ -->
+<IMG
+ WIDTH="30" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img392.png"
+ ALT="$ \mathsf{tf} \; \mathsf{r'}$">
+.  The next two expression arguments to <!-- MATH
+ $\mathsf{fold}$
+ -->
+<IMG
+ WIDTH="29" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img389.png"
+ ALT="$ \mathsf{fold}$">
+ are the usual step function and initial accumulator, familiar from fold functions over lists.  The final two arguments are the record to fold over and a <!-- MATH
+ $\mathsf{folder}$
+ -->
+<IMG
+ WIDTH="41" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img390.png"
+ ALT="$ \mathsf{folder}$">
+ for it.
+
+<P>
+The Ur compiler treats <!-- MATH
+ $\mathsf{folder}$
+ -->
+<IMG
+ WIDTH="41" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img390.png"
+ ALT="$ \mathsf{folder}$">
+ like a constructor class, using built-in rules to infer <!-- MATH
+ $\mathsf{folder}$
+ -->
+<IMG
+ WIDTH="41" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img390.png"
+ ALT="$ \mathsf{folder}$">
+s for records with known structure.  The order in which field names are mentioned in source code is used as a hint about the permutation that the programmer would like.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html548"
+  HREF="node32.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html544"
+  HREF="manual.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html538"
+  HREF="node30.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html546"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html549"
+  HREF="node32.html">The Ur/Web Standard Library</A>
+<B> Up:</B> <A NAME="tex2html545"
+  HREF="manual.html">The Ur/Web Manual</A>
+<B> Previous:</B> <A NAME="tex2html539"
+  HREF="node30.html">Implicit Arguments in Functor</A>
+ &nbsp; <B>  <A NAME="tex2html547"
+  HREF="node1.html">Contents</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,204 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Pattern Typing</TITLE>
+<META NAME="description" CONTENT="Pattern Typing">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node20.html">
+<LINK REL="previous" HREF="node18.html">
+<LINK REL="up" HREF="node13.html">
+<LINK REL="next" HREF="node20.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html403"
+  HREF="node20.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html399"
+  HREF="node13.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html393"
+  HREF="node18.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html401"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html404"
+  HREF="node20.html">Declaration Typing</A>
+<B> Up:</B> <A NAME="tex2html400"
+  HREF="node13.html">Static Semantics</A>
+<B> Previous:</B> <A NAME="tex2html394"
+  HREF="node18.html">Expression Typing</A>
+ &nbsp; <B>  <A NAME="tex2html402"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00066000000000000000">
+Pattern Typing</A>
+</H2>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \_ \leadsto \Gamma; \tau}{}
+\quad \infer{\Gamma \vdash x \leadsto \Gamma, x : \tau; \tau}{}
+\quad \infer{\Gamma \vdash \ell \leadsto \Gamma; T(\ell)}{}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="355" HEIGHT="46" ALIGN="MIDDLE" BORDER="0"
+ SRC="img205.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \_ \leadsto \Gamma; \tau}{}
+\quad \infer{\Ga...
+..., x : \tau; \tau}{}
+\quad \infer{\Gamma \vdash \ell \leadsto \Gamma; T(\ell)}{}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash X \leadsto \Gamma; \overline{[x_i \mapsto \tau'_i]}\tau}{
+  X : \overline{x ::: \mathsf{Type}} \to \tau \in \Gamma
+  & \textrm{$\tau$ not a function type}
+}
+\quad \infer{\Gamma \vdash X \; p \leadsto \Gamma'; \overline{[x_i \mapsto \tau'_i]}\tau}{
+  X : \overline{x ::: \mathsf{Type}} \to \tau'' \to \tau \in \Gamma
+  & \Gamma \vdash p \leadsto \Gamma'; \overline{[x_i \mapsto \tau'_i]}\tau''
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="710" HEIGHT="91" ALIGN="MIDDLE" BORDER="0"
+ SRC="img206.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash X \leadsto \Gamma; \overline{[x_i \mapsto \t...
+...a
+&amp; \Gamma \vdash p \leadsto \Gamma'; \overline{[x_i \mapsto \tau'_i]}\tau''
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash M.X \leadsto \Gamma; \overline{[x_i \mapsto \tau'_i]}\tau}{
+  \Gamma \vdash M : \mathsf{sig} \; \overline{s} \; \mathsf{end}
+  & \mathsf{proj}(M, \overline{s}, \mathsf{val} \; X) = \overline{x ::: \mathsf{Type}} \to \tau
+  & \textrm{$\tau$ not a function type}
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="533" HEIGHT="89" ALIGN="MIDDLE" BORDER="0"
+ SRC="img207.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash M.X \leadsto \Gamma; \overline{[x_i \mapsto ...
+...overline{x ::: \mathsf{Type}} \to \tau
+&amp; \textrm{$\tau$ not a function type}
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash M.X \; p \leadsto \Gamma'; \overline{[x_i \mapsto \tau'_i]}\tau}{
+  \Gamma \vdash M : \mathsf{sig} \; \overline{s} \; \mathsf{end}
+  & \mathsf{proj}(M, \overline{s}, \mathsf{val} \; X) = \overline{x ::: \mathsf{Type}} \to \tau'' \to \tau
+  & \Gamma \vdash p \leadsto \Gamma'; \overline{[x_i \mapsto \tau'_i]}\tau''
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="586" HEIGHT="91" ALIGN="MIDDLE" BORDER="0"
+ SRC="img208.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash M.X \; p \leadsto \Gamma'; \overline{[x_i \m...
+...u
+&amp; \Gamma \vdash p \leadsto \Gamma'; \overline{[x_i \mapsto \tau'_i]}\tau''
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \{\overline{x = p}\} \leadsto \Gamma_n; \{\overline{x = \tau}\}}{
+  \Gamma_0 = \Gamma
+  & \forall i: \Gamma_i \vdash p_i \leadsto \Gamma_{i+1}; \tau_i
+}
+\quad \infer{\Gamma \vdash \{\overline{x = p}, \ldots\} \leadsto \Gamma_n; \$([\overline{x = \tau}] + \hspace{-.075in} + \;c)}{
+  \Gamma_0 = \Gamma
+  & \forall i: \Gamma_i \vdash p_i \leadsto \Gamma_{i+1}; \tau_i
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="496" HEIGHT="77" ALIGN="MIDDLE" BORDER="0"
+ SRC="img209.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \{\overline{x = p}\} \leadsto \Gamma_n; \{\o...
+...ma_0 = \Gamma
+&amp; \forall i: \Gamma_i \vdash p_i \leadsto \Gamma_{i+1}; \tau_i
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash p : \tau \leadsto \Gamma'; \tau}{
+  \Gamma \vdash p \leadsto \Gamma'; \tau'
+  & \Gamma \vdash \tau' \equiv \tau
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="187" HEIGHT="76" ALIGN="MIDDLE" BORDER="0"
+ SRC="img210.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash p : \tau \leadsto \Gamma'; \tau}{
+\Gamma \vdash p \leadsto \Gamma'; \tau'
+&amp; \Gamma \vdash \tau' \equiv \tau
+}$">
+</DIV><P>
+</P>
+
+<P>
+<BR><HR>
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

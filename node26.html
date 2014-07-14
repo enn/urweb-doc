@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Basic Unification</TITLE>
+<META NAME="description" CONTENT="Basic Unification">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node27.html">
+<LINK REL="previous" HREF="node25.html">
+<LINK REL="up" HREF="node25.html">
+<LINK REL="next" HREF="node27.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html490"
+  HREF="node27.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html486"
+  HREF="node25.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html480"
+  HREF="node25.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html488"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html491"
+  HREF="node27.html">Unifying Record Types</A>
+<B> Up:</B> <A NAME="tex2html487"
+  HREF="node25.html">Type Inference</A>
+<B> Previous:</B> <A NAME="tex2html481"
+  HREF="node25.html">Type Inference</A>
+ &nbsp; <B>  <A NAME="tex2html489"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00071000000000000000">
+Basic Unification</A>
+</H2>
+
+<P>
+Type-checkers for languages based on the Hindley-Milner type discipline, like ML and Haskell, take advantage of <I>principal typing</I> properties, making complete type inference relatively straightforward.  Inference algorithms are traditionally implemented using type unification variables, at various points asserting equalities between types, in the process discovering the values of type variables.  The Ur/Web compiler uses the same basic strategy, but the complexity of the type system rules out easy completeness.
+
+<P>
+Type-checking can require evaluating recursive functional programs, thanks to the type-level <!-- MATH
+ $\mathsf{map}$
+ -->
+<IMG
+ WIDTH="32" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img371.png"
+ ALT="$ \mathsf{map}$">
+ operator.  When a unification variable appears in such a type, the next step of computation can be undetermined.  The value of that variable might be determined later, but this would be ``too late'' for the unification problems generated at the first occurrence.  This is the essential source of incompleteness.
+
+<P>
+Nonetheless, the unification engine tends to do reasonably well.  Unlike in ML, polymorphism is never inferred in definitions; it must be indicated explicitly by writing out constructor-level parameters.  By writing these and other annotations, the programmer can generally get the type inference engine to do most of the type reconstruction work.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html490"
+  HREF="node27.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html486"
+  HREF="node25.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html480"
+  HREF="node25.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html488"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html491"
+  HREF="node27.html">Unifying Record Types</A>
+<B> Up:</B> <A NAME="tex2html487"
+  HREF="node25.html">Type Inference</A>
+<B> Previous:</B> <A NAME="tex2html481"
+  HREF="node25.html">Type Inference</A>
+ &nbsp; <B>  <A NAME="tex2html489"
+  HREF="node1.html">Contents</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

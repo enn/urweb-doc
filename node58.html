@@ -1,0 +1,188 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Writing JavaScript FFI Code</TITLE>
+<META NAME="description" CONTENT="Writing JavaScript FFI Code">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node59.html">
+<LINK REL="previous" HREF="node57.html">
+<LINK REL="up" HREF="node56.html">
+<LINK REL="next" HREF="node59.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html897"
+  HREF="node59.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html893"
+  HREF="node56.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html887"
+  HREF="node57.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html895"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html898"
+  HREF="node59.html">Introducing New HTML Tags</A>
+<B> Up:</B> <A NAME="tex2html894"
+  HREF="node56.html">The Foreign Function Interface</A>
+<B> Previous:</B> <A NAME="tex2html888"
+  HREF="node57.html">Writing C FFI Code</A>
+ &nbsp; <B>  <A NAME="tex2html896"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000122000000000000000">
+Writing JavaScript FFI Code</A>
+</H2>
+
+<P>
+JavaScript is dynamically typed, so Ur/Web type definitions imply no JavaScript code.  The JavaScript identifier for each FFI function is set with the <TT>jsFunc</TT> directive.  Each identifier can be defined in any JavaScript file that you ask to include with the <TT>script</TT> directive.
+
+<P>
+In contrast to C FFI code, JavaScript FFI functions take no extra context argument.  Their argument lists are as you would expect from their Ur types.  Only functions whose ranges take the form <TT>transaction T</TT> should have side effects; the JavaScript ``return type'' of such a function is <TT>T</TT>.  Here are the conventions for representing Ur values in JavaScript.
+
+<P>
+
+<UL>
+<LI>Integers, floats, strings, characters, and booleans are represented in the usual JavaScript way.
+</LI>
+<LI>Ur functions are represented in an unspecified way.  This means that you should not rely on any details of function representation.  Named FFI functions are represented as JavaScript functions with as many arguments as their Ur types specify.  To call a non-FFI function <TT>f</TT> on argument <TT>x</TT>, run <TT>execF(f, x)</TT>.  A normal JavaScript function may also be used in a position where the Ur/Web runtime system expects an Ur/Web function.
+</LI>
+<LI>An Ur record is represented with a JavaScript record, where Ur field name <TT>N</TT> translates to JavaScript field name <TT>_N</TT>.  An exception to this rule is that the empty record is encoded as <TT>null</TT>.
+</LI>
+<LI><TT>option</TT>-like types receive special handling similar to their handling in C.  The ``<TT>None</TT>'' constructor is <TT>null</TT>, and a use of the ``<TT>Some</TT>'' constructor on a value <TT>v</TT> is either <TT>v</TT>, if the underlying type doesn't need to use <TT>null</TT>; or <TT>{v:v}</TT> otherwise.
+</LI>
+<LI>Any other datatypes represent a non-value-carrying constructor <TT>C</TT> as <TT>"C"</TT> and an application of a constructor <TT>C</TT> to value <TT>v</TT> as <TT>{n:"C", v:v}</TT>.  This rule only applies to datatypes defined in FFI module signatures; the compiler is free to optimize the representations of other, non-<TT>option</TT>-like datatypes in arbitrary ways.
+</LI>
+<LI>As in the C FFI, all abstract types of program syntax are implemented with strings in JavaScript.
+</LI>
+<LI>A value of Ur type <TT>transaction t</TT> is represented in the same way as for <TT>unit -&gt; t</TT>.  (Note that FFI functions skip this extra level of function encoding, which only applies to functions defined in Ur/Web.)
+</LI>
+</UL>
+
+<P>
+It is possible to write JavaScript FFI code that interacts with the functional-reactive structure of a document.  Here is a quick summary of some of the simpler functions to use; descriptions of fancier stuff may be added later on request (and such stuff should be considered ``undocumented features'' until then).
+
+<P>
+
+<UL>
+<LI>Sources should be treated as an abstract type, manipulated via:
+  
+<UL>
+<LI><TT>sc(v)</TT>, to create a source initialized to <TT>v</TT>
+</LI>
+<LI><TT>sg(s)</TT>, to retrieve the current value of source <TT>s</TT>
+</LI>
+<LI><TT>sv(s, v)</TT>, to set source <TT>s</TT> to value <TT>v</TT>
+  
+</LI>
+</UL>
+
+<P>
+</LI>
+<LI>Signals should be treated as an abstract type, manipulated via:
+  
+<UL>
+<LI><TT>sr(v)</TT> and <TT>sb(s, f)</TT>, the ``return'' and ``bind'' monad operators, respectively
+</LI>
+<LI><TT>ss(s)</TT>, to produce the signal corresponding to source <TT>s</TT>
+</LI>
+<LI><TT>scur(s)</TT>, to get the current value of signal <TT>s</TT>
+  
+</LI>
+</UL>
+
+<P>
+</LI>
+<LI>The behavior of the <TT>&lt;dyn&gt;</TT> pseudo-tag may be mimicked by following the right convention in a piece of HTML source code with a type like <!-- MATH
+ $\mathsf{xbody}$
+ -->
+<IMG
+ WIDTH="44" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img581.png"
+ ALT="$ \mathsf{xbody}$">
+.  Such a piece of source code may be encoded with a JavaScript string.  To insert a dynamic section, include a <TT>&lt;script&gt;</TT> tag whose content is just a call <TT>dyn(pnode, s)</TT>.  The argument <TT>pnode</TT> specifies what the relevant enclosing parent tag is.  Use value <TT>"tr"</TT> when the immediate parent is <TT>&lt;tr&gt;</TT>, use <TT>"table"</TT> when the immediate parent is <TT>&lt;table&gt;</TT>, and use <TT>"span"</TT> otherwise.  The argument <TT>s</TT> is a string-valued signal giving the HTML code to be inserted at this point.  As with the usual <TT>&lt;dyn&gt;</TT> tag, that HTML subtree is automatically updated as the value of <TT>s</TT> changes.
+
+<P>
+</LI>
+<LI>There is only one supported method of taking HTML values generated in Ur/Web code and adding them to the DOM in FFI JavaScript code: call <TT>setInnerHTML(node, html)</TT> to add HTML content <TT>html</TT> within DOM node <TT>node</TT>.  Merely running <TT>node.innerHTML = html</TT> is not guaranteed to get the job done, though programmers familiar with JavaScript will probably find it useful to think of <TT>setInnerHTML</TT> as having this effect.  The unusual idiom is required because Ur/Web uses a nonstandard representation of HTML, to support infinite nesting of code that may generate code that may generate code that....  The <TT>node</TT> value must already be in the DOM tree at the point when <TT>setInnerHTML</TT> is called, because some plumbing must be set up to interact sensibly with <TT>&lt;dyn&gt;</TT> tags. 
+
+<P>
+</LI>
+<LI>It is possible to use the more standard ``IDs and mutation'' style of JavaScript coding, though that style is unidiomatic for Ur/Web and should be avoided wherever possible.  Recall the abstract type <!-- MATH
+ $\mathsf{id}$
+ -->
+<IMG
+ WIDTH="16" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img582.png"
+ ALT="$ \mathsf{id}$">
+ and its constructor <!-- MATH
+ $\mathsf{fresh}$
+ -->
+<IMG
+ WIDTH="36" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img583.png"
+ ALT="$ \mathsf{fresh}$">
+, which can be used to generate new unique IDs in Ur/Web code.  Values of this type are represented as strings in JavaScript, and a function <TT>fresh()</TT> is available to generate new unique IDs.  Application-specific ID generation schemes may cause bad interactions with Ur/Web code that also generates IDs, so the recommended approach is to produce IDs only via calls to <TT>fresh()</TT>.  FFI code shouldn't depend on the ID generation scheme (on either server side or client side), but it is safe to include these IDs in tag attributes (in either server-side or client-side code) and manipulate the associated DOM nodes in the standard way (in client-side code).  Be forewarned that this kind of imperative DOM manipulation may confuse the Ur/Web runtime system and interfere with proper behavior of tags like <TT>&lt;dyn&gt;</TT>!
+</LI>
+</UL>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html897"
+  HREF="node59.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html893"
+  HREF="node56.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html887"
+  HREF="node57.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html895"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html898"
+  HREF="node59.html">Introducing New HTML Tags</A>
+<B> Up:</B> <A NAME="tex2html894"
+  HREF="node56.html">The Foreign Function Interface</A>
+<B> Previous:</B> <A NAME="tex2html888"
+  HREF="node57.html">Writing C FFI Code</A>
+ &nbsp; <B>  <A NAME="tex2html896"
+  HREF="node1.html">Contents</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

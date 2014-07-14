@@ -1,0 +1,288 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>The Structure of Web Applications</TITLE>
+<META NAME="description" CONTENT="The Structure of Web Applications">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node56.html">
+<LINK REL="previous" HREF="node48.html">
+<LINK REL="up" HREF="manual.html">
+<LINK REL="next" HREF="node55.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html846"
+  HREF="node55.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html842"
+  HREF="manual.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html836"
+  HREF="node53.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html844"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html847"
+  HREF="node55.html">Tasks</A>
+<B> Up:</B> <A NAME="tex2html843"
+  HREF="manual.html">The Ur/Web Manual</A>
+<B> Previous:</B> <A NAME="tex2html837"
+  HREF="node53.html">XML</A>
+ &nbsp; <B>  <A NAME="tex2html845"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION000110000000000000000"></A><A NAME="structure"></A>
+<BR>
+The Structure of Web Applications
+</H1>
+
+<P>
+A web application is built from a series of modules, with one module, the last one appearing in the <TT>.urp</TT> file, designated as the main module.  The signature of the main module determines the URL entry points to the application.  Such an entry point should have type <!-- MATH
+ $\mathsf{t1} \to \ldots \to \mathsf{tn} \to \mathsf{transaction} \; \mathsf{page}$
+ -->
+<IMG
+ WIDTH="233" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img557.png"
+ ALT="$ \mathsf{t1} \to \ldots \to \mathsf{tn} \to \mathsf{transaction} \; \mathsf{page}$">
+, for any integer <IMG
+ WIDTH="43" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img558.png"
+ ALT="$ n \geq 0$">
+, where <!-- MATH
+ $\mathsf{page}$
+ -->
+<IMG
+ WIDTH="35" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img559.png"
+ ALT="$ \mathsf{page}$">
+ is a type synonym for top-level HTML pages, defined in <!-- MATH
+ $\mathsf{Basis}$
+ -->
+<IMG
+ WIDTH="38" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img100.png"
+ ALT="$ \mathsf{Basis}$">
+.  If such a function is at the top level of main module <IMG
+ WIDTH="21" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img41.png"
+ ALT="$ M$">
+, with <IMG
+ WIDTH="43" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img560.png"
+ ALT="$ n = 0$">
+, it will be accessible at URI <TT>/M/f</TT>, and so on for more deeply nested functions, as described in Section <A HREF="node71.html#tag">12.10</A> below.  See Section <A HREF="node5.html#cl">3.1</A> for information on the <TT>prefix</TT> and <TT>rewrite url</TT> directives, which can be used to rewrite the default URIs of different entry point functions.  The final URL of a function is its default module-based URI, with <TT>rewrite url</TT> rules applied, and with the <TT>prefix</TT> prepended.  Arguments to an entry-point function are deserialized from the part of the URI following <TT>f</TT>.
+
+<P>
+Elements of modules beside the main module, including page handlers, will only be included in the final application if they are transitive dependencies of the handlers in the main module.
+
+<P>
+Normal links are accessible via HTTP <TT>GET</TT>, which the relevant standard says should never cause side effects.  To export a page which may cause side effects, accessible only via HTTP <TT>POST</TT>, include one argument of the page handler of type <!-- MATH
+ $\mathsf{Basis.postBody}$
+ -->
+<IMG
+ WIDTH="106" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img561.png"
+ ALT="$ \mathsf{Basis.postBody}$">
+.  When the handler is called, this argument will receive a value that can be deconstructed into a MIME type (with <!-- MATH
+ $\mathsf{Basis.postType}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img562.png"
+ ALT="$ \mathsf{Basis.postType}$">
+) and payload (with <!-- MATH
+ $\mathsf{Basis.postData}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img563.png"
+ ALT="$ \mathsf{Basis.postData}$">
+).  This kind of handler should not be used with forms that exist solely within Ur/Web apps; for these, use Ur/Web's built-in support, as described below.  It may still be useful to use <!-- MATH
+ $\mathsf{Basis.postBody}$
+ -->
+<IMG
+ WIDTH="106" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img561.png"
+ ALT="$ \mathsf{Basis.postBody}$">
+ with form requests submitted by code outside an Ur/Web app.  For such cases, the function <!-- MATH
+ $\mathsf{Top.postFields} : \mathsf{postBody} \to \mathsf{list} \; (\mathsf{string} \times \mathsf{string})$
+ -->
+<IMG
+ WIDTH="332" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img564.png"
+ ALT="$ \mathsf{Top.postFields} : \mathsf{postBody} \to \mathsf{list} \; (\mathsf{string} \times \mathsf{string})$">
+ may be useful, breaking a <TT>POST</TT> body of type <TT>application/x-www-form-urlencoded</TT> into its name-value pairs.
+
+<P>
+Any normal page handler may also include arguments of type <!-- MATH
+ $\mathsf{option \; Basis.queryString}$
+ -->
+<IMG
+ WIDTH="165" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img565.png"
+ ALT="$ \mathsf{option \; Basis.queryString}$">
+, which will be handled specially.  Rather than being deserialized from the current URI, such an argument is passed the whole query string that the handler received.  The string may be analyzed by calling <!-- MATH
+ $\mathsf{Basis.show}$
+ -->
+<IMG
+ WIDTH="75" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img566.png"
+ ALT="$ \mathsf{Basis.show}$">
+ on it.  A handler of this kind may be passed as an argument to <!-- MATH
+ $\mathsf{Basis.effectfulUrl}$
+ -->
+<IMG
+ WIDTH="116" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img567.png"
+ ALT="$ \mathsf{Basis.effectfulUrl}$">
+ to generate a URL to a page that may be used as a ``callback'' by an external service, such that the handler is allowed to cause side effects.
+
+<P>
+When the standalone web server receives a request for a known page, it calls the function for that page, ``running'' the resulting transaction to produce the page to return to the client.  Pages link to other pages with the <TT>link</TT> attribute of the <TT>a</TT> HTML tag.  A link has type <!-- MATH
+ $\mathsf{transaction} \; \mathsf{page}$
+ -->
+<IMG
+ WIDTH="113" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img568.png"
+ ALT="$ \mathsf{transaction} \; \mathsf{page}$">
+, and the semantics of a link are that this transaction should be run to compute the result page, when the link is followed.  Link targets are assigned URL names in the same way as top-level entry points.
+
+<P>
+HTML forms are handled in a similar way.  The <!-- MATH
+ $\mathsf{action}$
+ -->
+<IMG
+ WIDTH="44" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img569.png"
+ ALT="$ \mathsf{action}$">
+ attribute of a <!-- MATH
+ $\mathsf{submit}$
+ -->
+<IMG
+ WIDTH="49" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img570.png"
+ ALT="$ \mathsf{submit}$">
+ form tag takes a value of type <!-- MATH
+ $\$\mathsf{use} \to \mathsf{transaction} \; \mathsf{page}$
+ -->
+<IMG
+ WIDTH="167" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img571.png"
+ ALT="$ \$\mathsf{use} \to \mathsf{transaction} \; \mathsf{page}$">
+, where <!-- MATH
+ $\mathsf{use}$
+ -->
+<IMG
+ WIDTH="25" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img572.png"
+ ALT="$ \mathsf{use}$">
+ is a kind-<!-- MATH
+ $\{\mathsf{Type}\}$
+ -->
+<IMG
+ WIDTH="52" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img573.png"
+ ALT="$ \{\mathsf{Type}\}$">
+ record of the form fields used by this action handler.  Action handlers are assigned URL patterns in the same way as above.
+
+<P>
+For both links and actions, direct arguments and local variables mentioned implicitly via closures are automatically included in serialized form in URLs, in the order in which they appear in the source code.  Such serialized values may only be drawn from a limited set of types, and programs will fail to compile when the (implicit or explicit) arguments of page handler functions involve disallowed types.  (Keep in mind that every free variable of a function is an implicit argument if it was not defined at the top level of a module.)  For instance:
+
+<UL>
+<LI>Functions are disallowed, since there is no obvious way to serialize them safely.
+</LI>
+<LI>XML fragments are disallowed, since it is unclear how to check client-provided XML to be sure it doesn't break the HTML invariants of the application (for instance, by mutating the DOM in the conventional way, interfering with Ur/Web's functional-reactive regime).
+</LI>
+<LI>Blobs (``files'') are disallowed, since they can easily have very large serializations that could not fit within most web servers' URL size limits.  (And you probably don't want to be serializing, e.g., image files in URLs, anyway.)
+</LI>
+</UL>
+
+<P>
+Ur/Web programs generally mix server- and client-side code in a fairly transparent way.  The one important restriction is that mixed client-server code must encapsulate all server-side pieces within named functions.  This is because execution of such pieces will be implemented by explicit calls to the remote web server, and it is useful to get the programmer's help in designing the interface to be used.  For example, this makes it easier to allow a client running an old version of an application to continue interacting with a server that has been upgraded to a new version, if the programmer took care to keep the interfaces of all of the old remote calls the same.  The functions implementing these services are assigned names in the same way as normal web entry points, by using module structure.
+
+<P>
+
+<P>
+<BR>
+
+<P>
+The HTTP standard suggests that GET requests only be used in ways that generate no side effects.  Side effecting operations should use POST requests instead.  The Ur/Web compiler enforces this rule strictly, via a simple conservative program analysis.  Any page that may have a side effect must be accessed through a form, all of which use POST requests, or via a direct call to a page handler with some argument of type <!-- MATH
+ $\mathsf{Basis.postBody}$
+ -->
+<IMG
+ WIDTH="106" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img561.png"
+ ALT="$ \mathsf{Basis.postBody}$">
+.  A page is judged to have a side effect if its code depends syntactically on any of the side-effecting, server-side FFI functions.  Links, forms, and most client-side event handlers are not followed during this syntactic traversal, but <TT>&lt;body onload={...}&gt;</TT> handlers <I>are</I> examined, since they run right away and could just as well be considered parts of main page handlers.
+
+<P>
+Ur/Web includes a kind of automatic protection against cross site request forgery attacks.  Whenever any page execution can have side effects and can also read at least one cookie value, all cookie values must be signed cryptographically, to ensure that the user has come to the current page by submitting a form on a real page generated by the proper server.  Signing and signature checking are inserted automatically by the compiler.  This prevents attacks like phishing schemes where users are directed to counterfeit pages with forms that submit to your application, where a user's cookies might be submitted without his knowledge, causing some undesired side effect.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html848"
+  HREF="node55.html">Tasks</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html846"
+  HREF="node55.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html842"
+  HREF="manual.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html836"
+  HREF="node53.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html844"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html847"
+  HREF="node55.html">Tasks</A>
+<B> Up:</B> <A NAME="tex2html843"
+  HREF="manual.html">The Ur/Web Manual</A>
+<B> Previous:</B> <A NAME="tex2html837"
+  HREF="node53.html">XML</A>
+ &nbsp; <B>  <A NAME="tex2html845"
+  HREF="node1.html">Contents</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

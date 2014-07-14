@@ -1,0 +1,280 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>The Basics</TITLE>
+<META NAME="description" CONTENT="The Basics">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node44.html">
+<LINK REL="previous" HREF="node42.html">
+<LINK REL="up" HREF="node42.html">
+<LINK REL="next" HREF="node44.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html712"
+  HREF="node44.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html708"
+  HREF="node42.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html702"
+  HREF="node42.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html710"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html713"
+  HREF="node44.html">Node IDs</A>
+<B> Up:</B> <A NAME="tex2html709"
+  HREF="node42.html">Client-Side Programming</A>
+<B> Previous:</B> <A NAME="tex2html703"
+  HREF="node42.html">Client-Side Programming</A>
+ &nbsp; <B>  <A NAME="tex2html711"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00096100000000000000">
+The Basics</A>
+</H3>
+
+<P>
+All of the functions in this subsection are client-side only.
+
+<P>
+Clients can open alert and confirm dialog boxes, in the usual annoying JavaScript way.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{alert} : \mathsf{string} \to \mathsf{transaction} \; \mathsf{unit} \\
+  \mathsf{val} \; \mathsf{confirm} : \mathsf{string} \to \mathsf{transaction} \; \mathsf{bool}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="255" HEIGHT="54" BORDER="0"
+ SRC="img509.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{alert} : \mathsf{st...
+...f{string} \to \mathsf{transaction} \; \mathsf{bool}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+Any transaction may be run in a new thread with the <!-- MATH
+ $\mathsf{spawn}$
+ -->
+<IMG
+ WIDTH="44" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img510.png"
+ ALT="$ \mathsf{spawn}$">
+ function.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{spawn} : \mathsf{transaction} \; \mathsf{unit} \to \mathsf{transaction} \; \mathsf{unit}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="310" HEIGHT="39" BORDER="0"
+ SRC="img511.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{spawn} : \mathsf{tr...
+...hsf{unit} \to \mathsf{transaction} \; \mathsf{unit}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+The current thread can be paused for at least a specified number of milliseconds.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{sleep} : \mathsf{int} \to \mathsf{transaction} \; \mathsf{unit}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="215" HEIGHT="39" BORDER="0"
+ SRC="img512.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{sleep} : \mathsf{int} \to \mathsf{transaction} \; \mathsf{unit}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+A few functions are available to registers callbacks for particular error events.  Respectively, they are triggered on calls to <!-- MATH
+ $\mathsf{error}$
+ -->
+<IMG
+ WIDTH="35" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img513.png"
+ ALT="$ \mathsf{error}$">
+, uncaught JavaScript exceptions, failure of remote procedure calls, the severance of the connection serving asynchronous messages, or the occurrence of some other error with that connection.  If no handlers are registered for a kind of error, then a JavaScript <TT>alert()</TT> is used to announce its occurrence.  When one of these functions is called multiple times within a single page, all registered handlers are run when appropriate events occur, with handlers run in the reverse of their registration order.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{onError} : (\mathsf{xbody} \to \mathsf{transaction} \; \mathsf{unit}) \to \mathsf{transaction} \; \mathsf{unit} \\
+  \mathsf{val} \; \mathsf{onFail} : (\mathsf{string} \to \mathsf{transaction} \; \mathsf{unit}) \to \mathsf{transaction} \; \mathsf{unit} \\
+  \mathsf{val} \; \mathsf{onConnectFail} : \mathsf{transaction} \; \mathsf{unit} \to \mathsf{transaction} \; \mathsf{unit} \\
+  \mathsf{val} \; \mathsf{onDisconnect} : \mathsf{transaction} \; \mathsf{unit} \to \mathsf{transaction} \; \mathsf{unit} \\
+  \mathsf{val} \; \mathsf{onServerError} : (\mathsf{string} \to \mathsf{transaction} \; \mathsf{unit}) \to \mathsf{transaction} \; \mathsf{unit}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="435" HEIGHT="112" BORDER="0"
+ SRC="img514.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{onError} : (\mathsf...
+...sf{unit}) \to \mathsf{transaction} \; \mathsf{unit}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+There are also functions to register standard document-level event handlers.
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+ \mathsf{val} \; \mathsf{onClick} : (\mathsf{mouseEvent} \to \mathsf{transaction} \; \mathsf{unit}) \to \mathsf{transaction} \; \mathsf{unit} \\
+ \mathsf{val} \; \mathsf{onDblclick} : (\mathsf{mouseEvent} \to \mathsf{transaction} \; \mathsf{unit}) \to \mathsf{transaction} \; \mathsf{unit} \\
+ \mathsf{val} \; \mathsf{onKeydown} : (\mathsf{keyEvent} \to \mathsf{transaction} \; \mathsf{unit}) \to \mathsf{transaction} \; \mathsf{unit} \\
+ \mathsf{val} \; \mathsf{onKeypress} : (\mathsf{keyEvent} \to \mathsf{transaction} \; \mathsf{unit}) \to \mathsf{transaction} \; \mathsf{unit} \\
+ \mathsf{val} \; \mathsf{onKeyup} : (\mathsf{keyEvent} \to \mathsf{transaction} \; \mathsf{unit}) \to \mathsf{transaction} \; \mathsf{unit} \\
+ \mathsf{val} \; \mathsf{onMousedown} : (\mathsf{mouseEvent} \to \mathsf{transaction} \; \mathsf{unit}) \to \mathsf{transaction} \; \mathsf{unit} \\
+ \mathsf{val} \; \mathsf{onMouseup} : (\mathsf{mouseEvent} \to \mathsf{transaction} \; \mathsf{unit}) \to \mathsf{transaction} \; \mathsf{unit}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="481" HEIGHT="140" BORDER="0"
+ SRC="img515.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{onClick} : (\mathsf...
+...sf{unit}) \to \mathsf{transaction} \; \mathsf{unit}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+Versions of standard JavaScript functions are provided that event handlers may call to mask default handling or prevent bubbling of events up to parent DOM nodes, respectively.
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{preventDefault} : \mathsf{transaction} \; \mathsf{unit} \\
+  \mathsf{val} \; \mathsf{stopPropagation} : \mathsf{transaction} \; \mathsf{unit}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="249" HEIGHT="54" BORDER="0"
+ SRC="img516.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{preventDefault} : \...
+...ropagation} : \mathsf{transaction} \; \mathsf{unit}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+Finally, here is an HTML tag to leave a marker in the <TT>&lt;head&gt;</TT> of a document asking for some side-effecting code to be run.  This pattern is <I>much</I> less common in Ur/Web applications than in normal HTML/JavaScript applications; see Section <A HREF="node45.html#signals">8.6.3</A> for the more idiomatic, functional way of manipulating the visible page.
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{script} : \mathsf{unit} \to \mathsf{tag} \; [\mathsf{Code} = \mathsf{transaction} \; \mathsf{unit}] \; \mathsf{head} \; [] \; [] \; []
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="391" HEIGHT="39" BORDER="0"
+ SRC="img517.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{script} : \mathsf{u...
+...; \mathsf{unit}] \; \mathsf{head} \; [] \; [] \; []
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+Note that the Ur/Web version of <TT>&lt;script&gt;</TT> is used like <TT>&lt;script code={...}/&gt;</TT>, rather than <TT>&lt;script&gt;...&lt;/script&gt;</TT>.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html712"
+  HREF="node44.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html708"
+  HREF="node42.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html702"
+  HREF="node42.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html710"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html713"
+  HREF="node44.html">Node IDs</A>
+<B> Up:</B> <A NAME="tex2html709"
+  HREF="node42.html">Client-Side Programming</A>
+<B> Previous:</B> <A NAME="tex2html703"
+  HREF="node42.html">Client-Side Programming</A>
+ &nbsp; <B>  <A NAME="tex2html711"
+  HREF="node1.html">Contents</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

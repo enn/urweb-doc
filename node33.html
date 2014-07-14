@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Monads</TITLE>
+<META NAME="description" CONTENT="Monads">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node34.html">
+<LINK REL="previous" HREF="node32.html">
+<LINK REL="up" HREF="node32.html">
+<LINK REL="next" HREF="node34.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html587"
+  HREF="node34.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html583"
+  HREF="node32.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html577"
+  HREF="node32.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html585"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html588"
+  HREF="node34.html">Transactions</A>
+<B> Up:</B> <A NAME="tex2html584"
+  HREF="node32.html">The Ur/Web Standard Library</A>
+<B> Previous:</B> <A NAME="tex2html578"
+  HREF="node32.html">The Ur/Web Standard Library</A>
+ &nbsp; <B>  <A NAME="tex2html586"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00091000000000000000">
+Monads</A>
+</H2>
+
+<P>
+The Ur Basis defines the monad constructor class from Haskell.
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{class} \; \mathsf{monad} :: \mathsf{Type} \to \mathsf{Type} \\
+  \mathsf{val} \; \mathsf{return} : \mathsf{m} ::: (\mathsf{Type} \to \mathsf{Type}) \to \mathsf{t} ::: \mathsf{Type} \\
+  \hspace{.1in} \to \mathsf{monad} \; \mathsf{m} \\
+  \hspace{.1in} \to \mathsf{t} \to \mathsf{m} \; \mathsf{t} \\
+  \mathsf{val} \; \mathsf{bind} : \mathsf{m} ::: (\mathsf{Type} \to \mathsf{Type}) \to \mathsf{t1} ::: \mathsf{Type} \to \mathsf{t2} ::: \mathsf{Type} \\
+  \hspace{.1in} \to \mathsf{monad} \; \mathsf{m} \\
+  \hspace{.1in} \to \mathsf{m} \; \mathsf{t1} \to (\mathsf{t1} \to \mathsf{m} \; \mathsf{t2}) \\
+  \hspace{.1in} \to \mathsf{m} \; \mathsf{t2} \\
+  \mathsf{val} \; \mathsf{mkMonad} : \mathsf{m} ::: (\mathsf{Type} \to \mathsf{Type}) \\
+  \hspace{.1in} \to \{\mathsf{Return} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{t} \to \mathsf{m} \; \mathsf{t}, \\
+  \hspace{.3in} \mathsf{Bind} : \mathsf{t1} ::: \mathsf{Type} \to \mathsf{t2} ::: \mathsf{Type} \to \mathsf{m} \; \mathsf{t1} \to (\mathsf{t1} \to \mathsf{m} \; \mathsf{t2}) \to \mathsf{m} \; \mathsf{t2}\} \\
+  \hspace{.1in} \to \mathsf{monad} \; \mathsf{m}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="465" HEIGHT="245" BORDER="0"
+ SRC="img393.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{class} \; \mathsf{monad} :: \mathsf...
+...\\
+\hspace{.1in} \to \mathsf{monad} \; \mathsf{m}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+The Ur/Web compiler provides syntactic sugar for monads, similar to Haskell's <TT>do</TT> notation.  An expression <!-- MATH
+ $x \leftarrow e_1; e_2$
+ -->
+<IMG
+ WIDTH="74" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img394.png"
+ ALT="$ x \leftarrow e_1; e_2$">
+ is desugared to <!-- MATH
+ $\mathsf{bind} \; e_1 \; (\lambda x \Rightarrow e_2)$
+ -->
+<IMG
+ WIDTH="126" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img395.png"
+ ALT="$ \mathsf{bind} \; e_1 \; (\lambda x \Rightarrow e_2)$">
+, and an expression <IMG
+ WIDTH="40" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img396.png"
+ ALT="$ e_1; e_2$">
+ is desugared to <!-- MATH
+ $\mathsf{bind} \; e_1 \; (\lambda () \Rightarrow e_2)$
+ -->
+<IMG
+ WIDTH="129" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img397.png"
+ ALT="$ \mathsf{bind} \; e_1 \; (\lambda () \Rightarrow e_2)$">
+.  Note a difference from Haskell: as the <IMG
+ WIDTH="40" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img396.png"
+ ALT="$ e_1; e_2$">
+ case desugaring involves a function with <IMG
+ WIDTH="16" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img55.png"
+ ALT="$ ()$">
+ as its formal argument, the type of <IMG
+ WIDTH="18" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img398.png"
+ ALT="$ e_1$">
+ must be of the form <IMG
+ WIDTH="38" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img399.png"
+ ALT="$ m \; \{\}$">
+, rather than some arbitrary <IMG
+ WIDTH="28" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img400.png"
+ ALT="$ m \; t$">
+.
+
+<P>
+The syntactic sugar also allows <!-- MATH
+ $p \leftarrow e_1; e_2$
+ -->
+<IMG
+ WIDTH="73" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img401.png"
+ ALT="$ p \leftarrow e_1; e_2$">
+ for <IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img83.png"
+ ALT="$ p$">
+ a pattern.  The pattern should be guaranteed to match any value of the corresponding type, or there will be a compile-time error.
+
+<P>
+<BR><HR>
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

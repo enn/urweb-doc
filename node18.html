@@ -1,0 +1,396 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Expression Typing</TITLE>
+<META NAME="description" CONTENT="Expression Typing">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node19.html">
+<LINK REL="previous" HREF="node17.html">
+<LINK REL="up" HREF="node13.html">
+<LINK REL="next" HREF="node19.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html391"
+  HREF="node19.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html387"
+  HREF="node13.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html381"
+  HREF="node17.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html389"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html392"
+  HREF="node19.html">Pattern Typing</A>
+<B> Up:</B> <A NAME="tex2html388"
+  HREF="node13.html">Static Semantics</A>
+<B> Previous:</B> <A NAME="tex2html382"
+  HREF="node17.html">Definitional Equality</A>
+ &nbsp; <B>  <A NAME="tex2html390"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00065000000000000000">
+Expression Typing</A>
+</H2>
+
+<P>
+We assume the existence of a function <IMG
+ WIDTH="15" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img184.png"
+ ALT="$ T$">
+ assigning types to literal constants.  It maps integer constants to <!-- MATH
+ $\mathsf{Basis}.\mathsf{int}$
+ -->
+<IMG
+ WIDTH="60" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img185.png"
+ ALT="$ \mathsf{Basis}.\mathsf{int}$">
+, float constants to <!-- MATH
+ $\mathsf{Basis}.\mathsf{float}$
+ -->
+<IMG
+ WIDTH="72" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img186.png"
+ ALT="$ \mathsf{Basis}.\mathsf{float}$">
+, character constants to <!-- MATH
+ $\mathsf{Basis}.\mathsf{char}$
+ -->
+<IMG
+ WIDTH="71" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img187.png"
+ ALT="$ \mathsf{Basis}.\mathsf{char}$">
+, and string constants to <!-- MATH
+ $\mathsf{Basis}.\mathsf{string}$
+ -->
+<IMG
+ WIDTH="80" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img188.png"
+ ALT="$ \mathsf{Basis}.\mathsf{string}$">
+.
+
+<P>
+We also refer to a function <!-- MATH
+ $\mathcal I$
+ -->
+<IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img189.png"
+ ALT="$ \mathcal I$">
+, such that <!-- MATH
+ $\mathcal I(\tau)$
+ -->
+<IMG
+ WIDTH="35" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img190.png"
+ ALT="$ \mathcal I(\tau)$">
+ ``uses an oracle'' to instantiate all constructor function arguments at the beginning of <IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img191.png"
+ ALT="$ \tau$">
+ that are marked implicit; i.e., replace <!-- MATH
+ $x_1 ::: \kappa_1 \to \ldots \to x_n ::: \kappa_n \to \tau$
+ -->
+<IMG
+ WIDTH="218" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img192.png"
+ ALT="$ x_1 ::: \kappa_1 \to \ldots \to x_n ::: \kappa_n \to \tau$">
+ with <!-- MATH
+ $[x_1 \mapsto c_1]\ldots[x_n \mapsto c_n]\tau$
+ -->
+<IMG
+ WIDTH="167" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img193.png"
+ ALT="$ [x_1 \mapsto c_1]\ldots[x_n \mapsto c_n]\tau$">
+, where the <IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img194.png"
+ ALT="$ c_i$">
+s are inferred and <IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img191.png"
+ ALT="$ \tau$">
+ does not start like <!-- MATH
+ $x ::: \kappa \to \tau'$
+ -->
+<IMG
+ WIDTH="82" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img195.png"
+ ALT="$ x ::: \kappa \to \tau'$">
+.
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash e : \tau : \tau}{
+  \Gamma \vdash e : \tau
+}
+\quad \infer{\Gamma \vdash e : \tau}{
+  \Gamma \vdash e : \tau'
+  & \Gamma \vdash \tau' \equiv \tau
+}
+\quad \infer{\Gamma \vdash \ell : T(\ell)}{}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="345" HEIGHT="68" ALIGN="MIDDLE" BORDER="0"
+ SRC="img196.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash e : \tau : \tau}{
+\Gamma \vdash e : \tau
+}
+...
+... \Gamma \vdash \tau' \equiv \tau
+}
+\quad \infer{\Gamma \vdash \ell : T(\ell)}{}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash x : \mathcal I(\tau)}{
+  x : \tau \in \Gamma
+}
+\quad \infer{\Gamma \vdash M.x : \mathcal I(\tau)}{
+  \Gamma \vdash M : \mathsf{sig} \; \overline{s} \; \mathsf{end}
+  & \mathsf{proj}(M, \overline{s}, \mathsf{val} \; x) = \tau
+}
+\quad \infer{\Gamma \vdash X : \mathcal I(\tau)}{
+  X : \tau \in \Gamma
+}
+\quad \infer{\Gamma \vdash M.X : \mathcal I(\tau)}{
+  \Gamma \vdash M : \mathsf{sig} \; \overline{s} \; \mathsf{end}
+  & \mathsf{proj}(M, \overline{s}, \mathsf{val} \; X) = \tau
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="766" HEIGHT="78" ALIGN="MIDDLE" BORDER="0"
+ SRC="img197.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash x : \mathcal I(\tau)}{
+x : \tau \in \Gamma
+...
+...} \; \mathsf{end}
+&amp; \mathsf{proj}(M, \overline{s}, \mathsf{val} \; X) = \tau
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash e_1 \; e_2 : \tau_2}{
+  \Gamma \vdash e_1 : \tau_1 \to \tau_2
+  & \Gamma \vdash e_2 : \tau_1
+}
+\quad \infer{\Gamma \vdash \lambda x : \tau_1 \Rightarrow e : \tau_1 \to \tau_2}{
+  \Gamma, x : \tau_1 \vdash e : \tau_2
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="388" HEIGHT="74" ALIGN="MIDDLE" BORDER="0"
+ SRC="img198.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash e_1 \; e_2 : \tau_2}{
+\Gamma \vdash e_1 : \...
+...u_1 \Rightarrow e : \tau_1 \to \tau_2}{
+\Gamma, x : \tau_1 \vdash e : \tau_2
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash e [c] : [x \mapsto c]\tau}{
+  \Gamma \vdash e : x :: \kappa \to \tau
+  & \Gamma \vdash c :: \kappa
+}
+\quad \infer{\Gamma \vdash \lambda [x \; ? \; \kappa] \Rightarrow e : x \; ? \; \kappa \to \tau}{
+  \Gamma, x :: \kappa \vdash e : \tau
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="411" HEIGHT="74" ALIGN="MIDDLE" BORDER="0"
+ SRC="img199.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash e [c] : [x \mapsto c]\tau}{
+\Gamma \vdash e...
+...ghtarrow e : x \; ? \; \kappa \to \tau}{
+\Gamma, x :: \kappa \vdash e : \tau
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash e [\kappa] : [X \mapsto \kappa]\tau}{
+  \Gamma \vdash e : X \longrightarrow \tau
+  & \Gamma \vdash \kappa
+}
+\quad \infer{\Gamma \vdash X \Longrightarrow e : X \longrightarrow \tau}{
+  \Gamma, X \vdash e : \tau
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="336" HEIGHT="74" ALIGN="MIDDLE" BORDER="0"
+ SRC="img200.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash e [\kappa] : [X \mapsto \kappa]\tau}{
+\Gamm...
+...ash X \Longrightarrow e : X \longrightarrow \tau}{
+\Gamma, X \vdash e : \tau
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \{\overline{c = e}\} : \{\overline{c : \tau}\}}{
+  \forall i: \Gamma \vdash c_i :: \mathsf{Name}
+  & \Gamma \vdash e_i : \tau_i
+  & \forall i \neq j: \Gamma \vdash c_i \sim c_j
+}
+\quad \infer{\Gamma \vdash e.c : \tau}{
+  \Gamma \vdash e : \$([c = \tau] + \hspace{-.075in} + \;c')
+}
+\quad \infer{\Gamma \vdash e_1 + \hspace{-.075in} + \;e_2 : \$(c_1 + \hspace{-.075in} + \;c_2)}{
+  \Gamma \vdash e_1 : \$c_1
+  & \Gamma \vdash e_2 : \$c_2
+  & \Gamma \vdash c_1 \sim c_2
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="810" HEIGHT="77" ALIGN="MIDDLE" BORDER="0"
+ SRC="img201.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \{\overline{c = e}\} : \{\overline{c : \tau}...
+...\vdash e_1 : \$c_1
+&amp; \Gamma \vdash e_2 : \$c_2
+&amp; \Gamma \vdash c_1 \sim c_2
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash e \; \texttt{- -} \;c : \$c'}{
+  \Gamma \vdash e : \$([c = \tau] + \hspace{-.075in} + \;c')
+}
+\quad \infer{\Gamma \vdash e \; \texttt{- - -} \;c : \$c'}{
+  \Gamma \vdash e : \$(c + \hspace{-.075in} + \;c')
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="289" HEIGHT="78" ALIGN="MIDDLE" BORDER="0"
+ SRC="img202.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash e \; \texttt{--} \;c : \$c'}{
+\Gamma \vdash...
+... \texttt{---} \;c : \$c'}{
+\Gamma \vdash e : \$(c + \hspace{-.075in} + \;c')
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{let} \; \overline{ed} \; \mathsf{in} \; e \; \mathsf{end} : \tau}{
+  \Gamma \vdash \overline{ed} \leadsto \Gamma'
+  & \Gamma' \vdash e : \tau
+}
+\quad \infer{\Gamma \vdash \mathsf{case} \; e \; \mathsf{of} \; \overline{p \Rightarrow e} : \tau}{
+  \forall i: \Gamma \vdash p_i \leadsto \Gamma_i, \tau'
+  & \Gamma_i \vdash e_i : \tau
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="396" HEIGHT="79" ALIGN="MIDDLE" BORDER="0"
+ SRC="img203.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{let} \; \overline{ed} \; \mathsf{in}...
+...l i: \Gamma \vdash p_i \leadsto \Gamma_i, \tau'
+&amp; \Gamma_i \vdash e_i : \tau
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \lambda [c_1 \sim c_2] \Rightarrow e : \lambda [c_1 \sim c_2] \Rightarrow \tau}{
+  \Gamma \vdash c_1 :: \{\kappa\}
+  & \Gamma \vdash c_2 :: \{\kappa'\}
+  & \Gamma, c_1 \sim c_2 \vdash e : \tau
+}
+\quad \infer{\Gamma \vdash e \; ! : \tau}{
+  \Gamma \vdash e : [c_1 \sim c_2] \Rightarrow \tau
+  & \Gamma \vdash c_1 \sim c_2
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="574" HEIGHT="78" ALIGN="MIDDLE" BORDER="0"
+ SRC="img204.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \lambda [c_1 \sim c_2] \Rightarrow e : \lamb...
+...amma \vdash e : [c_1 \sim c_2] \Rightarrow \tau
+&amp; \Gamma \vdash c_1 \sim c_2
+}$">
+</DIV><P>
+</P>
+
+<P>
+<BR><HR>
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

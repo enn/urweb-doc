@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>SQL</TITLE>
+<META NAME="description" CONTENT="SQL">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node41.html">
+<LINK REL="previous" HREF="node35.html">
+<LINK REL="up" HREF="node32.html">
+<LINK REL="next" HREF="node37.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html623"
+  HREF="node37.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html619"
+  HREF="node32.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html613"
+  HREF="node35.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html621"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html624"
+  HREF="node37.html">Table Constraints</A>
+<B> Up:</B> <A NAME="tex2html620"
+  HREF="node32.html">The Ur/Web Standard Library</A>
+<B> Previous:</B> <A NAME="tex2html614"
+  HREF="node35.html">HTTP</A>
+ &nbsp; <B>  <A NAME="tex2html622"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00094000000000000000">
+SQL</A>
+</H2>
+
+<P>
+Everything about SQL database access is restricted to server-side code.
+
+<P>
+The fundamental unit of interest in the embedding of SQL is tables, described by a type family and creatable only via the <!-- MATH
+ $\mathsf{table}$
+ -->
+<IMG
+ WIDTH="36" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img42.png"
+ ALT="$ \mathsf{table}$">
+ declaration form.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{con} \; \mathsf{sql\_table} :: \{\mathsf{Type}\} \to \{\{\mathsf{Unit}\}\} \to \mathsf{Type}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="294" HEIGHT="39" BORDER="0"
+ SRC="img416.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{con} \; \mathsf{sql\_table} :: \{\m...
+...Type}\} \to \{\{\mathsf{Unit}\}\} \to \mathsf{Type}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+The first argument to this constructor gives the names and types of a table's columns, and the second argument gives the set of valid keys.  Keys are the only subsets of the columns that may be referenced as foreign keys.  Each key has a name.
+
+<P>
+We also have the simpler type family of SQL views, which have no keys.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{con} \; \mathsf{sql\_view} :: \{\mathsf{Type}\} \to \mathsf{Type}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="205" HEIGHT="39" BORDER="0"
+ SRC="img417.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{con} \; \mathsf{sql\_view} :: \{\mathsf{Type}\} \to \mathsf{Type}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+A multi-parameter type class is used to allow tables and views to be used interchangeably, with a way of extracting the set of columns from each.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{class} \; \mathsf{fieldsOf} :: \mathsf{Type} \to \{\mathsf{Type}\} \to \mathsf{Type} \\
+  \mathsf{val} \; \mathsf{fieldsOf\_table} : \mathsf{fs} ::: \{\mathsf{Type}\} \to \mathsf{keys} ::: \{\{\mathsf{Unit}\}\} \to \mathsf{fieldsOf} \; (\mathsf{sql\_table} \; \mathsf{fs} \; \mathsf{keys}) \; \mathsf{fs} \\
+  \mathsf{val} \; \mathsf{fieldsOf\_view} : \mathsf{fs} ::: \{\mathsf{Type}\} \to \mathsf{fieldsOf} \; (\mathsf{sql\_view} \; \mathsf{fs}) \; \mathsf{fs}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="557" HEIGHT="64" BORDER="0"
+ SRC="img418.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{class} \; \mathsf{fieldsOf} :: \mat...
+... (\mathsf{sql\_view} \; \mathsf{fs}) \; \mathsf{fs}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html625"
+  HREF="node37.html">Table Constraints</A>
+<LI><A NAME="tex2html626"
+  HREF="node38.html">Queries</A>
+<LI><A NAME="tex2html627"
+  HREF="node39.html">DML</A>
+<LI><A NAME="tex2html628"
+  HREF="node40.html">Sequences</A>
+</UL>
+<!--End of Table of Child-Links-->
+<BR><HR>
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

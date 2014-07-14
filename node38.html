@@ -1,0 +1,1035 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Queries</TITLE>
+<META NAME="description" CONTENT="Queries">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node39.html">
+<LINK REL="previous" HREF="node37.html">
+<LINK REL="up" HREF="node36.html">
+<LINK REL="next" HREF="node39.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html651"
+  HREF="node39.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html647"
+  HREF="node36.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html641"
+  HREF="node37.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html649"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html652"
+  HREF="node39.html">DML</A>
+<B> Up:</B> <A NAME="tex2html648"
+  HREF="node36.html">SQL</A>
+<B> Previous:</B> <A NAME="tex2html642"
+  HREF="node37.html">Table Constraints</A>
+ &nbsp; <B>  <A NAME="tex2html650"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00094200000000000000">
+Queries</A>
+</H3>
+
+<P>
+A final query is constructed via the <!-- MATH
+ $\mathsf{sql\_query}$
+ -->
+<IMG
+ WIDTH="65" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img438.png"
+ ALT="$ \mathsf{sql\_query}$">
+ function.  Constructor arguments respectively specify the unrestricted free table variables (which will only be available in subqueries), the free table variables that may only be mentioned within arguments to aggregate functions, table fields we select (as records mapping tables to the subsets of their fields that we choose), and the (always named) extra expressions that we select.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{con} \; \mathsf{sql\_query} :: \{\{\mathsf{Type}\}\} \to \{\{\mathsf{Type}\}\} \to \{\{\mathsf{Type}\}\} \to \{\mathsf{Type}\} \to \mathsf{Type} \\
+  \mathsf{val} \; \mathsf{sql\_query} : \mathsf{free} ::: \{\{\mathsf{Type}\}\} \\
+  \hspace{.1in} \to \mathsf{afree} ::: \{\{\mathsf{Type}\}\} \\
+  \hspace{.1in} \to \mathsf{tables} ::: \{\{\mathsf{Type}\}\} \\
+  \hspace{.1in} \to \mathsf{selectedFields} ::: \{\{\mathsf{Type}\}\} \\
+  \hspace{.1in} \to \mathsf{selectedExps} ::: \{\mathsf{Type}\} \\
+  \hspace{.1in} \to [\mathsf{free} \sim \mathsf{tables}] \\
+  \hspace{.1in} \Rightarrow \{\mathsf{Rows} : \mathsf{sql\_query1} \; \mathsf{free} \; \mathsf{afree} \; \mathsf{tables} \; \mathsf{selectedFields} \; \mathsf{selectedExps}, \\
+  \hspace{.2in} \mathsf{OrderBy} : \mathsf{sql\_order\_by} \; (\mathsf{free} + \hspace{-.075in} + \;\mathsf{tables}) \; \mathsf{selectedExps}, \\
+  \hspace{.2in} \mathsf{Limit} : \mathsf{sql\_limit}, \\
+  \hspace{.2in} \mathsf{Offset} : \mathsf{sql\_offset}\} \\
+  \hspace{.1in} \to \mathsf{sql\_query} \; \mathsf{free} \; \mathsf{afree} \; \mathsf{selectedFields} \; \mathsf{selectedExps}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="480" HEIGHT="236" BORDER="0"
+ SRC="img439.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{con} \; \mathsf{sql\_query} :: \{\{...
+...\; \mathsf{selectedFields} \; \mathsf{selectedExps}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+Queries are used by folding over their results inside transactions.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{query} : \mathsf{tables} ::: \{\{\mathsf{Type}\}\} \to \mathsf{exps} ::: \{\mathsf{Type}\} \to [\mathsf{tables} \sim \mathsf{exps}] \Rightarrow \mathsf{state} ::: \mathsf{Type} \to \mathsf{sql\_query} \; [] \; [] \; \mathsf{tables} \; \mathsf{exps} \\
+  \hspace{.1in} \to (\$(\mathsf{exps} + \hspace{-.075in} + \;\mathsf{map} \; (\lambda \mathsf{fields} :: \{\mathsf{Type}\} \Rightarrow \$\mathsf{fields}) \; \mathsf{tables}) \\
+  \hspace{.2in} \to \mathsf{state} \to \mathsf{transaction} \; \mathsf{state}) \\
+  \hspace{.1in} \to \mathsf{state} \to \mathsf{transaction} \; \mathsf{state}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="745" HEIGHT="83" BORDER="0"
+ SRC="img440.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{query} : \mathsf{ta...
+...f{state} \to \mathsf{transaction} \; \mathsf{state}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+Most of the complexity of the query encoding is in the type <!-- MATH
+ $\mathsf{sql\_query1}$
+ -->
+<IMG
+ WIDTH="73" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img441.png"
+ ALT="$ \mathsf{sql\_query1}$">
+, which includes simple queries and derived queries based on relational operators.  Constructor arguments respectively specify the unrestricted free table veriables, the aggregate-only free table variables, the tables we select from, the subset of fields that we keep from each table for the result rows, and the extra expressions that we select.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{con} \; \mathsf{sql\_query1} :: \{\{\mathsf{Type}\}\} \to \{\{\mathsf{Type}\}\} \to \{\{\mathsf{Type}\}\} \to \{\{\mathsf{Type}\}\} \to \{\mathsf{Type}\} \to \mathsf{Type} \\
+  \\
+  \mathsf{type} \; \mathsf{sql\_relop} \\
+  \mathsf{val} \; \mathsf{sql\_union} : \mathsf{sql\_relop} \\
+  \mathsf{val} \; \mathsf{sql\_intersect} : \mathsf{sql\_relop} \\
+  \mathsf{val} \; \mathsf{sql\_except} : \mathsf{sql\_relop} \\
+  \mathsf{val} \; \mathsf{sql\_relop} : \mathsf{free} ::: \{\{\mathsf{Type}\}\} \\
+  \hspace{.1in} \to \mathsf{afree} ::: \{\{\mathsf{Type}\}\} \\
+  \hspace{.1in} \to \mathsf{tables1} ::: \{\{\mathsf{Type}\}\} \\
+  \hspace{.1in} \to \mathsf{tables2} ::: \{\{\mathsf{Type}\}\} \\
+  \hspace{.1in} \to \mathsf{selectedFields} ::: \{\{\mathsf{Type}\}\} \\
+  \hspace{.1in} \to \mathsf{selectedExps} ::: \{\mathsf{Type}\} \\
+  \hspace{.1in} \to \mathsf{sql\_relop} \\
+  \hspace{.1in} \to \mathsf{bool} \; (* \; \mathsf{ALL} \; *) \\
+  \hspace{.1in} \to \mathsf{sql\_query1} \; \mathsf{free} \; \mathsf{afree} \; \mathsf{tables1} \; \mathsf{selectedFields} \; \mathsf{selectedExps} \\
+  \hspace{.1in} \to \mathsf{sql\_query1} \; \mathsf{free} \; \mathsf{afree} \; \mathsf{tables2} \; \mathsf{selectedFields} \; \mathsf{selectedExps} \\
+  \hspace{.1in} \to \mathsf{sql\_query1} \; \mathsf{free} \; \mathsf{afree} \; \mathsf{selectedFields} \; \mathsf{selectedFields} \; \mathsf{selectedExps}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="577" HEIGHT="331" BORDER="0"
+ SRC="img442.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{con} \; \mathsf{sql\_query1} :: \{\...
+...\; \mathsf{selectedFields} \; \mathsf{selectedExps}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{sql\_query1} : \mathsf{free} ::: \{\{\mathsf{Type}\}\} \\
+  \hspace{.1in} \to \mathsf{afree} ::: \{\{\mathsf{Type}\}\} \\
+  \hspace{.1in} \to \mathsf{tables} ::: \{\{\mathsf{Type}\}\} \\
+  \hspace{.1in} \to \mathsf{grouped} ::: \{\{\mathsf{Type}\}\} \\
+  \hspace{.1in} \to \mathsf{selectedFields} ::: \{\{\mathsf{Type}\}\} \\
+  \hspace{.1in} \to \mathsf{selectedExps} ::: \{\mathsf{Type}\} \\
+  \hspace{.1in} \to \mathsf{empties} :: \{\mathsf{Unit}\} \\
+  \hspace{.1in} \to [\mathsf{free} \sim \mathsf{tables}] \\
+  \hspace{.1in} \Rightarrow [\mathsf{free} \sim \mathsf{grouped}] \\
+  \hspace{.1in} \Rightarrow [\mathsf{afree} \sim \mathsf{tables}] \\
+  \hspace{.1in} \Rightarrow [\mathsf{empties} \sim \mathsf{selectedFields}] \\
+  \hspace{.1in} \Rightarrow \{\mathsf{Distinct} : \mathsf{bool}, \\
+  \hspace{.2in} \mathsf{From} : \mathsf{sql\_from\_items} \; \mathsf{free} \; \mathsf{tables}, \\
+  \hspace{.2in} \mathsf{Where} : \mathsf{sql\_exp} \; (\mathsf{free} + \hspace{-.075in} + \;\mathsf{tables}) \; \mathsf{afree} \; [] \; \mathsf{bool}, \\
+  \hspace{.2in} \mathsf{GroupBy} : \mathsf{sql\_subset} \; \mathsf{tables} \; \mathsf{grouped}, \\
+  \hspace{.2in} \mathsf{Having} : \mathsf{sql\_exp} \; (\mathsf{free} + \hspace{-.075in} + \;\mathsf{grouped}) \; (\mathsf{afree} + \hspace{-.075in} + \;\mathsf{tables}) \; [] \; \mathsf{bool}, \\
+  \hspace{.2in} \mathsf{SelectFields} : \mathsf{sql\_subset} \; \mathsf{grouped} \; (\mathsf{map} \; (\lambda \_ \Rightarrow []) \; \mathsf{empties} + \hspace{-.075in} + \;\mathsf{selectedFields}), \\
+  \hspace{.2in} \mathsf{SelectExps} : \$(\mathsf{map} \; (\mathsf{sql\_expw} \; (\mathsf{free} + \hspace{-.075in} + \;\mathsf{grouped}) \; (\mathsf{afree} + \hspace{-.075in} + \;\mathsf{tables}) \; []) \; \mathsf{selectedExps}) \} \\
+  \hspace{.1in} \to \mathsf{sql\_query1} \; \mathsf{free} \; \mathsf{afree} \; \mathsf{tables} \; \mathsf{selectedFields} \; \mathsf{selectedExps}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="576" HEIGHT="369" BORDER="0"
+ SRC="img443.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{sql\_query1} : \mat...
+...\; \mathsf{selectedFields} \; \mathsf{selectedExps}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+To encode projection of subsets of fields in <!-- MATH
+ $\mathsf{SELECT}$
+ -->
+<IMG
+ WIDTH="61" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img444.png"
+ ALT="$ \mathsf{SELECT}$">
+ clauses, and to encode <!-- MATH
+ $\mathsf{GROUP} \; \mathsf{BY}$
+ -->
+<IMG
+ WIDTH="84" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img445.png"
+ ALT="$ \mathsf{GROUP} \; \mathsf{BY}$">
+ clauses, we rely on a type family <!-- MATH
+ $\mathsf{sql\_subset}$
+ -->
+<IMG
+ WIDTH="70" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img446.png"
+ ALT="$ \mathsf{sql\_subset}$">
+, capturing what it means for one record of table fields to be a subset of another.  The main constructor <!-- MATH
+ $\mathsf{sql\_subset}$
+ -->
+<IMG
+ WIDTH="70" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img446.png"
+ ALT="$ \mathsf{sql\_subset}$">
+ ``proves subset facts'' by requiring a split of a record into kept and dropped parts.  The extra constructor <!-- MATH
+ $\mathsf{sql\_subset\_all}$
+ -->
+<IMG
+ WIDTH="91" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img447.png"
+ ALT="$ \mathsf{sql\_subset\_all}$">
+ is a convenience for keeping all fields of a record.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{con} \; \mathsf{sql\_subset} :: \{\{\mathsf{Type}\}\} \to \{\{\mathsf{Type}\}\} \to \mathsf{Type} \\
+  \mathsf{val} \; \mathsf{sql\_subset} : \mathsf{keep\_drop} :: \{(\{\mathsf{Type}\} \times \{\mathsf{Type}\})\} \\
+  \hspace{.1in} \to \mathsf{sql\_subset} \\
+  \hspace{.2in} (\mathsf{map} \; (\lambda \mathsf{fields} :: (\{\mathsf{Type}\} \times \{\mathsf{Type}\}) \Rightarrow \mathsf{fields}.1 + \hspace{-.075in} + \;\mathsf{fields}.2)\; \mathsf{keep\_drop}) \\
+  \hspace{.2in} (\mathsf{map} \; (\lambda \mathsf{fields} :: (\{\mathsf{Type}\} \times \{\mathsf{Type}\}) \Rightarrow \mathsf{fields}.1) \; \mathsf{keep\_drop}) \\
+\mathsf{val} \; \mathsf{sql\_subset\_all} : \mathsf{tables} :: \{\{\mathsf{Type}\}\} \to \mathsf{sql\_subset} \; \mathsf{tables} \; \mathsf{tables}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="483" HEIGHT="121" BORDER="0"
+ SRC="img448.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{con} \; \mathsf{sql\_subset} :: \{\...
+...{sql\_subset} \; \mathsf{tables} \; \mathsf{tables}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+SQL expressions are used in several places, including <!-- MATH
+ $\mathsf{SELECT}$
+ -->
+<IMG
+ WIDTH="61" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img444.png"
+ ALT="$ \mathsf{SELECT}$">
+, <!-- MATH
+ $\mathsf{WHERE}$
+ -->
+<IMG
+ WIDTH="59" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img449.png"
+ ALT="$ \mathsf{WHERE}$">
+, <!-- MATH
+ $\mathsf{HAVING}$
+ -->
+<IMG
+ WIDTH="61" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img450.png"
+ ALT="$ \mathsf{HAVING}$">
+, and <!-- MATH
+ $\mathsf{ORDER} \; \mathsf{BY}$
+ -->
+<IMG
+ WIDTH="83" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img451.png"
+ ALT="$ \mathsf{ORDER} \; \mathsf{BY}$">
+ clauses.  They reify a fragment of the standard SQL expression language, while making it possible to inject ``native'' Ur values in some places.  The arguments to the <!-- MATH
+ $\mathsf{sql\_exp}$
+ -->
+<IMG
+ WIDTH="51" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img436.png"
+ ALT="$ \mathsf{sql\_exp}$">
+ type family respectively give the unrestricted-availability table fields, the table fields that may only be used in arguments to aggregate functions, the available selected expressions, and the type of the expression.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{con} \; \mathsf{sql\_exp} :: \{\{\mathsf{Type}\}\} \to \{\{\mathsf{Type}\}\} \to \{\mathsf{Type}\} \to \mathsf{Type} \to \mathsf{Type}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="434" HEIGHT="39" BORDER="0"
+ SRC="img452.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{con} \; \mathsf{sql\_exp} :: \{\{\m...
+...\mathsf{Type}\} \to \mathsf{Type} \to \mathsf{Type}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+Any field in scope may be converted to an expression.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{sql\_field} : \mathsf{otherTabs} ::: \{\{\mathsf{Type}\}\} \to \mathsf{otherFields} ::: \{\mathsf{Type}\} \\
+  \hspace{.1in} \to \mathsf{fieldType} ::: \mathsf{Type} \to \mathsf{agg} ::: \{\{\mathsf{Type}\}\} \\
+  \hspace{.1in} \to \mathsf{exps} ::: \{\mathsf{Type}\} \\
+  \hspace{.1in} \to \mathsf{tab} :: \mathsf{Name} \to \mathsf{field} :: \mathsf{Name} \\
+  \hspace{.1in} \to \mathsf{sql\_exp} \; ([\mathsf{tab} = [\mathsf{field} = \mathsf{fieldType}] + \hspace{-.075in} + \;\mathsf{otherFields}] + \hspace{-.075in} + \;\mathsf{otherTabs}) \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{fieldType}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="585" HEIGHT="102" BORDER="0"
+ SRC="img453.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{sql\_field} : \math...
+...\mathsf{agg} \; \mathsf{exps} \; \mathsf{fieldType}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+There is an analogous function for referencing named expressions.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{sql\_exp} : \mathsf{tabs} ::: \{\{\mathsf{Type}\}\} \to \mathsf{agg} ::: \{\{\mathsf{Type}\}\} \to \mathsf{t} ::: \mathsf{Type} \to \mathsf{rest} ::: \{\mathsf{Type}\} \to \mathsf{nm} :: \mathsf{Name} \\
+  \hspace{.1in} \to \mathsf{sql\_exp} \; \mathsf{tabs} \; \mathsf{agg} \; ([\mathsf{nm} = \mathsf{t}] + \hspace{-.075in} + \;\mathsf{rest}) \; \mathsf{t}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="640" HEIGHT="45" BORDER="0"
+ SRC="img454.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{sql\_exp} : \mathsf...
+...+ \hspace{-.075in} + \;\mathsf{rest}) \; \mathsf{t}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+Ur values of appropriate types may be injected into SQL expressions.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{class} \; \mathsf{sql\_injectable\_prim} \\
+  \mathsf{val} \; \mathsf{sql\_bool} : \mathsf{sql\_injectable\_prim} \; \mathsf{bool} \\
+  \mathsf{val} \; \mathsf{sql\_int} : \mathsf{sql\_injectable\_prim} \; \mathsf{int} \\
+  \mathsf{val} \; \mathsf{sql\_float} : \mathsf{sql\_injectable\_prim} \; \mathsf{float} \\
+  \mathsf{val} \; \mathsf{sql\_string} : \mathsf{sql\_injectable\_prim} \; \mathsf{string} \\
+  \mathsf{val} \; \mathsf{sql\_time} : \mathsf{sql\_injectable\_prim} \; \mathsf{time} \\
+  \mathsf{val} \; \mathsf{sql\_blob} : \mathsf{sql\_injectable\_prim} \; \mathsf{blob} \\
+  \mathsf{val} \; \mathsf{sql\_channel} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{sql\_injectable\_prim} \; (\mathsf{channel} \; \mathsf{t}) \\
+  \mathsf{val} \; \mathsf{sql\_client} : \mathsf{sql\_injectable\_prim} \; \mathsf{client} \\
+  \\
+  \mathsf{class} \; \mathsf{sql\_injectable} \\
+  \mathsf{val} \; \mathsf{sql\_prim} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{sql\_injectable\_prim} \; \mathsf{t} \to \mathsf{sql\_injectable} \; \mathsf{t} \\
+  \mathsf{val} \; \mathsf{sql\_option\_prim} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{sql\_injectable\_prim} \; \mathsf{t} \to \mathsf{sql\_injectable} \; (\mathsf{option} \; \mathsf{t}) \\
+  \\
+  \mathsf{val} \; \mathsf{sql\_inject} : \mathsf{tables} ::: \{\{\mathsf{Type}\}\} \to \mathsf{agg} ::: \{\{\mathsf{Type}\}\} \to \mathsf{exps} ::: \{\mathsf{Type}\} \to \mathsf{t} ::: \mathsf{Type} \to \mathsf{sql\_injectable} \; \mathsf{t} \\
+  \hspace{.1in} \to \mathsf{t} \to \mathsf{sql\_exp} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{t}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="689" HEIGHT="312" BORDER="0"
+ SRC="img455.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{class} \; \mathsf{sql\_injectable\_...
+...les} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{t}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+Additionally, most function-free types may be injected safely, via the <!-- MATH
+ $\mathsf{serialized}$
+ -->
+<IMG
+ WIDTH="64" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img456.png"
+ ALT="$ \mathsf{serialized}$">
+ type family.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{con} \; \mathsf{serialized} :: \mathsf{Type} \to \mathsf{Type} \\
+  \mathsf{val} \; \mathsf{serialize} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{t} \to \mathsf{serialized} \; \mathsf{t} \\
+  \mathsf{val} \; \mathsf{deserialize} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{serialized} \; \mathsf{t} \to \mathsf{t} \\
+  \mathsf{val} \; \mathsf{sql\_serialized} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{sql\_injectable\_prim} \; (\mathsf{serialized} \; \mathsf{t})
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="415" HEIGHT="92" BORDER="0"
+ SRC="img457.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{con} \; \mathsf{serialized} :: \mat...
+...table\_prim} \; (\mathsf{serialized} \; \mathsf{t})
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+We have the SQL nullness test, which is necessary because of the strange SQL semantics of equality in the presence of null values.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{sql\_is\_null} : \mathsf{tables} ::: \{\{\mathsf{Type}\}\} \to \mathsf{agg} ::: \{\{\mathsf{Type}\}\} \to \mathsf{exps} ::: \{\mathsf{Type}\} \to \mathsf{t} ::: \mathsf{Type} \\
+  \hspace{.1in} \to \mathsf{sql\_exp} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \; (\mathsf{option} \; \mathsf{t}) \to \mathsf{sql\_exp} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{bool}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="571" HEIGHT="45" BORDER="0"
+ SRC="img458.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{sql\_is\_null} : \m...
+...} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{bool}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+As another way of dealing with null values, there is also a restricted form of the standard <TT>COALESCE</TT> function.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{sql\_coalesce} : \mathsf{tables} ::: \{\{\mathsf{Type}\}\} \to \mathsf{agg} ::: \{\{\mathsf{Type}\}\} \to \mathsf{exps} ::: \{\mathsf{Type}\} \\
+  \hspace{.1in} \to \mathsf{t} ::: \mathsf{Type} \\
+  \hspace{.1in} \to \mathsf{sql\_exp} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \; (\mathsf{option} \; \mathsf{t}) \\
+  \hspace{.1in} \to \mathsf{sql\_exp} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{t} \\
+  \hspace{.1in} \to \mathsf{sql\_exp} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{t}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="498" HEIGHT="102" BORDER="0"
+ SRC="img459.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{sql\_coalesce} : \m...
+...les} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{t}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+We have generic nullary, unary, and binary operators.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{con} \; \mathsf{sql\_nfunc} :: \mathsf{Type} \to \mathsf{Type} \\
+  \mathsf{val} \; \mathsf{sql\_current\_timestamp} : \mathsf{sql\_nfunc} \; \mathsf{time} \\
+  \mathsf{val} \; \mathsf{sql\_nfunc} : \mathsf{tables} ::: \{\{\mathsf{Type}\}\} \to \mathsf{agg} ::: \{\{\mathsf{Type}\}\} \to \mathsf{exps} ::: \{\mathsf{Type}\} \to \mathsf{t} ::: \mathsf{Type} \\
+  \hspace{.1in} \to \mathsf{sql\_nfunc} \; \mathsf{t} \to \mathsf{sql\_exp} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{t} \\\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="567" HEIGHT="83" BORDER="0"
+ SRC="img460.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{con} \; \mathsf{sql\_nfunc} :: \mat...
+...} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{t} \\ \end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{con} \; \mathsf{sql\_unary} :: \mathsf{Type} \to \mathsf{Type} \to \mathsf{Type} \\
+  \mathsf{val} \; \mathsf{sql\_not} : \mathsf{sql\_unary} \; \mathsf{bool} \; \mathsf{bool} \\
+  \mathsf{val} \; \mathsf{sql\_unary} : \mathsf{tables} ::: \{\{\mathsf{Type}\}\} \to \mathsf{agg} ::: \{\{\mathsf{Type}\}\} \to \mathsf{exps} ::: \{\mathsf{Type}\} \to \mathsf{arg} ::: \mathsf{Type} \to \mathsf{res} ::: \mathsf{Type} \\
+  \hspace{.1in} \to \mathsf{sql\_unary} \; \mathsf{arg} \; \mathsf{res} \to \mathsf{sql\_exp} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{arg} \to \mathsf{sql\_exp} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{res} \\
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="680" HEIGHT="83" BORDER="0"
+ SRC="img461.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{con} \; \mathsf{sql\_unary} :: \mat...
+...; \mathsf{agg} \; \mathsf{exps} \; \mathsf{res} \\
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{con} \; \mathsf{sql\_binary} :: \mathsf{Type} \to \mathsf{Type} \to \mathsf{Type} \to \mathsf{Type} \\
+  \mathsf{val} \; \mathsf{sql\_and} : \mathsf{sql\_binary} \; \mathsf{bool} \; \mathsf{bool} \; \mathsf{bool} \\
+  \mathsf{val} \; \mathsf{sql\_or} : \mathsf{sql\_binary} \; \mathsf{bool} \; \mathsf{bool} \; \mathsf{bool} \\
+  \mathsf{val} \; \mathsf{sql\_binary} : \mathsf{tables} ::: \{\{\mathsf{Type}\}\} \to \mathsf{agg} ::: \{\{\mathsf{Type}\}\} \to \mathsf{exps} ::: \{\mathsf{Type}\} \to \mathsf{arg_1} ::: \mathsf{Type} \to \mathsf{arg_2} ::: \mathsf{Type} \to \mathsf{res} ::: \mathsf{Type} \\
+  \hspace{.1in} \to \mathsf{sql\_binary} \; \mathsf{arg_1} \; \mathsf{arg_2} \; \mathsf{res} \to \mathsf{sql\_exp} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{arg_1} \to \mathsf{sql\_exp} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{arg_2} \to \mathsf{sql\_exp} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{res}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="799" HEIGHT="102" BORDER="0"
+ SRC="img462.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{con} \; \mathsf{sql\_binary} :: \ma...
+...s} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{res}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{class} \; \mathsf{sql\_arith} \\
+  \mathsf{val} \; \mathsf{sql\_int\_arith} : \mathsf{sql\_arith} \; \mathsf{int} \\
+  \mathsf{val} \; \mathsf{sql\_float\_arith} : \mathsf{sql\_arith} \; \mathsf{float} \\
+  \mathsf{val} \; \mathsf{sql\_neg} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{sql\_arith} \; \mathsf{t} \to \mathsf{sql\_unary} \; \mathsf{t} \; \mathsf{t} \\
+  \mathsf{val} \; \mathsf{sql\_plus} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{sql\_arith} \; \mathsf{t} \to \mathsf{sql\_binary} \; \mathsf{t} \; \mathsf{t} \; \mathsf{t} \\
+  \mathsf{val} \; \mathsf{sql\_minus} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{sql\_arith} \; \mathsf{t} \to \mathsf{sql\_binary} \; \mathsf{t} \; \mathsf{t} \; \mathsf{t} \\
+  \mathsf{val} \; \mathsf{sql\_times} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{sql\_arith} \; \mathsf{t} \to \mathsf{sql\_binary} \; \mathsf{t} \; \mathsf{t} \; \mathsf{t} \\
+  \mathsf{val} \; \mathsf{sql\_div} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{sql\_arith} \; \mathsf{t} \to \mathsf{sql\_binary} \; \mathsf{t} \; \mathsf{t} \; \mathsf{t} \\
+  \mathsf{val} \; \mathsf{sql\_mod} : \mathsf{sql\_binary} \; \mathsf{int} \; \mathsf{int} \; \mathsf{int}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="370" HEIGHT="188" BORDER="0"
+ SRC="img463.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{class} \; \mathsf{sql\_arith} \\
+...
+...ry} \; \mathsf{int} \; \mathsf{int} \; \mathsf{int}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+Finally, we have aggregate functions.  The <!-- MATH
+ $\mathsf{COUNT(\ast)}$
+ -->
+<IMG
+ WIDTH="79" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img464.png"
+ ALT="$ \mathsf{COUNT(\ast)}$">
+ syntax is handled specially, since it takes no real argument.  The other aggregate functions are placed into a general type family, using constructor classes to restrict usage to properly typed arguments.  The key aspect of the <!-- MATH
+ $\mathsf{sql\_aggregate}$
+ -->
+<IMG
+ WIDTH="93" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img465.png"
+ ALT="$ \mathsf{sql\_aggregate}$">
+ function's type is the shift of aggregate-function-only fields into unrestricted fields.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{sql\_count} : \mathsf{tables} ::: \{\{\mathsf{Type}\}\} \to \mathsf{agg} ::: \{\{\mathsf{Type}\}\} \to \mathsf{exps} ::: \{\mathsf{Type}\} \to \mathsf{sql\_exp} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{int}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="681" HEIGHT="30" BORDER="0"
+ SRC="img466.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{sql\_count} : \math...
+...s} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{int}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{con} \; \mathsf{sql\_aggregate} :: \mathsf{Type} \to \mathsf{Type} \to \mathsf{Type} \\
+  \mathsf{val} \; \mathsf{sql\_aggregate} : \mathsf{tables} ::: \{\{\mathsf{Type}\}\} \to \mathsf{agg} ::: \{\{\mathsf{Type}\}\} \to \mathsf{exps} ::: \{\mathsf{Type}\} \to \mathsf{dom} ::: \mathsf{Type} \to \mathsf{ran} ::: \mathsf{Type} \\
+  \hspace{.1in} \to \mathsf{sql\_aggregate} \; \mathsf{dom} \; \mathsf{ran} \to \mathsf{sql\_exp} \; \mathsf{agg} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{dom} \to \mathsf{sql\_exp} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{ran}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="719" HEIGHT="64" BORDER="0"
+ SRC="img467.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{con} \; \mathsf{sql\_aggregate} :: ...
+...s} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{ran}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{sql\_count\_col} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{sql\_aggregate} \; (\mathsf{option} \; \mathsf{t}) \; \mathsf{int}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="389" HEIGHT="39" BORDER="0"
+ SRC="img468.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{sql\_count\_col} : ...
+... \; (\mathsf{option} \; \mathsf{t}) \; \mathsf{int}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+Most aggregate functions are typed using a two-parameter constructor class <!-- MATH
+ $\mathsf{nullify}$
+ -->
+<IMG
+ WIDTH="44" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img469.png"
+ ALT="$ \mathsf{nullify}$">
+ which maps <!-- MATH
+ $\mathsf{option}$
+ -->
+<IMG
+ WIDTH="46" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img421.png"
+ ALT="$ \mathsf{option}$">
+ types to themselves and adds <!-- MATH
+ $\mathsf{option}$
+ -->
+<IMG
+ WIDTH="46" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img421.png"
+ ALT="$ \mathsf{option}$">
+ to others.  That is, this constructor class represents the process of making an SQL type ``nullable.''
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{class} \; \mathsf{sql\_summable} \\
+  \mathsf{val} \; \mathsf{sql\_summable\_int} : \mathsf{sql\_summable} \; \mathsf{int} \\
+  \mathsf{val} \; \mathsf{sql\_summable\_float} : \mathsf{sql\_summable} \; \mathsf{float} \\
+  \mathsf{val} \; \mathsf{sql\_avg} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{sql\_summable} \; \mathsf{t} \to \mathsf{sql\_aggregate} \; \mathsf{t} \; (\mathsf{option} \; \mathsf{float}) \\
+  \mathsf{val} \; \mathsf{sql\_sum} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{nt} ::: \mathsf{Type} \to \mathsf{sql\_summable} \; \mathsf{t} \to \mathsf{nullify} \; \mathsf{t} \; \mathsf{nt} \to \mathsf{sql\_aggregate} \; \mathsf{t} \; \mathsf{nt}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="604" HEIGHT="102" BORDER="0"
+ SRC="img470.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{class} \; \mathsf{sql\_summable} \\...
+...mathsf{sql\_aggregate} \; \mathsf{t} \; \mathsf{nt}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{class} \; \mathsf{sql\_maxable} \\
+  \mathsf{val} \; \mathsf{sql\_maxable\_int} : \mathsf{sql\_maxable} \; \mathsf{int} \\
+  \mathsf{val} \; \mathsf{sql\_maxable\_float} : \mathsf{sql\_maxable} \; \mathsf{float} \\
+  \mathsf{val} \; \mathsf{sql\_maxable\_string} : \mathsf{sql\_maxable} \; \mathsf{string} \\
+  \mathsf{val} \; \mathsf{sql\_maxable\_time} : \mathsf{sql\_maxable} \; \mathsf{time} \\
+  \mathsf{val} \; \mathsf{sql\_max} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{nt} ::: \mathsf{Type} \to \mathsf{sql\_maxable} \; \mathsf{t} \to \mathsf{nullify} \; \mathsf{t} \; \mathsf{nt} \to \mathsf{sql\_aggregate} \; \mathsf{t} \; \mathsf{nt} \\
+  \mathsf{val} \; \mathsf{sql\_min} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{nt} ::: \mathsf{Type} \to \mathsf{sql\_maxable} \; \mathsf{t} \to \mathsf{nullify} \; \mathsf{t} \; \mathsf{nt} \to \mathsf{sql\_aggregate} \; \mathsf{t} \; \mathsf{nt}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="593" HEIGHT="140" BORDER="0"
+ SRC="img471.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{class} \; \mathsf{sql\_maxable} \\ ...
+...mathsf{sql\_aggregate} \; \mathsf{t} \; \mathsf{nt}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+Any SQL query that returns single columns may be turned into a subquery expression.
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+\mathsf{val} \; \mathsf{sql\_subquery} : \mathsf{tables} ::: \{\{\mathsf{Type}\}\} \to \mathsf{agg} ::: \{\{\mathsf{Type}\}\} \to \mathsf{exps} ::: \{\mathsf{Type}\} \to \mathsf{nm} ::: \mathsf{Name} \to \mathsf{t} ::: \mathsf{Type} \to \mathsf{nt} ::: \mathsf{Type} \\
+\hspace{.1in} \to \mathsf{nullify} \; \mathsf{t} \; \mathsf{nt} \to \mathsf{sql\_query} \; \mathsf{tables} \; \mathsf{agg} \; [\mathsf{nm} = \mathsf{t}] \to \mathsf{sql\_exp} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{nt}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="790" HEIGHT="45" BORDER="0"
+ SRC="img472.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{sql\_subquery} : \ma...
+...es} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{nt}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+There is also an <TT>IF..THEN..ELSE..</TT> construct that is compiled into standard SQL <TT>CASE</TT> expressions.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+\mathsf{val} \; \mathsf{sql\_if\_then\_else} : \mathsf{tables} ::: \{\{\mathsf{Type}\}\} \to \mathsf{agg} ::: \{\{\mathsf{Type}\}\} \to \mathsf{exps} ::: \{\mathsf{Type}\} \to \mathsf{t} ::: \mathsf{Type} \\
+\hspace{.1in} \to \mathsf{sql\_exp} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{bool} \\
+\hspace{.1in} \to \mathsf{sql\_exp} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{t} \\
+\hspace{.1in} \to \mathsf{sql\_exp} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{t} \\
+\hspace{.1in} \to \mathsf{sql\_exp} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{t}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="606" HEIGHT="102" BORDER="0"
+ SRC="img473.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{sql\_if\_then\_else}...
+...les} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{t}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+<TT>FROM</TT> clauses are specified using a type family, whose arguments are the free table variables and the table variables bound by this clause.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{con} \; \mathsf{sql\_from\_items} :: \{\{\mathsf{Type}\}\} \to \{\{\mathsf{Type}\}\} \to \mathsf{Type} \\
+  \mathsf{val} \; \mathsf{sql\_from\_table} : \mathsf{free} ::: \{\{\mathsf{Type}\}\} \\
+  \hspace{.1in} \to \mathsf{t} ::: \mathsf{Type} \to \mathsf{fs} ::: \{\mathsf{Type}\} \to \mathsf{fieldsOf} \; \mathsf{t} \; \mathsf{fs} \to \mathsf{name} :: \mathsf{Name} \to \mathsf{t} \to \mathsf{sql\_from\_items} \; \mathsf{free} \; [\mathsf{name} = \mathsf{fs}] \\
+  \mathsf{val} \; \mathsf{sql\_from\_query} : \mathsf{free} ::: \{\{\mathsf{Type}\}\} \to \mathsf{fs} ::: \{\mathsf{Type}\} \to \mathsf{name} :: \mathsf{Name} \to \mathsf{sql\_query} \; \mathsf{free} \; [] \; \mathsf{fs} \to \mathsf{sql\_from\_items} \; \mathsf{free} \; [\mathsf{name} = \mathsf{fs}] \\
+  \mathsf{val} \; \mathsf{sql\_from\_comma} : \mathsf{free} ::: \mathsf{tabs1} ::: \{\{\mathsf{Type}\}\} \to \mathsf{tabs2} ::: \{\{\mathsf{Type}\}\} \to [\mathsf{tabs1} \sim \mathsf{tabs2}] \\
+  \hspace{.1in} \Rightarrow \mathsf{sql\_from\_items} \; \mathsf{free} \; \mathsf{tabs1} \to \mathsf{sql\_from\_items} \; \mathsf{free} \; \mathsf{tabs2} \\
+  \hspace{.1in} \to \mathsf{sql\_from\_items} \; \mathsf{free} \; (\mathsf{tabs1} + \hspace{-.075in} + \;\mathsf{tabs2}) \\
+  \mathsf{val} \; \mathsf{sql\_inner\_join} : \mathsf{free} ::: \{\{\mathsf{Type}\}\} \to \mathsf{tabs1} ::: \{\{\mathsf{Type}\}\} \to \mathsf{tabs2} ::: \{\{\mathsf{Type}\}\} \\
+  \hspace{.1in} \to [\mathsf{free} \sim \mathsf{tabs1}] \Rightarrow [\mathsf{free} \sim \mathsf{tabs2}] \Rightarrow [\mathsf{tabs1} \sim \mathsf{tabs2}] \\
+  \hspace{.1in} \Rightarrow \mathsf{sql\_from\_items} \; \mathsf{free} \; \mathsf{tabs1} \to \mathsf{sql\_from\_items} \; \mathsf{free} \; \mathsf{tabs2} \\
+  \hspace{.1in} \to \mathsf{sql\_exp} \; (\mathsf{free} + \hspace{-.075in} + \;\mathsf{tabs1} + \hspace{-.075in} + \;\mathsf{tabs2}) \; [] \; [] \; \mathsf{bool} \\
+  \hspace{.1in} \to \mathsf{sql\_from\_items} \; \mathsf{free} \; (\mathsf{tabs1} + \hspace{-.075in} + \;\mathsf{tabs2})
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="842" HEIGHT="236" BORDER="0"
+ SRC="img474.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{con} \; \mathsf{sql\_from\_items} :...
+...athsf{tabs1} + \hspace{-.075in} + \;\mathsf{tabs2})
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+Besides these basic cases, outer joins are supported, which requires a type class for turning non-<!-- MATH
+ $\mathsf{option}$
+ -->
+<IMG
+ WIDTH="46" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img421.png"
+ ALT="$ \mathsf{option}$">
+ columns into <!-- MATH
+ $\mathsf{option}$
+ -->
+<IMG
+ WIDTH="46" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img421.png"
+ ALT="$ \mathsf{option}$">
+ columns.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{class} \; \mathsf{nullify} :: \mathsf{Type} \to \mathsf{Type} \to \mathsf{Type} \\
+  \mathsf{val} \; \mathsf{nullify\_option} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{nullify} \; (\mathsf{option} \; \mathsf{t}) \; (\mathsf{option} \; \mathsf{t}) \\
+  \mathsf{val} \; \mathsf{nullify\_prim} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{sql\_injectable\_prim} \; \mathsf{t} \to \mathsf{nullify} \; \mathsf{t} \; (\mathsf{option} \; \mathsf{t})
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="475" HEIGHT="73" BORDER="0"
+ SRC="img475.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{class} \; \mathsf{nullify} :: \math...
+...y} \; \mathsf{t} \; (\mathsf{option} \; \mathsf{t})
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+Left, right, and full outer joins can now be expressed using functions that accept records of <!-- MATH
+ $\mathsf{nullify}$
+ -->
+<IMG
+ WIDTH="44" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img469.png"
+ ALT="$ \mathsf{nullify}$">
+ instances.  Here, we give only the type for a left join as an example.
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+ \mathsf{val} \; \mathsf{sql\_left\_join} : \mathsf{free} ::: \{\{\mathsf{Type}\}\} \to \mathsf{tabs1} ::: \{\{\mathsf{Type}\}\} \to \mathsf{tabs2} ::: \{\{(\mathsf{Type} \times \mathsf{Type})\}\} \\
+  \hspace{.1in} \to [\mathsf{free} \sim \mathsf{tabs1}] \Rightarrow [\mathsf{free} \sim \mathsf{tabs2}] \Rightarrow [\mathsf{tabs1} \sim \mathsf{tabs2}] \\
+ \hspace{.1in} \Rightarrow \$(\mathsf{map} \; (\lambda \mathsf{r} \Rightarrow \$(\mathsf{map} \; (\lambda \mathsf{p} :: (\mathsf{Type} \times \mathsf{Type}) \Rightarrow \mathsf{nullify} \; \mathsf{p}.1 \; \mathsf{p}.2) \; \mathsf{r})) \; \mathsf{tabs2}) \\
+ \hspace{.1in} \to \mathsf{sql\_from\_items} \; \mathsf{free} \; \mathsf{tabs1} \to \mathsf{sql\_from\_items} \; \mathsf{free} \; (\mathsf{map} \; (\mathsf{map} \; (\lambda \mathsf{p} :: (\mathsf{Type} \times \mathsf{Type}) \Rightarrow \mathsf{p}.1)) \; \mathsf{tabs2}) \\
+ \hspace{.1in} \to \mathsf{sql\_exp} \; (\mathsf{free} + \hspace{-.075in} + \;\mathsf{tabs1} + \hspace{-.075in} + \;\mathsf{map} \; (\mathsf{map} \; (\lambda \mathsf{p} :: (\mathsf{Type} \times \mathsf{Type}) \Rightarrow \mathsf{p}.1)) \; \mathsf{tabs2}) \; [] \; [] \; \mathsf{bool} \\
+ \hspace{.1in} \to \mathsf{sql\_from\_items} \; \mathsf{free} \; (\mathsf{tabs1} + \hspace{-.075in} + \;\mathsf{map} \; (\mathsf{map} \; (\lambda \mathsf{p} :: (\mathsf{Type} \times \mathsf{Type}) \Rightarrow \mathsf{p}.2)) \; \mathsf{tabs2})
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="673" HEIGHT="121" BORDER="0"
+ SRC="img476.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{sql\_left\_join} : ...
+...ype}) \Rightarrow \mathsf{p}.2)) \; \mathsf{tabs2})
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+We wrap up the definition of query syntax with the types used in representing <!-- MATH
+ $\mathsf{ORDER} \; \mathsf{BY}$
+ -->
+<IMG
+ WIDTH="83" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img451.png"
+ ALT="$ \mathsf{ORDER} \; \mathsf{BY}$">
+, <!-- MATH
+ $\mathsf{LIMIT}$
+ -->
+<IMG
+ WIDTH="46" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img477.png"
+ ALT="$ \mathsf{LIMIT}$">
+, and <!-- MATH
+ $\mathsf{OFFSET}$
+ -->
+<IMG
+ WIDTH="63" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img478.png"
+ ALT="$ \mathsf{OFFSET}$">
+ clauses.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{type} \; \mathsf{sql\_direction} \\
+  \mathsf{val} \; \mathsf{sql\_asc} : \mathsf{sql\_direction} \\
+  \mathsf{val} \; \mathsf{sql\_desc} : \mathsf{sql\_direction} \\
+  \\
+  \mathsf{con} \; \mathsf{sql\_order\_by} :: \{\{\mathsf{Type}\}\} \to \{\mathsf{Type}\} \to \mathsf{Type} \\
+  \mathsf{val} \; \mathsf{sql\_order\_by\_Nil} : \mathsf{tables} ::: \{\{\mathsf{Type}\}\} \to \mathsf{exps} :: \{\mathsf{Type}\} \to \mathsf{sql\_order\_by} \; \mathsf{tables} \; \mathsf{exps} \\
+  \mathsf{val} \; \mathsf{sql\_order\_by\_Cons} : \mathsf{tf} ::: (\{\{\mathsf{Type}\}\} \to \{\{\mathsf{Type}\}\} \to \{\mathsf{Type}\} \to \mathsf{Type} \to \mathsf{Type}) \\
+  \hspace{.1in} \to \mathsf{tables} ::: \{\{\mathsf{Type}\}\} \to \mathsf{exps} ::: \{\mathsf{Type}\} \to \mathsf{t} ::: \mathsf{Type} \\
+  \hspace{.1in} \to \mathsf{sql\_window} \; \mathsf{tf} \to \mathsf{tf} \; \mathsf{tables} \; [] \; \mathsf{exps} \; \mathsf{t} \to \mathsf{sql\_direction} \to \mathsf{sql\_order\_by} \; \mathsf{tables} \; \mathsf{exps} \to \mathsf{sql\_order\_by} \; \mathsf{tables} \; \mathsf{exps} \\
+  \mathsf{val} \; \mathsf{sql\_order\_by\_random} : \mathsf{tables} ::: \{\{\mathsf{Type}\}\} \to \mathsf{exps} ::: \{\mathsf{Type}\} \to \mathsf{sql\_order\_by} \; \mathsf{tables} \; \mathsf{exps} \\
+  \\
+  \mathsf{type} \; \mathsf{sql\_limit} \\
+  \mathsf{val} \; \mathsf{sql\_no\_limit} : \mathsf{sql\_limit} \\
+  \mathsf{val} \; \mathsf{sql\_limit} : \mathsf{int} \to \mathsf{sql\_limit} \\
+  \\
+  \mathsf{type} \; \mathsf{sql\_offset} \\
+  \mathsf{val} \; \mathsf{sql\_no\_offset} : \mathsf{sql\_offset} \\
+  \mathsf{val} \; \mathsf{sql\_offset} : \mathsf{int} \to \mathsf{sql\_offset}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="727" HEIGHT="350" BORDER="0"
+ SRC="img479.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{type} \; \mathsf{sql\_direction} \\...
+...ql\_offset} : \mathsf{int} \to \mathsf{sql\_offset}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+When using Postgres, <TT>SELECT</TT> and <TT>ORDER BY</TT> are allowed to contain top-level uses of <I>window functions</I>.  A separate type family <TT>sql_expw</TT> is provided for such cases, with some type class convenience for overloading between normal and window expressions.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{con} \; \mathsf{sql\_expw} :: \{\{\mathsf{Type}\}\} \to \{\{\mathsf{Type}\}\} \to \{\mathsf{Type}\} \to \mathsf{Type} \to \mathsf{Type} \\
+  \\
+  \mathsf{class} \; \mathsf{sql\_window} :: (\{\{\mathsf{Type}\}\} \to \{\{\mathsf{Type}\}\} \to \{\mathsf{Type}\} \to \mathsf{Type} \to \mathsf{Type}) \to \mathsf{Type} \\
+  \mathsf{val} \; \mathsf{sql\_window\_normal} : \mathsf{sql\_window} \; \mathsf{sql\_exp} \\
+  \mathsf{val} \; \mathsf{sql\_window\_fancy} : \mathsf{sql\_window} \; \mathsf{sql\_expw} \\
+  \mathsf{val} \; \mathsf{sql\_window} : \mathsf{tf} ::: (\{\{\mathsf{Type}\}\} \to \{\{\mathsf{Type}\}\} \to \{\mathsf{Type}\} \to \mathsf{Type} \to \mathsf{Type}) \\
+  \hspace{.1in} \to \mathsf{tables} ::: \{\{\mathsf{Type}\}\} \to \mathsf{agg} ::: \{\{\mathsf{Type}\}\} \to \mathsf{exps} ::: \{\mathsf{Type}\} \to \mathsf{t} ::: \mathsf{Type} \\
+  \hspace{.1in} \to \mathsf{sql\_window} \; \mathsf{tf} \\
+  \hspace{.1in} \to \mathsf{tf} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{t} \\
+  \hspace{.1in} \to \mathsf{sql\_expw} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{t} \\
+  \\
+  \mathsf{con} \; \mathsf{sql\_partition} :: \{\{\mathsf{Type}\}\} \to \{\{\mathsf{Type}\}\} \to \{\mathsf{Type}\} \to \mathsf{Type} \\
+  \mathsf{val} \; \mathsf{sql\_no\_partition} : \mathsf{tables} ::: \{\{\mathsf{Type}\}\} \to \mathsf{agg} ::: \{\{\mathsf{Type}\}\} \to \mathsf{exps} ::: \{\mathsf{Type}\} \\
+  \hspace{.1in} \to \mathsf{sql\_partition} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \\
+  \mathsf{val} \; \mathsf{sql\_partition} : \mathsf{tables} ::: \{\{\mathsf{Type}\}\} \to \mathsf{agg} ::: \{\{\mathsf{Type}\}\} \to \mathsf{exps} ::: \{\mathsf{Type}\} \to \mathsf{t} ::: \mathsf{Type} \\
+  \hspace{.1in} \to \mathsf{sql\_exp} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{t} \\
+  \hspace{.1in} \to \mathsf{sql\_partition} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \\
+  \\
+  \mathsf{con} \; \mathsf{sql\_window\_function} :: \{\{\mathsf{Type}\}\} \to \{\{\mathsf{Type}\}\} \to \{\mathsf{Type}\} \to \mathsf{Type} \to \mathsf{Type} \\
+  \mathsf{val} \; \mathsf{sql\_window\_function} : \mathsf{tables} ::: \{\{\mathsf{Type}\}\} \to \mathsf{agg} ::: \{\{\mathsf{Type}\}\} \to \mathsf{exps} ::: \{\mathsf{Type}\} \\
+  \hspace{.1in} \to \mathsf{t} ::: \mathsf{Type} \\
+  \hspace{.1in} \to \mathsf{sql\_window\_function} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{t} \\
+  \hspace{.1in} \to \mathsf{sql\_partition} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \\
+  \hspace{.1in} \to \mathsf{sql\_order\_by} \; \mathsf{tables} \; \mathsf{exps} \\
+  \hspace{.1in} \to \mathsf{sql\_expw} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{t} \\
+  \\
+  \mathsf{val} \; \mathsf{sql\_window\_aggregate} : \mathsf{tables} ::: \{\{\mathsf{Type}\}\} \to \mathsf{agg} ::: \{\{\mathsf{Type}\}\} \to \mathsf{exps} ::: \{\mathsf{Type}\} \\
+  \hspace{.1in} \to \mathsf{t} ::: \mathsf{Type} \to \mathsf{nt} ::: \mathsf{Type} \\
+  \hspace{.1in} \to \mathsf{sql\_aggregate} \; \mathsf{t} \; \mathsf{nt} \\
+  \hspace{.1in} \to \mathsf{sql\_exp} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{t} \\
+  \hspace{.1in} \to \mathsf{sql\_window\_function} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{nt} \\
+  \mathsf{val} \; \mathsf{sql\_window\_count} : \mathsf{tables} ::: \{\{\mathsf{Type}\}\} \to \mathsf{agg} ::: \{\{\mathsf{Type}\}\} \to \mathsf{exps} ::: \{\mathsf{Type}\} \\
+  \hspace{.1in} \to \mathsf{sql\_window\_function} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{int} \\
+  \mathsf{val} \; \mathsf{sql\_rank} : \mathsf{tables} ::: \{\{\mathsf{Type}\}\} \to \mathsf{agg} ::: \{\{\mathsf{Type}\}\} \to \mathsf{exps} ::: \{\mathsf{Type}\} \\
+  \hspace{.1in} \to \mathsf{sql\_window\_function} \; \mathsf{tables} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{int}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="587" HEIGHT="675" BORDER="0"
+ SRC="img480.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{con} \; \mathsf{sql\_expw} :: \{\{\...
+...s} \; \mathsf{agg} \; \mathsf{exps} \; \mathsf{int}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html651"
+  HREF="node39.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html647"
+  HREF="node36.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html641"
+  HREF="node37.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html649"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html652"
+  HREF="node39.html">DML</A>
+<B> Up:</B> <A NAME="tex2html648"
+  HREF="node36.html">SQL</A>
+<B> Previous:</B> <A NAME="tex2html642"
+  HREF="node37.html">Table Constraints</A>
+ &nbsp; <B>  <A NAME="tex2html650"
+  HREF="node1.html">Contents</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

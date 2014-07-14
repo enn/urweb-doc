@@ -1,0 +1,530 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Declaration Typing</TITLE>
+<META NAME="description" CONTENT="Declaration Typing">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node21.html">
+<LINK REL="previous" HREF="node19.html">
+<LINK REL="up" HREF="node13.html">
+<LINK REL="next" HREF="node21.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html415"
+  HREF="node21.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html411"
+  HREF="node13.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html405"
+  HREF="node19.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html413"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html416"
+  HREF="node21.html">Signature Item Typing</A>
+<B> Up:</B> <A NAME="tex2html412"
+  HREF="node13.html">Static Semantics</A>
+<B> Previous:</B> <A NAME="tex2html406"
+  HREF="node19.html">Pattern Typing</A>
+ &nbsp; <B>  <A NAME="tex2html414"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00067000000000000000">
+Declaration Typing</A>
+</H2>
+
+<P>
+We use an auxiliary judgment <!-- MATH
+ $\overline{y}; x; \Gamma \vdash \overline{dc} \leadsto \Gamma'$
+ -->
+<IMG
+ WIDTH="118" HEIGHT="38" ALIGN="MIDDLE" BORDER="0"
+ SRC="img211.png"
+ ALT="$ \overline{y}; x; \Gamma \vdash \overline{dc} \leadsto \Gamma'$">
+, expressing the enrichment of <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img212.png"
+ ALT="$ \Gamma$">
+ with the types of the datatype constructors <!-- MATH
+ $\overline{dc}$
+ -->
+<IMG
+ WIDTH="19" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img213.png"
+ ALT="$ \overline{dc}$">
+, when they are known to belong to datatype <IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.png"
+ ALT="$ x$">
+ with type parameters <!-- MATH
+ $\overline{y}$
+ -->
+<IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img214.png"
+ ALT="$ \overline{y}$">
+.
+
+<P>
+We presuppose the existence of a function <!-- MATH
+ $\mathcal O$
+ -->
+<IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img215.png"
+ ALT="$ \mathcal O$">
+, where <!-- MATH
+ $\mathcal O(M, \overline{s})$
+ -->
+<IMG
+ WIDTH="60" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img216.png"
+ ALT="$ \mathcal O(M, \overline{s})$">
+ implements the <!-- MATH
+ $\mathsf{open}$
+ -->
+<IMG
+ WIDTH="36" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img217.png"
+ ALT="$ \mathsf{open}$">
+ declaration by producing a context with the appropriate entry for each available component of module <IMG
+ WIDTH="21" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img41.png"
+ ALT="$ M$">
+ with signature items <!-- MATH
+ $\overline{s}$
+ -->
+<IMG
+ WIDTH="11" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img146.png"
+ ALT="$ \overline{s}$">
+.  Where possible, <!-- MATH
+ $\mathcal O$
+ -->
+<IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img215.png"
+ ALT="$ \mathcal O$">
+ uses ``transparent'' entries (e.g., an abstract type <IMG
+ WIDTH="34" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img218.png"
+ ALT="$ M.x$">
+ is mapped to <!-- MATH
+ $x :: \mathsf{Type} = M.x$
+ -->
+<IMG
+ WIDTH="114" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img219.png"
+ ALT="$ x :: \mathsf{Type} = M.x$">
+), so that the relationship with <IMG
+ WIDTH="21" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img41.png"
+ ALT="$ M$">
+ is maintained.  A related function <!-- MATH
+ $\mathcal O_c$
+ -->
+<IMG
+ WIDTH="23" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img220.png"
+ ALT="$ \mathcal O_c$">
+ builds a context containing the disjointness constraints found in <!-- MATH
+ $\overline s$
+ -->
+<IMG
+ WIDTH="11" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img221.png"
+ ALT="$ \overline s$">
+.
+We write <!-- MATH
+ $\kappa_1^n \to \kappa$
+ -->
+<IMG
+ WIDTH="56" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img222.png"
+ ALT="$ \kappa_1^n \to \kappa$">
+ as a shorthand, where <!-- MATH
+ $\kappa_1^0 \to \kappa = \kappa$
+ -->
+<IMG
+ WIDTH="84" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img223.png"
+ ALT="$ \kappa_1^0 \to \kappa = \kappa$">
+ and <!-- MATH
+ $\kappa_1^{n+1} \to \kappa_2 = \kappa_1 \to (\kappa_1^n \to \kappa_2)$
+ -->
+<IMG
+ WIDTH="212" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img224.png"
+ ALT="$ \kappa_1^{n+1} \to \kappa_2 = \kappa_1 \to (\kappa_1^n \to \kappa_2)$">
+.  We write <!-- MATH
+ $\mathsf{len}(\overline{y})$
+ -->
+<IMG
+ WIDTH="44" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img225.png"
+ ALT="$ \mathsf{len}(\overline{y})$">
+ for the length of vector <!-- MATH
+ $\overline{y}$
+ -->
+<IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img214.png"
+ ALT="$ \overline{y}$">
+ of variables.
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \cdot \leadsto \Gamma}{}
+\quad \infer{\Gamma \vdash d, \overline{d} \leadsto \Gamma''}{
+  \Gamma \vdash d \leadsto \Gamma'
+  & \Gamma' \vdash \overline{d} \leadsto \Gamma''
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="263" HEIGHT="79" ALIGN="MIDDLE" BORDER="0"
+ SRC="img226.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \cdot \leadsto \Gamma}{}
+\quad \infer{\Gamma...
+...ma \vdash d \leadsto \Gamma'
+&amp; \Gamma' \vdash \overline{d} \leadsto \Gamma''
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{con} \; x :: \kappa = c \leadsto \Gamma, x :: \kappa = c}{
+  \Gamma \vdash c :: \kappa
+}
+\quad \infer{\Gamma \vdash \mathsf{datatype} \; x \; \overline{y} = \overline{dc} \leadsto \Gamma'}{
+  \overline{y}; x; \Gamma, x :: \mathsf{Type}^{\mathsf{len}(\overline y)} \to \mathsf{Type} \vdash \overline{dc} \leadsto \Gamma'
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="516" HEIGHT="88" ALIGN="MIDDLE" BORDER="0"
+ SRC="img227.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{con} \; x :: \kappa = c \leadsto \Ga...
+...sf{len}(\overline y)} \to \mathsf{Type} \vdash \overline{dc} \leadsto \Gamma'
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{datatype} \; x = \mathsf{datatype} \; M.z \leadsto \Gamma'}{
+  \Gamma \vdash M : \mathsf{sig} \; \overline{s} \; \mathsf{end}
+  & \mathsf{proj}(M, \overline{s}, \mathsf{datatype} \; z) = (\overline{y}, \overline{dc})
+  & \overline{y}; x; \Gamma, x :: \mathsf{Type}^{\mathsf{len}(\overline y)} \to \mathsf{Type} = M.z \vdash \overline{dc} \leadsto \Gamma'
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="682" HEIGHT="85" ALIGN="MIDDLE" BORDER="0"
+ SRC="img228.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{datatype} \; x = \mathsf{datatype} \...
+...}(\overline y)} \to \mathsf{Type} = M.z \vdash \overline{dc} \leadsto \Gamma'
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{val} \; x : \tau = e \leadsto \Gamma, x : \tau}{
+  \Gamma \vdash e : \tau
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="188" HEIGHT="68" ALIGN="MIDDLE" BORDER="0"
+ SRC="img229.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{val} \; x : \tau = e \leadsto \Gamma, x : \tau}{
+\Gamma \vdash e : \tau
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{val} \; \mathsf{rec} \; \overline{x : \tau = e} \leadsto \Gamma, \overline{x : \tau}}{
+  \forall i: \Gamma, \overline{x : \tau} \vdash e_i : \tau_i
+  & \textrm{$e_i$ starts with an expression $\lambda$, optionally preceded by constructor and disjointness $\lambda$s}
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="745" HEIGHT="72" ALIGN="MIDDLE" BORDER="0"
+ SRC="img230.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{val} \; \mathsf{rec} \; \overline{x ...
+...on $\lambda$, optionally preceded by constructor and disjointness $\lambda$s}
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{structure} \; X : S = M \leadsto \Gamma, X : S}{
+  \Gamma \vdash M : S
+  & \textrm{ $M$ not a constant or application}
+}
+\quad \infer{\Gamma \vdash \mathsf{structure} \; X : S = M \leadsto \Gamma, X : \mathsf{selfify}(X, \overline{s})}{
+  \Gamma \vdash M : \mathsf{sig} \; \overline{s} \; \mathsf{end}
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="651" HEIGHT="74" ALIGN="MIDDLE" BORDER="0"
+ SRC="img231.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{structure} \; X : S = M \leadsto \Ga...
+...verline{s})}{
+\Gamma \vdash M : \mathsf{sig} \; \overline{s} \; \mathsf{end}
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{signature} \; X = S \leadsto \Gamma, X = S}{
+  \Gamma \vdash S
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="231" HEIGHT="68" ALIGN="MIDDLE" BORDER="0"
+ SRC="img232.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{signature} \; X = S \leadsto \Gamma, X = S}{
+\Gamma \vdash S
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{open} \; M \leadsto \Gamma, \mathcal O(M, \overline{s})}{
+  \Gamma \vdash M : \mathsf{sig} \; \overline{s} \; \mathsf{end}
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="184" HEIGHT="74" ALIGN="MIDDLE" BORDER="0"
+ SRC="img233.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{open} \; M \leadsto \Gamma, \mathcal...
+...verline{s})}{
+\Gamma \vdash M : \mathsf{sig} \; \overline{s} \; \mathsf{end}
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{constraint} \; c_1 \sim c_2 \leadsto \Gamma}{
+  \Gamma \vdash c_1 :: \{\kappa\}
+  & \Gamma \vdash c_2 :: \{\kappa\}
+  & \Gamma \vdash c_1 \sim c_2
+}
+\quad \infer{\Gamma \vdash \mathsf{open} \; \mathsf{constraints} \; M \leadsto \Gamma, \mathcal O_c(M, \overline{s})}{
+  \Gamma \vdash M : \mathsf{sig} \; \overline{s} \; \mathsf{end}
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="562" HEIGHT="76" ALIGN="MIDDLE" BORDER="0"
+ SRC="img234.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{constraint} \; c_1 \sim c_2 \leadsto...
+...verline{s})}{
+\Gamma \vdash M : \mathsf{sig} \; \overline{s} \; \mathsf{end}
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{table} \; x : c \leadsto \Gamma, x : \mathsf{Basis}.\mathsf{sql\_table} \; c \; []}{
+  \Gamma \vdash c :: \{\mathsf{Type}\}
+}
+\quad \infer{\Gamma \vdash \mathsf{view} \; x = e \leadsto \Gamma, x : \mathsf{Basis}.\mathsf{sql\_view} \; c}{
+  \Gamma \vdash e :: \mathsf{Basis}.\mathsf{sql\_query} \; [] \; [] \; (\mathsf{map} \; (\lambda \_ \Rightarrow []) \; c') \; c
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="616" HEIGHT="78" ALIGN="MIDDLE" BORDER="0"
+ SRC="img235.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{table} \; x : c \leadsto \Gamma, x :...
+...uery} \; [] \; [] \; (\mathsf{map} \; (\lambda \_ \Rightarrow []) \; c') \; c
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{sequence} \; x \leadsto \Gamma, x : \mathsf{Basis}.\mathsf{sql\_sequence}}{}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="291" HEIGHT="44" ALIGN="MIDDLE" BORDER="0"
+ SRC="img236.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{sequence} \; x \leadsto \Gamma, x : \mathsf{Basis}.\mathsf{sql\_sequence}}{}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{cookie} \; x : \tau \leadsto \Gamma, x : \mathsf{Basis}.\mathsf{http\_cookie} \; \tau}{
+  \Gamma \vdash \tau :: \mathsf{Type}
+}
+\quad \infer{\Gamma \vdash \mathsf{style} \; x \leadsto \Gamma, x : \mathsf{Basis}.\mathsf{css\_class}}{}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="549" HEIGHT="74" ALIGN="MIDDLE" BORDER="0"
+ SRC="img237.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{cookie} \; x : \tau \leadsto \Gamma,...
+... \mathsf{style} \; x \leadsto \Gamma, x : \mathsf{Basis}.\mathsf{css\_class}}{}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{task} \; e_1 = e_2 \leadsto \Gamma}{
+  \Gamma \vdash e_1 :: \mathsf{Basis}.\mathsf{task\_kind} \; \tau
+  & \Gamma \vdash e_2 :: \tau \to \mathsf{Basis}.\mathsf{transaction} \; \{\}
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="421" HEIGHT="76" ALIGN="MIDDLE" BORDER="0"
+ SRC="img238.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{task} \; e_1 = e_2 \leadsto \Gamma}{...
+...
+&amp; \Gamma \vdash e_2 :: \tau \to \mathsf{Basis}.\mathsf{transaction} \; \{\}
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\overline{y}; x; \Gamma \vdash \cdot \leadsto \Gamma}{}
+\quad \infer{\overline{y}; x; \Gamma \vdash X \mid \overline{dc} \leadsto \Gamma', X : \overline{y ::: \mathsf{Type}} \to x \; \overline{y}}{
+  \overline{y}; x; \Gamma \vdash \overline{dc} \leadsto \Gamma'
+}
+\quad \infer{\overline{y}; x; \Gamma \vdash X \; \mathsf{of} \; \tau \mid \overline{dc} \leadsto \Gamma', X : \overline{y ::: \mathsf{Type}} \to \tau \to x \; \overline{y}}{
+  \overline{y}; x; \Gamma \vdash \overline{dc} \leadsto \Gamma'
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="772" HEIGHT="85" ALIGN="MIDDLE" BORDER="0"
+ SRC="img239.png"
+ ALT="$\displaystyle \infer{\overline{y}; x; \Gamma \vdash \cdot \leadsto \Gamma}{}
+\q...
+...\overline{y}}{
+\overline{y}; x; \Gamma \vdash \overline{dc} \leadsto \Gamma'
+}$">
+</DIV><P>
+</P>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html415"
+  HREF="node21.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html411"
+  HREF="node13.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html405"
+  HREF="node19.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html413"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html416"
+  HREF="node21.html">Signature Item Typing</A>
+<B> Up:</B> <A NAME="tex2html412"
+  HREF="node13.html">Static Semantics</A>
+<B> Previous:</B> <A NAME="tex2html406"
+  HREF="node19.html">Pattern Typing</A>
+ &nbsp; <B>  <A NAME="tex2html414"
+  HREF="node1.html">Contents</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

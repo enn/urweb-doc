@@ -1,0 +1,228 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Queries</TITLE>
+<META NAME="description" CONTENT="Queries">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node52.html">
+<LINK REL="previous" HREF="node50.html">
+<LINK REL="up" HREF="node49.html">
+<LINK REL="next" HREF="node52.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html814"
+  HREF="node52.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html810"
+  HREF="node49.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html804"
+  HREF="node50.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html812"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html815"
+  HREF="node52.html">DML</A>
+<B> Up:</B> <A NAME="tex2html811"
+  HREF="node49.html">SQL</A>
+<B> Previous:</B> <A NAME="tex2html805"
+  HREF="node50.html">Table Declarations</A>
+ &nbsp; <B>  <A NAME="tex2html813"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000101200000000000000">
+Queries</A>
+</H3>
+
+<P>
+Queries <IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img546.png"
+ ALT="$ Q$">
+ are added to the rules for expressions <IMG
+ WIDTH="11" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img17.png"
+ ALT="$ e$">
+.
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{rrcll}
+  \textrm{Queries} & Q &::=& (q \; [\mathsf{ORDER} \; \mathsf{BY} \; O] \; [\mathsf{LIMIT} \; N] \; [\mathsf{OFFSET} \; N]) \\
+  \textrm{Pre-queries} & q &::=& \mathsf{SELECT} \; [\mathsf{DISTINCT}] \; P \; \mathsf{FROM} \; F,^+ \; [\mathsf{WHERE} \; E] \; [\mathsf{GROUP} \; \mathsf{BY} \; p,^+] \; [\mathsf{HAVING} \; E] \\
+  &&& \mid q \; R \; q \mid \{\{\{e\}\}\} \\
+  \textrm{Relational operators} & R &::=& \mathsf{UNION} \mid \mathsf{INTERSECT} \mid \mathsf{EXCEPT} \\
+  \textrm{$\mathsf{ORDER \; BY}$ items} & O &::=& \mathsf{RANDOM} [()] \mid \hat{E} \; [o] \mid \hat{E} \; [o], O
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="760" HEIGHT="104" BORDER="0"
+ SRC="img547.png"
+ ALT="\begin{displaymath}\begin{array}{rrcll}
+\textrm{Queries} &amp; Q &amp;::=&amp; (q \; [\math...
+...OM} [()] \mid \hat{E} \; [o] \mid \hat{E} \; [o], O
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{rrcll}
+  \textrm{Projections} & P &::=& \ast & \textrm{all columns} \\
+  &&& p,^+ & \textrm{particular columns} \\
+  \textrm{Pre-projections} & p &::=& t.f & \textrm{one column from a table} \\
+  &&& t.\{\{c\}\} & \textrm{a record of columns from a table (of kind $\{\mathsf{Type}\}$)} \\
+  &&& t.* & \textrm{all columns from a table} \\
+  &&& \hat{E} \; [\mathsf{AS} \; f] & \textrm{expression column} \\
+  \textrm{Table names} & t &::=& x & \textrm{constant table name (automatically capitalized)} \\
+  &&& X & \textrm{constant table name} \\
+  &&& \{\{c\}\} & \textrm{computed table name (of kind $\mathsf{Name}$)} \\
+  \textrm{Column names} & f &::=& X & \textrm{constant column name} \\
+  &&& \{c\} & \textrm{computed column name (of kind $\mathsf{Name}$)} \\
+  \textrm{Tables} & T &::=& x & \textrm{table variable, named locally by its own capitalization} \\
+  &&& x \; \mathsf{AS} \; X & \textrm{table variable, with local name} \\
+  &&& x \; \mathsf{AS} \; \{c\} & \textrm{table variable, with computed local name} \\
+  &&& \{\{e\}\} \; \mathsf{AS} \; t & \textrm{computed table expression, with local name} \\
+  &&& \{\{e\}\} \; \mathsf{AS} \; \{c\} & \textrm{computed table expression, with computed local name} \\
+  \textrm{$\mathsf{FROM}$ items} & F &::=& T \mid \{\{e\}\} \mid F \; J \; \mathsf{JOIN} \; F \; \mathsf{ON} \; E \\
+  &&& \mid F \; \mathsf{CROSS} \; \mathsf{JOIN} \ F \\
+  &&& \mid (Q) \; \mathsf{AS} \; t \mid (\{\{e\}\}) \; \mathsf{AS} \; t \\
+  \textrm{Joins} & J &::=& [\mathsf{INNER}] \\
+  &&& \mid [\mathsf{LEFT} \mid \mathsf{RIGHT} \mid \mathsf{FULL}] \; [\mathsf{OUTER}] \\
+  \textrm{SQL expressions} & E &::=& t.f & \textrm{column references} \\
+  &&& X & \textrm{named expression references} \\
+  &&& \{[e]\} & \textrm{injected native Ur expressions} \\
+  &&& \{e\} & \textrm{computed expressions, probably using $\mathsf{sql\_exp}$ directly} \\
+  &&& \mathsf{TRUE} \mid \mathsf{FALSE} & \textrm{boolean constants} \\
+  &&& \ell & \textrm{primitive type literals} \\
+  &&& \mathsf{NULL} & \textrm{null value (injection of $\mathsf{None}$)} \\
+  &&& E \; \mathsf{IS} \; \mathsf{NULL} & \textrm{nullness test} \\
+  &&& \mathsf{COALESCE}(E, E) & \textrm{take first non-null value} \\
+  &&& n & \textrm{nullary operators} \\
+  &&& u \; E & \textrm{unary operators} \\
+  &&& E \; b \; E & \textrm{binary operators} \\
+  &&& \mathsf{COUNT}(\ast) & \textrm{count number of rows} \\
+  &&& a(E) & \textrm{other aggregate function} \\
+  &&& \mathsf{IF} \; E \; \mathsf{THEN} \; E \; \mathsf{ELSE} \; E & \textrm{conditional} \\
+  &&& (Q) & \textrm{subquery (must return a single expression column)} \\
+  &&& (E) & \textrm{explicit precedence} \\
+  \textrm{Nullary operators} & n &::=& \mathsf{CURRENT\_TIMESTAMP} \\
+  \textrm{Unary operators} & u &::=& \mathsf{NOT} \\
+  \textrm{Binary operators} & b &::=& \mathsf{AND} \mid \mathsf{OR} \mid = \mid \neq \mid < \mid \leq \mid > \mid \geq \\
+  \textrm{Aggregate functions} & a &::=& \mathsf{COUNT} \mid \mathsf{AVG} \mid \mathsf{SUM} \mid \mathsf{MIN} \mid \mathsf{MAX} \\
+  \textrm{Directions} & o &::=& \mathsf{ASC} \mid \mathsf{DESC} \mid \{e\} \\
+  \textrm{SQL integer} & N &::=& n \mid \{e\} \\
+  \textrm{Windowable expressions} & \hat{E} &::=& E \\
+  &&& w \; [\mathsf{OVER} \; ( & \textrm{(Postgres only)} \\
+  &&& \hspace{.1in} [\mathsf{PARTITION} \; \mathsf{BY} \; E] \\
+  &&& \hspace{.1in} [\mathsf{ORDER} \; \mathsf{BY} \; O])] \\
+  \textrm{Window function} & w &::=& \mathsf{RANK}() \\
+  &&& \mathsf{COUNT}(*) \\
+  &&& a(E)
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="882" HEIGHT="984" BORDER="0"
+ SRC="img548.png"
+ ALT="\begin{displaymath}\begin{array}{rrcll}
+\textrm{Projections} &amp; P &amp;::=&amp; \ast &amp; \...
+...sf{RANK}() \\
+&amp;&amp;&amp; \mathsf{COUNT}(*) \\
+&amp;&amp;&amp; a(E)
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+Additionally, an SQL expression may be inserted into normal Ur code with the syntax <!-- MATH
+ $(\mathsf{SQL} \; E)$
+ -->
+<IMG
+ WIDTH="63" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img549.png"
+ ALT="$ (\mathsf{SQL} \; E)$">
+ or <!-- MATH
+ $(\mathsf{WHERE} \; E)$
+ -->
+<IMG
+ WIDTH="89" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img550.png"
+ ALT="$ (\mathsf{WHERE} \; E)$">
+.  Similar shorthands exist for other nonterminals, with the prefix <!-- MATH
+ $\mathsf{FROM}$
+ -->
+<IMG
+ WIDTH="49" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img551.png"
+ ALT="$ \mathsf{FROM}$">
+ for <!-- MATH
+ $\mathsf{FROM}$
+ -->
+<IMG
+ WIDTH="49" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img551.png"
+ ALT="$ \mathsf{FROM}$">
+ items and <!-- MATH
+ $\mathsf{SELECT1}$
+ -->
+<IMG
+ WIDTH="69" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img552.png"
+ ALT="$ \mathsf{SELECT1}$">
+ for pre-queries.
+
+<P>
+Unnamed expression columns in <!-- MATH
+ $\mathsf{SELECT}$
+ -->
+<IMG
+ WIDTH="61" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img444.png"
+ ALT="$ \mathsf{SELECT}$">
+ clauses are assigned consecutive natural numbers, starting with 1.  Any expression in a <IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img83.png"
+ ALT="$ p$">
+ position that is enclosed in parentheses is treated as an expression column, rather than a column pulled directly out of a table, even if it is only a field projection.  (This distinction affects the record type used to describe query results.)
+
+<P>
+<BR><HR>
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,413 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Table Constraints</TITLE>
+<META NAME="description" CONTENT="Table Constraints">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node38.html">
+<LINK REL="previous" HREF="node36.html">
+<LINK REL="up" HREF="node36.html">
+<LINK REL="next" HREF="node38.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html639"
+  HREF="node38.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html635"
+  HREF="node36.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html629"
+  HREF="node36.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html637"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html640"
+  HREF="node38.html">Queries</A>
+<B> Up:</B> <A NAME="tex2html636"
+  HREF="node36.html">SQL</A>
+<B> Previous:</B> <A NAME="tex2html630"
+  HREF="node36.html">SQL</A>
+ &nbsp; <B>  <A NAME="tex2html638"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00094100000000000000">
+Table Constraints</A>
+</H3>
+
+<P>
+Tables may be declared with constraints, such that database modifications that violate the constraints are blocked.  A table may have at most one <TT>PRIMARY KEY</TT> constraint, which gives the subset of columns that will most often be used to look up individual rows in the table.
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{con} \; \mathsf{primary\_key} :: \{\mathsf{Type}\} \to \{\{\mathsf{Unit}\}\} \to \mathsf{Type} \\
+  \mathsf{val} \; \mathsf{no\_primary\_key} : \mathsf{fs} ::: \{\mathsf{Type}\} \to \mathsf{primary\_key} \; \mathsf{fs} \; [] \\
+  \mathsf{val} \; \mathsf{primary\_key} : \mathsf{rest} ::: \{\mathsf{Type}\} \to \mathsf{t} ::: \mathsf{Type} \to \mathsf{key1} :: \mathsf{Name} \to \mathsf{keys} :: \{\mathsf{Type}\} \\
+  \hspace{.1in} \to [[\mathsf{key1}] \sim \mathsf{keys}] \Rightarrow [[\mathsf{key1} = \mathsf{t}] + \hspace{-.075in} + \;\mathsf{keys} \sim \mathsf{rest}] \\
+  \hspace{.1in} \Rightarrow \$([\mathsf{key1} = \mathsf{sql\_injectable\_prim} \; \mathsf{t}] + \hspace{-.075in} + \;\mathsf{map} \; \mathsf{sql\_injectable\_prim} \; \mathsf{keys}) \\
+  \hspace{.1in} \to \mathsf{primary\_key} \; ([\mathsf{key1} = \mathsf{t}] + \hspace{-.075in} + \;\mathsf{keys} + \hspace{-.075in} + \;\mathsf{rest}) \; [\mathsf{Pkey} = [\mathsf{key1}] + \hspace{-.075in} + \;\mathsf{map} \; (\lambda \_ \Rightarrow ()) \; \mathsf{keys}]
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="562" HEIGHT="121" BORDER="0"
+ SRC="img419.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{con} \; \mathsf{primary\_key} :: \{...
+...p} \; (\lambda \_ \Rightarrow ()) \; \mathsf{keys}]
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+The type class <!-- MATH
+ $\mathsf{sql\_injectable\_prim}$
+ -->
+<IMG
+ WIDTH="127" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img420.png"
+ ALT="$ \mathsf{sql\_injectable\_prim}$">
+ characterizes which types are allowed in SQL and are not <!-- MATH
+ $\mathsf{option}$
+ -->
+<IMG
+ WIDTH="46" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img421.png"
+ ALT="$ \mathsf{option}$">
+ types.  In SQL, a <TT>PRIMARY KEY</TT> constraint enforces after-the-fact that a column may not contain <TT>NULL</TT>s, but Ur/Web forces that information to be included in table types from the beginning.  Thus, the only effect of this kind of constraint in Ur/Web is to enforce uniqueness of the given key within the table.
+
+<P>
+A type family stands for sets of named constraints of the remaining varieties.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{con} \; \mathsf{sql\_constraints} :: \{\mathsf{Type}\} \to \{\{\mathsf{Unit}\}\} \to \mathsf{Type}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="333" HEIGHT="39" BORDER="0"
+ SRC="img422.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{con} \; \mathsf{sql\_constraints} :...
+...Type}\} \to \{\{\mathsf{Unit}\}\} \to \mathsf{Type}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+The first argument gives the column types of the table being constrained, and the second argument maps constraint names to the keys that they define.  Constraints that don't define keys are mapped to ``empty keys.''
+
+<P>
+There is a type family of individual, unnamed constraints.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{con} \; \mathsf{sql\_constraint} :: \{\mathsf{Type}\} \to \{\mathsf{Unit}\} \to \mathsf{Type}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="311" HEIGHT="39" BORDER="0"
+ SRC="img423.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{con} \; \mathsf{sql\_constraint} ::...
+...hsf{Type}\} \to \{\mathsf{Unit}\} \to \mathsf{Type}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+The first argument is the same as above, and the second argument gives the key columns for just this constraint.
+
+<P>
+We have operations for assembling constraints into constraint sets.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{no\_constraint} : \mathsf{fs} ::: \{\mathsf{Type}\} \to \mathsf{sql\_constraints} \; \mathsf{fs} \; [] \\
+  \mathsf{val} \; \mathsf{one\_constraint} : \mathsf{fs} ::: \{\mathsf{Type}\} \to \mathsf{unique} ::: \{\mathsf{Unit}\} \to \mathsf{name} :: \mathsf{Name} \\
+  \hspace{.1in} \to \mathsf{sql\_constraint} \; \mathsf{fs} \; \mathsf{unique} \to \mathsf{sql\_constraints} \; \mathsf{fs} \; [\mathsf{name} = \mathsf{unique}] \\
+  \mathsf{val} \; \mathsf{join\_constraints} : \mathsf{fs} ::: \{\mathsf{Type}\} \to \mathsf{uniques1} ::: \{\{\mathsf{Unit}\}\} \to \mathsf{uniques2} ::: \{\{\mathsf{Unit}\}\} \to [\mathsf{uniques1} \sim \mathsf{uniques2}] \\
+  \hspace{.1in} \Rightarrow \mathsf{sql\_constraints} \; \mathsf{fs} \; \mathsf{uniques1} \to \mathsf{sql\_constraints} \; \mathsf{fs} \; \mathsf{uniques2} \to \mathsf{sql\_constraints} \; \mathsf{fs} \; (\mathsf{uniques1} + \hspace{-.075in} + \;\mathsf{uniques2})
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="720" HEIGHT="102" BORDER="0"
+ SRC="img424.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{no\_constraint} : \...
+...uniques1} + \hspace{-.075in} + \;\mathsf{uniques2})
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+A <TT>UNIQUE</TT> constraint forces a set of columns to be a key, which means that no combination of column values may occur more than once in the table.  The <!-- MATH
+ $\mathsf{unique1}$
+ -->
+<IMG
+ WIDTH="56" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img425.png"
+ ALT="$ \mathsf{unique1}$">
+ and <!-- MATH
+ $\mathsf{unique}$
+ -->
+<IMG
+ WIDTH="48" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img426.png"
+ ALT="$ \mathsf{unique}$">
+ arguments are separated out only to ensure that empty <TT>UNIQUE</TT> constraints are rejected.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{unique} : \mathsf{rest} ::: \{\mathsf{Type}\} \to \mathsf{t} ::: \mathsf{Type} \to \mathsf{unique1} :: \mathsf{Name} \to \mathsf{unique} :: \{\mathsf{Type}\} \\
+  \hspace{.1in} \to [[\mathsf{unique1}] \sim \mathsf{unique}] \Rightarrow [[\mathsf{unique1} = \mathsf{t}] + \hspace{-.075in} + \;\mathsf{unique} \sim \mathsf{rest}] \\
+  \hspace{.1in} \Rightarrow \mathsf{sql\_constraint} \; ([\mathsf{unique1} = \mathsf{t}] + \hspace{-.075in} + \;\mathsf{unique} + \hspace{-.075in} + \;\mathsf{rest}) \; ([\mathsf{unique1}] + \hspace{-.075in} + \;\mathsf{map} \; (\lambda \_ \Rightarrow ()) \; \mathsf{unique})
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="600" HEIGHT="64" BORDER="0"
+ SRC="img427.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{unique} : \mathsf{r...
+... \; (\lambda \_ \Rightarrow ()) \; \mathsf{unique})
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+A <TT>FOREIGN KEY</TT> constraint connects a set of local columns to a local or remote key, enforcing that the local columns always reference an existent row of the foreign key's table.  A local column of type <!-- MATH
+ $\mathsf{t}$
+ -->
+<IMG
+ WIDTH="10" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img428.png"
+ ALT="$ \mathsf{t}$">
+ may be linked to a foreign column of type <!-- MATH
+ $\mathsf{option} \; \mathsf{t}$
+ -->
+<IMG
+ WIDTH="56" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img429.png"
+ ALT="$ \mathsf{option} \; \mathsf{t}$">
+, and vice versa.  We formalize that notion with a type class.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{class} \; \mathsf{linkable} :: \mathsf{Type} \to \mathsf{Type} \to \mathsf{Type} \\
+  \mathsf{val} \; \mathsf{linkable\_same} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{linkable} \; \mathsf{t} \; \mathsf{t} \\
+  \mathsf{val} \; \mathsf{linkable\_from\_nullable} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{linkable} \; (\mathsf{option} \; \mathsf{t}) \; \mathsf{t} \\
+  \mathsf{val} \; \mathsf{linkable\_to\_nullable} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{linkable} \; \mathsf{t} \; (\mathsf{option} \; \mathsf{t})
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="395" HEIGHT="92" BORDER="0"
+ SRC="img430.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{class} \; \mathsf{linkable} :: \mat...
+...e} \; \mathsf{t} \; (\mathsf{option} \; \mathsf{t})
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+The <!-- MATH
+ $\mathsf{matching}$
+ -->
+<IMG
+ WIDTH="65" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img431.png"
+ ALT="$ \mathsf{matching}$">
+ type family uses <!-- MATH
+ $\mathsf{linkable}$
+ -->
+<IMG
+ WIDTH="54" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img432.png"
+ ALT="$ \mathsf{linkable}$">
+ to define when two keys match up type-wise.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{con} \; \mathsf{matching} :: \{\mathsf{Type}\} \to \{\mathsf{Type}\} \to \mathsf{Type} \\
+  \mathsf{val} \; \mathsf{mat\_nil} : \mathsf{matching} \; [] \; [] \\
+  \mathsf{val} \; \mathsf{mat\_cons} : \mathsf{t1} ::: \mathsf{Type} \to \mathsf{rest1} ::: \{\mathsf{Type}\} \to \mathsf{t2} ::: \mathsf{Type} \to \mathsf{rest2} ::: \{\mathsf{Type}\} \to \mathsf{nm1} :: \mathsf{Name} \to \mathsf{nm2} :: \mathsf{Name} \\
+  \hspace{.1in} \to [[\mathsf{nm1}] \sim \mathsf{rest1}] \Rightarrow [[\mathsf{nm2}] \sim \mathsf{rest2}] \Rightarrow \mathsf{linkable} \; \mathsf{t1} \; \mathsf{t2} \to \mathsf{matching} \; \mathsf{rest1} \; \mathsf{rest2} \\
+  \hspace{.1in} \to \mathsf{matching} \; ([\mathsf{nm1} = \mathsf{t1}] + \hspace{-.075in} + \;\mathsf{rest1}) \; ([\mathsf{nm2} = \mathsf{t2}] + \hspace{-.075in} + \;\mathsf{rest2})
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="735" HEIGHT="102" BORDER="0"
+ SRC="img433.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{con} \; \mathsf{matching} :: \{\mat...
+...\mathsf{t2}] + \hspace{-.075in} + \;\mathsf{rest2})
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+SQL provides a number of different propagation modes for <TT>FOREIGN KEY</TT> constraints, governing what happens when a row containing a still-referenced foreign key value is deleted or modified to have a different key value.  The argument of a propagation mode's type gives the local key type.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{con} \; \mathsf{propagation\_mode} :: \{\mathsf{Type}\} \to \mathsf{Type} \\
+  \mathsf{val} \; \mathsf{restrict} : \mathsf{fs} ::: \{\mathsf{Type}\} \to \mathsf{propagation\_mode} \; \mathsf{fs} \\
+  \mathsf{val} \; \mathsf{cascade} : \mathsf{fs} ::: \{\mathsf{Type}\} \to \mathsf{propagation\_mode} \; \mathsf{fs} \\
+  \mathsf{val} \; \mathsf{no\_action} : \mathsf{fs} ::: \{\mathsf{Type}\} \to \mathsf{propagation\_mode} \; \mathsf{fs} \\
+  \mathsf{val} \; \mathsf{set\_null} : \mathsf{fs} ::: \{\mathsf{Type}\} \to \mathsf{propagation\_mode} \; (\mathsf{map} \; \mathsf{option} \; \mathsf{fs})
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="419" HEIGHT="112" BORDER="0"
+ SRC="img434.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{con} \; \mathsf{propagation\_mode} ...
+...\; (\mathsf{map} \; \mathsf{option} \; \mathsf{fs})
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+Finally, we put these ingredient together to define the <TT>FOREIGN KEY</TT> constraint function.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{foreign\_key} : \mathsf{mine1} ::: \mathsf{Name} \to \mathsf{t} ::: \mathsf{Type} \to \mathsf{mine} ::: \{\mathsf{Type}\} \to \mathsf{munused} ::: \{\mathsf{Type}\} \to \mathsf{foreign} ::: \{\mathsf{Type}\} \\
+  \hspace{.1in} \to \mathsf{funused} ::: \{\mathsf{Type}\} \to \mathsf{nm} ::: \mathsf{Name} \to \mathsf{uniques} ::: \{\{\mathsf{Unit}\}\} \\
+  \hspace{.1in} \to [[\mathsf{mine1}] \sim \mathsf{mine}] \Rightarrow [[\mathsf{mine1} = \mathsf{t}] + \hspace{-.075in} + \;\mathsf{mine} \sim \mathsf{munused}] \Rightarrow [\mathsf{foreign} \sim \mathsf{funused}] \Rightarrow [[\mathsf{nm}] \sim \mathsf{uniques}] \\
+  \hspace{.1in} \Rightarrow \mathsf{matching} \; ([\mathsf{mine1} = \mathsf{t}] + \hspace{-.075in} + \;\mathsf{mine}) \; \mathsf{foreign} \\
+  \hspace{.1in} \to \mathsf{sql\_table} \; (\mathsf{foreign} + \hspace{-.075in} + \;\mathsf{funused}) \; ([\mathsf{nm} = \mathsf{map} \; (\lambda \_ \Rightarrow ()) \; \mathsf{foreign}] + \hspace{-.075in} + \;\mathsf{uniques}) \\
+  \hspace{.1in} \to \{\mathsf{OnDelete} : \mathsf{propagation\_mode} \; ([\mathsf{mine1} = \mathsf{t}] + \hspace{-.075in} + \;\mathsf{mine}), \\
+  \hspace{.2in} \mathsf{OnUpdate} : \mathsf{propagation\_mode} \; ([\mathsf{mine1} = \mathsf{t}] + \hspace{-.075in} + \;\mathsf{mine})\} \\
+  \hspace{.1in} \to \mathsf{sql\_constraint} \; ([\mathsf{mine1} = \mathsf{t}] + \hspace{-.075in} + \;\mathsf{mine} + \hspace{-.075in} + \;\mathsf{munused}) \; []
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="716" HEIGHT="159" BORDER="0"
+ SRC="img435.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{foreign\_key} : \ma...
+...ine} + \hspace{-.075in} + \;\mathsf{munused}) \; []
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+The last kind of constraint is a <TT>CHECK</TT> constraint, which attaches a boolean invariant over a row's contents.  It is defined using the <!-- MATH
+ $\mathsf{sql\_exp}$
+ -->
+<IMG
+ WIDTH="51" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img436.png"
+ ALT="$ \mathsf{sql\_exp}$">
+ type family, which we discuss in more detail below.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{check} : \mathsf{fs} ::: \{\mathsf{Type}\} \to \mathsf{sql\_exp} \; [] \; [] \; \mathsf{fs} \; \mathsf{bool} \to \mathsf{sql\_constraint} \; \mathsf{fs} \; []
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="445" HEIGHT="39" BORDER="0"
+ SRC="img437.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{check} : \mathsf{fs...
+...} \to \mathsf{sql\_constraint} \; \mathsf{fs} \; []
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+Section <A HREF="node50.html#tables">9.1.1</A> shows the expanded syntax of the <!-- MATH
+ $\mathsf{table}$
+ -->
+<IMG
+ WIDTH="36" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img42.png"
+ ALT="$ \mathsf{table}$">
+ declaration and signature item that includes constraints.  There is no other way to use constraints with SQL in Ur/Web.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html639"
+  HREF="node38.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html635"
+  HREF="node36.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html629"
+  HREF="node36.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html637"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html640"
+  HREF="node38.html">Queries</A>
+<B> Up:</B> <A NAME="tex2html636"
+  HREF="node36.html">SQL</A>
+<B> Previous:</B> <A NAME="tex2html630"
+  HREF="node36.html">SQL</A>
+ &nbsp; <B>  <A NAME="tex2html638"
+  HREF="node1.html">Contents</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,302 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>HTTP</TITLE>
+<META NAME="description" CONTENT="HTTP">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node36.html">
+<LINK REL="previous" HREF="node34.html">
+<LINK REL="up" HREF="node32.html">
+<LINK REL="next" HREF="node36.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html611"
+  HREF="node36.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html607"
+  HREF="node32.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html601"
+  HREF="node34.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html609"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html612"
+  HREF="node36.html">SQL</A>
+<B> Up:</B> <A NAME="tex2html608"
+  HREF="node32.html">The Ur/Web Standard Library</A>
+<B> Previous:</B> <A NAME="tex2html602"
+  HREF="node34.html">Transactions</A>
+ &nbsp; <B>  <A NAME="tex2html610"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00093000000000000000">
+HTTP</A>
+</H2>
+
+<P>
+There are transactions for reading an HTTP header by name and for getting and setting strongly typed cookies.  Cookies may only be created by the <!-- MATH
+ $\mathsf{cookie}$
+ -->
+<IMG
+ WIDTH="46" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img405.png"
+ ALT="$ \mathsf{cookie}$">
+ declaration form, ensuring that they be named consistently based on module structure.  For now, cookie operations are server-side only.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{con} \; \mathsf{http\_cookie} :: \mathsf{Type} \to \mathsf{Type} \\
+  \mathsf{val} \; \mathsf{getCookie} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{http\_cookie} \; \mathsf{t} \to \mathsf{transaction} \; (\mathsf{option} \; \mathsf{t}) \\
+  \mathsf{val} \; \mathsf{setCookie} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{http\_cookie} \; \mathsf{t} \to \{\mathsf{Value} : \mathsf{t}, \mathsf{Expires} : \mathsf{option} \; \mathsf{time}, \mathsf{Secure} : \mathsf{bool}\} \to \mathsf{transaction} \; \mathsf{unit} \\
+  \mathsf{val} \; \mathsf{clearCookie} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{http\_cookie} \; \mathsf{t} \to \mathsf{transaction} \; \mathsf{unit}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="734" HEIGHT="83" BORDER="0"
+ SRC="img406.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{con} \; \mathsf{http\_cookie} :: \m...
+...mathsf{t} \to \mathsf{transaction} \; \mathsf{unit}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+There are also an abstract <!-- MATH
+ $\mathsf{url}$
+ -->
+<IMG
+ WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img407.png"
+ ALT="$ \mathsf{url}$">
+ type and functions for converting to it, based on the policy defined by <TT>[allow|deny] url</TT> directives in the project file.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{type} \; \mathsf{url} \\
+  \mathsf{val} \; \mathsf{bless} : \mathsf{string} \to \mathsf{url} \\
+  \mathsf{val} \; \mathsf{checkUrl} : \mathsf{string} \to \mathsf{option} \; \mathsf{url}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="219" HEIGHT="73" BORDER="0"
+ SRC="img408.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{type} \; \mathsf{url} \\
+\mathsf{...
+...\mathsf{string} \to \mathsf{option} \; \mathsf{url}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+<!-- MATH
+ $\mathsf{bless}$
+ -->
+<IMG
+ WIDTH="35" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img409.png"
+ ALT="$ \mathsf{bless}$">
+ raises a runtime error if the string passed to it fails the URL policy.
+
+<P>
+It is possible to grab the current page's URL or to build a URL for an arbitrary transaction that would also be an acceptable value of a <TT>link</TT> attribute of the <TT>a</TT> tag.  These are server-side operations.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{currentUrl} : \mathsf{transaction} \; \mathsf{url} \\
+  \mathsf{val} \; \mathsf{url} : \mathsf{transaction} \; \mathsf{page} \to \mathsf{url}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="204" HEIGHT="54" BORDER="0"
+ SRC="img410.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{currentUrl} : \math...
+...thsf{transaction} \; \mathsf{page} \to \mathsf{url}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+Page generation may be interrupted at any time with a request to redirect to a particular URL instead.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{redirect} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{url} \to \mathsf{transaction} \; \mathsf{t}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="298" HEIGHT="39" BORDER="0"
+ SRC="img411.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{redirect} : \mathsf...
+...\mathsf{url} \to \mathsf{transaction} \; \mathsf{t}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+It's possible for pages to return files of arbitrary MIME types.  A file can be input from the user using this data type, along with the <!-- MATH
+ $\mathsf{upload}$
+ -->
+<IMG
+ WIDTH="48" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img412.png"
+ ALT="$ \mathsf{upload}$">
+ form tag.  These functions and those described in the following paragraph are server-side.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{type} \; \mathsf{file} \\
+  \mathsf{val} \; \mathsf{fileName} : \mathsf{file} \to \mathsf{option} \; \mathsf{string} \\
+  \mathsf{val} \; \mathsf{fileMimeType} : \mathsf{file} \to \mathsf{string} \\
+  \mathsf{val} \; \mathsf{fileData} : \mathsf{file} \to \mathsf{blob}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="222" HEIGHT="92" BORDER="0"
+ SRC="img413.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{type} \; \mathsf{file} \\
+\mathsf...
+...\mathsf{fileData} : \mathsf{file} \to \mathsf{blob}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+It is also possible to get HTTP request headers and environment variables, and set HTTP response headers, using abstract types similar to the one for URLs.
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{type} \; \mathsf{requestHeader} \\
+  \mathsf{val} \; \mathsf{blessRequestHeader} : \mathsf{string} \to \mathsf{requestHeader} \\
+  \mathsf{val} \; \mathsf{checkRequestHeader} : \mathsf{string} \to \mathsf{option} \; \mathsf{requestHeader} \\
+  \mathsf{val} \; \mathsf{getHeader} : \mathsf{requestHeader} \to \mathsf{transaction} \; (\mathsf{option} \; \mathsf{string}) \\
+  \\
+  \mathsf{type} \; \mathsf{envVar} \\
+  \mathsf{val} \; \mathsf{blessEnvVar} : \mathsf{string} \to \mathsf{envVar} \\
+  \mathsf{val} \; \mathsf{checkEnvVar} : \mathsf{string} \to \mathsf{option} \; \mathsf{envVar} \\
+  \mathsf{val} \; \mathsf{getenv} : \mathsf{envVar} \to \mathsf{transaction} \; (\mathsf{option} \; \mathsf{string}) \\
+  \\
+  \mathsf{type} \; \mathsf{responseHeader} \\
+  \mathsf{val} \; \mathsf{blessResponseHeader} : \mathsf{string} \to \mathsf{responseHeader} \\
+  \mathsf{val} \; \mathsf{checkResponseHeader} : \mathsf{string} \to \mathsf{option} \; \mathsf{responseHeader} \\
+  \mathsf{val} \; \mathsf{setHeader} : \mathsf{responseHeader} \to \mathsf{string} \to \mathsf{transaction} \; \mathsf{unit}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="397" HEIGHT="283" BORDER="0"
+ SRC="img414.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{type} \; \mathsf{requestHeader} \\ ...
+...f{string} \to \mathsf{transaction} \; \mathsf{unit}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+A blob can be extracted from a file and returned as the page result.  There are bless and check functions for MIME types analogous to those for URLs.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{type} \; \mathsf{mimeType} \\
+  \mathsf{val} \; \mathsf{blessMime} : \mathsf{string} \to \mathsf{mimeType} \\
+  \mathsf{val} \; \mathsf{checkMime} : \mathsf{string} \to \mathsf{option} \; \mathsf{mimeType} \\
+  \mathsf{val} \; \mathsf{returnBlob} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{blob} \to \mathsf{mimeType} \to \mathsf{transaction} \; \mathsf{t}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="423" HEIGHT="92" BORDER="0"
+ SRC="img415.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{type} \; \mathsf{mimeType} \\
+\ma...
+...sf{mimeType} \to \mathsf{transaction} \; \mathsf{t}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html611"
+  HREF="node36.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html607"
+  HREF="node32.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html601"
+  HREF="node34.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html609"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html612"
+  HREF="node36.html">SQL</A>
+<B> Up:</B> <A NAME="tex2html608"
+  HREF="node32.html">The Ur/Web Standard Library</A>
+<B> Previous:</B> <A NAME="tex2html602"
+  HREF="node34.html">Transactions</A>
+ &nbsp; <B>  <A NAME="tex2html610"
+  HREF="node1.html">Contents</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

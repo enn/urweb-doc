@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Remote Procedure Calls</TITLE>
+<META NAME="description" CONTENT="Remote Procedure Calls">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node47.html">
+<LINK REL="previous" HREF="node45.html">
+<LINK REL="up" HREF="node42.html">
+<LINK REL="next" HREF="node47.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html748"
+  HREF="node47.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html744"
+  HREF="node42.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html738"
+  HREF="node45.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html746"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html749"
+  HREF="node47.html">Asynchronous Message-Passing</A>
+<B> Up:</B> <A NAME="tex2html745"
+  HREF="node42.html">Client-Side Programming</A>
+<B> Previous:</B> <A NAME="tex2html739"
+  HREF="node45.html">Functional-Reactive Page Generation</A>
+ &nbsp; <B>  <A NAME="tex2html747"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00096400000000000000">
+Remote Procedure Calls</A>
+</H3>
+
+<P>
+Any function call may be made a client-to-server ``remote procedure call'' if the function being called needs no features that are only available to client code.  To make a function call an RPC, pass that function call as the argument to <!-- MATH
+ $\mathsf{Basis.rpc}$
+ -->
+<IMG
+ WIDTH="64" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img530.png"
+ ALT="$ \mathsf{Basis.rpc}$">
+:
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{rpc} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{transaction} \; \mathsf{t} \to \mathsf{transaction} \; \mathsf{t}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="335" HEIGHT="39" BORDER="0"
+ SRC="img531.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{rpc} : \mathsf{t} :...
+...; \mathsf{t} \to \mathsf{transaction} \; \mathsf{t}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+There is an alternate form that uses <!-- MATH
+ $\mathsf{None}$
+ -->
+<IMG
+ WIDTH="38" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img532.png"
+ ALT="$ \mathsf{None}$">
+ to indicate that an error occurred during RPC processing, rather than raising an exception to abort this branch of control flow.
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{tryRpc} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{transaction} \; \mathsf{t} \to \mathsf{transaction} \; (\mathsf{option} \; \mathsf{t})
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="415" HEIGHT="39" BORDER="0"
+ SRC="img533.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{tryRpc} : \mathsf{t...
+...hsf{transaction} \; (\mathsf{option} \; \mathsf{t})
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+<BR><HR>
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

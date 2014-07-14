@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Installation</TITLE>
+<META NAME="description" CONTENT="Installation">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="manual.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html197"
+  HREF="node4.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html193"
+  HREF="manual.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html187"
+  HREF="node2.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html195"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html198"
+  HREF="node4.html">Command-Line Compiler</A>
+<B> Up:</B> <A NAME="tex2html194"
+  HREF="manual.html">The Ur/Web Manual</A>
+<B> Previous:</B> <A NAME="tex2html188"
+  HREF="node2.html">Introduction</A>
+ &nbsp; <B>  <A NAME="tex2html196"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000">
+Installation</A>
+</H1>
+
+<P>
+If you are lucky, then the following standard command sequence will suffice for installation, in a directory to which you have unpacked the latest distribution tarball.
+
+<P>
+<PRE>
+./configure
+make
+sudo make install
+</PRE>
+
+<P>
+Some other packages must be installed for the above to work.  At a minimum, you need a standard UNIX shell, with standard UNIX tools like sed and GCC (or an alternate C compiler) in your execution path; MLton, the whole-program optimizing compiler for Standard ML; and the development files for the OpenSSL C library.  As of this writing, in the ``testing'' version of Debian Linux, this command will install the more uncommon of these dependencies:
+<PRE>
+apt-get install mlton libssl-dev
+</PRE>
+
+<P>
+Note that, like the Ur/Web compiler, MLton is a whole-program optimizing compiler, so it frequently requires much more memory than old-fashioned compilers do.  Expect building Ur/Web with MLton to require not much less than a gigabyte of RAM.  If a <TT>mlton</TT> invocation ends suspiciously, the most likely explanation is that it has exhausted available memory.
+
+<P>
+To build programs that access SQL databases, you also need one of these client libraries for supported backends.
+<PRE>
+apt-get install libpq-dev libmysqlclient-dev libsqlite3-dev
+</PRE>
+
+<P>
+It is also possible to access the modules of the Ur/Web compiler interactively, within Standard ML of New Jersey.  To install the prerequisites in Debian testing:
+<PRE>
+apt-get install smlnj libsmlnj-smlnj ml-yacc ml-lpt
+</PRE>
+
+<P>
+To begin an interactive session with the Ur compiler modules, run <TT>make smlnj</TT>, and then, from within an <TT>sml</TT> session, run <TT>CM.make "src/urweb.cm";</TT>.  The <TT>Compiler</TT> module is the main entry point, and you can find its signature in <TT>src/compiler.sig</TT>.
+
+<P>
+To run an SQL-backed application with a backend besides SQLite, you will probably want to install one of these servers.
+
+<P>
+<PRE>
+apt-get install postgresql mysql-server
+</PRE>
+
+<P>
+To use the Emacs mode, you must have a modern Emacs installed.  We assume that you already know how to do this, if you're in the business of looking for an Emacs mode.  The demo generation facility of the compiler will also call out to Emacs to syntax-highlight code, and that process depends on the <TT>htmlize</TT> module, which can be installed in Debian testing via:
+
+<P>
+<PRE>
+apt-get install emacs-goodies-el
+</PRE>
+
+<P>
+If you don't want to install the Emacs mode, run <TT>./configure</TT> with the argument <TT>-without-emacs</TT>.
+
+<P>
+Even with the right packages installed, configuration and building might fail to work.  After you run <TT>./configure</TT>, you will see the values of some named environment variables printed.  You may need to adjust these values to get proper installation for your system.  To change a value, store your preferred alternative in the corresponding UNIX environment variable, before running <TT>./configure</TT>.  For instance, here is how to change the list of extra arguments that the Ur/Web compiler will pass to the C compiler and linker on every invocation.  Some older GCC versions need this setting to mask a bug in function inlining.
+
+<P>
+<PRE>
+CCARGS=-fno-inline ./configure
+</PRE>
+
+<P>
+Since the author is still getting a handle on the GNU Autotools that provide the build system, you may need to do some further work to get started, especially in environments with significant differences from Linux (where most testing is done).  The variables <TT>PGHEADER</TT>, <TT>MSHEADER</TT>, and <TT>SQHEADER</TT> may be used to set the proper C header files to include for the development libraries of PostgreSQL, MySQL, and SQLite, respectively.  To get libpq to link, one OS X user reported setting <TT>CCARGS="-I/opt/local/include -L/opt/local/lib/postgresql84"</TT>, after creating a symbolic link with <TT>ln -s /opt/local/include/postgresql84 /opt/local/include/postgresql</TT>.
+
+<P>
+The Emacs mode can be set to autoload by adding the following to your <TT>.emacs</TT> file.
+
+<P>
+<PRE>
+(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/urweb-mode")
+(load "urweb-mode-startup")
+</PRE>
+
+<P>
+Change the path in the first line if you chose a different Emacs installation path during configuration.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html197"
+  HREF="node4.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html193"
+  HREF="manual.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html187"
+  HREF="node2.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html195"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html198"
+  HREF="node4.html">Command-Line Compiler</A>
+<B> Up:</B> <A NAME="tex2html194"
+  HREF="manual.html">The Ur/Web Manual</A>
+<B> Previous:</B> <A NAME="tex2html188"
+  HREF="node2.html">Introduction</A>
+ &nbsp; <B>  <A NAME="tex2html196"
+  HREF="node1.html">Contents</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

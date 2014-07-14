@@ -1,0 +1,269 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Lexical Conventions</TITLE>
+<META NAME="description" CONTENT="Lexical Conventions">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node11.html">
+<LINK REL="previous" HREF="node9.html">
+<LINK REL="up" HREF="node9.html">
+<LINK REL="next" HREF="node11.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html286"
+  HREF="node11.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html282"
+  HREF="node9.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html276"
+  HREF="node9.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html284"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html287"
+  HREF="node11.html">Core Syntax</A>
+<B> Up:</B> <A NAME="tex2html283"
+  HREF="node9.html">Ur Syntax</A>
+<B> Previous:</B> <A NAME="tex2html277"
+  HREF="node9.html">Ur Syntax</A>
+ &nbsp; <B>  <A NAME="tex2html285"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00051000000000000000">
+Lexical Conventions</A>
+</H2>
+
+<P>
+We give the Ur language definition in L<SUP><SMALL>A</SMALL></SUP>T<SMALL>E</SMALL>X<IMG
+ WIDTH="8" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$ \;$">
+ math mode, since that is prettier than monospaced ASCII.  The corresponding ASCII syntax can be read off directly.  Here is the key for mapping math symbols to ASCII character sequences.
+
+<P>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3>
+<TR><TH ALIGN="RIGHT"><B>L<SUP><SMALL>A</SMALL></SUP>T<SMALL>E</SMALL>X</B></TH>
+<TH ALIGN="LEFT"><B>ASCII</B></TH>
+</TR>
+<TR><TD ALIGN="RIGHT"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$ \to$">
+</TD>
+<TD ALIGN="LEFT"><TT>-&gt;</TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><!-- MATH
+ $\longrightarrow$
+ -->
+<IMG
+ WIDTH="30" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$ \longrightarrow$">
+</TD>
+<TD ALIGN="LEFT"><TT>-&gt;</TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$ \times$">
+</TD>
+<TD ALIGN="LEFT"><TT>*</TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><IMG
+ WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.png"
+ ALT="$ \lambda$">
+</TD>
+<TD ALIGN="LEFT"><TT>fn</TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><!-- MATH
+ $\Rightarrow$
+ -->
+<IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$ \Rightarrow$">
+</TD>
+<TD ALIGN="LEFT"><TT>=&gt;</TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><!-- MATH
+ $\Longrightarrow$
+ -->
+<IMG
+ WIDTH="30" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$ \Longrightarrow$">
+</TD>
+<TD ALIGN="LEFT"><TT>==&gt;</TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$ \neq$">
+</TD>
+<TD ALIGN="LEFT"><TT>&lt;&gt;</TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$ \leq$">
+</TD>
+<TD ALIGN="LEFT"><TT>&lt;=</TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$ \geq$">
+</TD>
+<TD ALIGN="LEFT"><TT>&gt;=</TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.png"
+ ALT="$ x$">
+</TD>
+<TD ALIGN="LEFT">Normal textual identifier, not beginning with an uppercase letter</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.png"
+ ALT="$ X$">
+</TD>
+<TD ALIGN="LEFT">Normal textual identifier, beginning with an uppercase letter</TD>
+</TR>
+</TABLE>
+</DIV>
+
+<P>
+We often write syntax like <IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.png"
+ ALT="$ e^*$">
+ to indicate zero or more copies of <IMG
+ WIDTH="11" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img17.png"
+ ALT="$ e$">
+, <IMG
+ WIDTH="22" HEIGHT="19" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.png"
+ ALT="$ e^+$">
+ to indicate one or more copies, and <IMG
+ WIDTH="23" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$ e,^*$">
+ and <IMG
+ WIDTH="26" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.png"
+ ALT="$ e,^+$">
+ to indicate multiple copies separated by commas.  Another separator may be used in place of a comma.  The <IMG
+ WIDTH="11" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img17.png"
+ ALT="$ e$">
+ term may be surrounded by parentheses to indicate grouping; those parentheses should not be included in the actual ASCII.
+
+<P>
+We write <IMG
+ WIDTH="11" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img21.png"
+ ALT="$ \ell$">
+ for literals of the primitive types, for the most part following C conventions.  There are <!-- MATH
+ $\mathsf{int}$
+ -->
+<IMG
+ WIDTH="22" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.png"
+ ALT="$ \mathsf{int}$">
+, <!-- MATH
+ $\mathsf{float}$
+ -->
+<IMG
+ WIDTH="34" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img23.png"
+ ALT="$ \mathsf{float}$">
+, <!-- MATH
+ $\mathsf{char}$
+ -->
+<IMG
+ WIDTH="32" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img24.png"
+ ALT="$ \mathsf{char}$">
+, and <!-- MATH
+ $\mathsf{string}$
+ -->
+<IMG
+ WIDTH="41" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.png"
+ ALT="$ \mathsf{string}$">
+ literals.  Character literals follow the SML convention instead of the C convention, written like <TT>#"a"</TT> instead of <TT>'a'</TT>.
+
+<P>
+This version of the manual doesn't include operator precedences; see <TT>src/urweb.grm</TT> for that.
+
+<P>
+As in the ML language family, the syntax <TT>(* ... *)</TT> is used for (nestable) comments.  Within XML literals, Ur/Web also supports the usual <TT>&lt;!- ... -&gt;</TT> XML comments.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html286"
+  HREF="node11.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html282"
+  HREF="node9.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html276"
+  HREF="node9.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html284"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html287"
+  HREF="node11.html">Core Syntax</A>
+<B> Up:</B> <A NAME="tex2html283"
+  HREF="node9.html">Ur Syntax</A>
+<B> Previous:</B> <A NAME="tex2html277"
+  HREF="node9.html">Ur Syntax</A>
+ &nbsp; <B>  <A NAME="tex2html285"
+  HREF="node1.html">Contents</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

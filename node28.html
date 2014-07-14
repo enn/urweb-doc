@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Constructor Classes</TITLE>
+<META NAME="description" CONTENT="Constructor Classes">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node29.html">
+<LINK REL="previous" HREF="node27.html">
+<LINK REL="up" HREF="node25.html">
+<LINK REL="next" HREF="node29.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html514"
+  HREF="node29.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html510"
+  HREF="node25.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html504"
+  HREF="node27.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html512"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html515"
+  HREF="node29.html">Reverse-Engineering Record Types</A>
+<B> Up:</B> <A NAME="tex2html511"
+  HREF="node25.html">Type Inference</A>
+<B> Previous:</B> <A NAME="tex2html505"
+  HREF="node27.html">Unifying Record Types</A>
+ &nbsp; <B>  <A NAME="tex2html513"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00073000000000000000"></A><A NAME="typeclasses"></A>
+<BR>
+Constructor Classes
+</H2>
+
+<P>
+Ur includes a constructor class facility inspired by Haskell's.  The current version is experimental, with very general Prolog-like facilities that can lead to compile-time non-termination.
+
+<P>
+Constructor classes are integrated with the module system.  A constructor class of kind <IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img372.png"
+ ALT="$ \kappa$">
+ is just a constructor of kind <IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img372.png"
+ ALT="$ \kappa$">
+.  By marking such a constructor <IMG
+ WIDTH="11" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img61.png"
+ ALT="$ c$">
+ as a constructor class, the programmer instructs the type inference engine to, in each scope, record all values of types <!-- MATH
+ $c \; c_1 \; \ldots \; c_n$
+ -->
+<IMG
+ WIDTH="77" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img373.png"
+ ALT="$ c \; c_1 \; \ldots \; c_n$">
+ as <I>instances</I>.  Any function argument whose type is of such a form is treated as implicit, to be determined by examining the current instance database.  Any suitably kinded constructor within a module may be exposed as a constructor class from outside the module, simply by using a <!-- MATH
+ $\mathsf{class}$
+ -->
+<IMG
+ WIDTH="35" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img240.png"
+ ALT="$ \mathsf{class}$">
+ signature item instead of a <!-- MATH
+ $\mathsf{con}$
+ -->
+<IMG
+ WIDTH="27" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img374.png"
+ ALT="$ \mathsf{con}$">
+ signature item in the module's signature.
+
+<P>
+The ``dictionary encoding'' often used in Haskell implementations is made explicit in Ur.  Constructor class instances are just properly typed values, and they can also be considered as ``proofs'' of membership in the class.  In some cases, it is useful to pass these proofs around explicitly.  An underscore written where a proof is expected will also be inferred, if possible, from the current instance database.
+
+<P>
+Just as for constructors, constructors classes may be exported from modules, and they may be exported as concrete or abstract.  Concrete constructor classes have their ``real'' definitions exposed, so that client code may add new instances freely.  Automatic inference of concrete class instances will not generally work, so abstract classes are almost always the right choice.  They are useful as ``predicates'' that can be used to enforce invariants, as we will see in some definitions of SQL syntax in the Ur/Web standard library.  Free extension of a concrete class is easily supported by exporting a constructor function from a module, since the class implementation will be concrete within the module.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html514"
+  HREF="node29.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html510"
+  HREF="node25.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html504"
+  HREF="node27.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html512"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html515"
+  HREF="node29.html">Reverse-Engineering Record Types</A>
+<B> Up:</B> <A NAME="tex2html511"
+  HREF="node25.html">Type Inference</A>
+<B> Previous:</B> <A NAME="tex2html505"
+  HREF="node27.html">Unifying Record Types</A>
+ &nbsp; <B>  <A NAME="tex2html513"
+  HREF="node1.html">Contents</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

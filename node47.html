@@ -1,0 +1,190 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Asynchronous Message-Passing</TITLE>
+<META NAME="description" CONTENT="Asynchronous Message-Passing">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="previous" HREF="node46.html">
+<LINK REL="up" HREF="node42.html">
+<LINK REL="next" HREF="node48.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html758"
+  HREF="node48.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html754"
+  HREF="node42.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html750"
+  HREF="node46.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html756"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html759"
+  HREF="node48.html">Ur/Web Syntax Extensions</A>
+<B> Up:</B> <A NAME="tex2html755"
+  HREF="node42.html">Client-Side Programming</A>
+<B> Previous:</B> <A NAME="tex2html751"
+  HREF="node46.html">Remote Procedure Calls</A>
+ &nbsp; <B>  <A NAME="tex2html757"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00096500000000000000">
+Asynchronous Message-Passing</A>
+</H3>
+
+<P>
+To support asynchronous, ``server push'' delivery of messages to clients, any client that might need to receive an asynchronous message is assigned a unique ID.  These IDs may be retrieved both on the client and on the server, during execution of code related to a client.
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{type} \; \mathsf{client} \\
+  \mathsf{val} \; \mathsf{self} : \mathsf{transaction} \; \mathsf{client}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="173" HEIGHT="54" BORDER="0"
+ SRC="img534.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{type} \; \mathsf{client} \\
+\math...
+...hsf{self} : \mathsf{transaction} \; \mathsf{client}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+<I>Channels</I> are the means of message-passing.  Each channel is created in the context of a client and belongs to that client; no other client may receive the channel's messages.  Note that here <I>client</I> has a technical Ur/Web meaning so that it describes only <I>single page views</I>, so a user following a traditional link within an application will remove the ability for <I>any</I> code to receive messages on the channels associated with the previous client.  Each channel type includes the type of values that may be sent over the channel.  Sending and receiving are asynchronous, in the sense that a client need not be ready to receive a message right away.  Rather, sent messages may queue up, waiting to be processed.
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{con} \; \mathsf{channel} :: \mathsf{Type} \to \mathsf{Type} \\
+  \mathsf{val} \; \mathsf{channel} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{transaction} \; (\mathsf{channel} \; \mathsf{t}) \\
+  \mathsf{val} \; \mathsf{send} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{channel} \; \mathsf{t} \to \mathsf{t} \to \mathsf{transaction} \; \mathsf{unit} \\
+  \mathsf{val} \; \mathsf{recv} : \mathsf{t} ::: \mathsf{Type} \to \mathsf{channel} \; \mathsf{t} \to \mathsf{transaction} \; \mathsf{t}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="371" HEIGHT="92" BORDER="0"
+ SRC="img535.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{con} \; \mathsf{channel} :: \mathsf...
+...; \mathsf{t} \to \mathsf{transaction} \; \mathsf{t}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+The <!-- MATH
+ $\mathsf{channel}$
+ -->
+<IMG
+ WIDTH="54" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img536.png"
+ ALT="$ \mathsf{channel}$">
+ and <!-- MATH
+ $\mathsf{send}$
+ -->
+<IMG
+ WIDTH="33" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img537.png"
+ ALT="$ \mathsf{send}$">
+ operations may only be executed on the server, and <!-- MATH
+ $\mathsf{recv}$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img538.png"
+ ALT="$ \mathsf{recv}$">
+ may only be executed on a client.  Neither clients nor channels may be passed as arguments from clients to server-side functions, so persistent channels can only be maintained by storing them in the database and looking them up using the current client ID or some application-specific value as a key.
+
+<P>
+Clients and channels live only as long as the web browser page views that they are associated with.  When a user surfs away, his client and its channels will be garbage-collected, after that user is not heard from for the timeout period.  Garbage collection deletes any database row that contains a client or channel directly.  Any reference to one of these types inside an <!-- MATH
+ $\mathsf{option}$
+ -->
+<IMG
+ WIDTH="46" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img421.png"
+ ALT="$ \mathsf{option}$">
+ is set to <!-- MATH
+ $\mathsf{None}$
+ -->
+<IMG
+ WIDTH="38" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img532.png"
+ ALT="$ \mathsf{None}$">
+ instead.  Both kinds of handling have the flavor of weak pointers, and that is a useful way to think about clients and channels in the database.
+
+<P>
+<I>Note</I>: Currently, there are known concurrency issues with multi-threaded applications that employ message-passing on top of database engines that don't support true serializable transactions.  Postgres 9.1 is the only supported engine that does this properly.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html758"
+  HREF="node48.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html754"
+  HREF="node42.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html750"
+  HREF="node46.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html756"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html759"
+  HREF="node48.html">Ur/Web Syntax Extensions</A>
+<B> Up:</B> <A NAME="tex2html755"
+  HREF="node42.html">Client-Side Programming</A>
+<B> Previous:</B> <A NAME="tex2html751"
+  HREF="node46.html">Remote Procedure Calls</A>
+ &nbsp; <B>  <A NAME="tex2html757"
+  HREF="node1.html">Contents</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

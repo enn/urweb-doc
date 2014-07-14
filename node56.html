@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>The Foreign Function Interface</TITLE>
+<META NAME="description" CONTENT="The Foreign Function Interface">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node61.html">
+<LINK REL="previous" HREF="node54.html">
+<LINK REL="up" HREF="manual.html">
+<LINK REL="next" HREF="node57.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html869"
+  HREF="node57.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html865"
+  HREF="manual.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html859"
+  HREF="node55.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html867"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html870"
+  HREF="node57.html">Writing C FFI Code</A>
+<B> Up:</B> <A NAME="tex2html866"
+  HREF="manual.html">The Ur/Web Manual</A>
+<B> Previous:</B> <A NAME="tex2html860"
+  HREF="node55.html">Tasks</A>
+ &nbsp; <B>  <A NAME="tex2html868"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION000120000000000000000"></A><A NAME="ffi"></A>
+<BR>
+The Foreign Function Interface
+</H1>
+
+<P>
+It is possible to call your own C and JavaScript code from Ur/Web applications, via the foreign function interface (FFI).  The starting point for a new binding is a <TT>.urs</TT> signature file that presents your external library as a single Ur/Web module (with no nested modules).  Compilation conventions map the types and values that you use into C and/or JavaScript types and values.
+
+<P>
+It is most convenient to encapsulate an FFI binding with a new <TT>.urp</TT> file, which applications can include with the <TT>library</TT> directive in their own <TT>.urp</TT> files.  A number of directives are likely to show up in the library's project file.
+
+<P>
+
+<UL>
+<LI><TT>clientOnly Module.ident</TT> registers a value as being allowed only in client-side code.
+</LI>
+<LI><TT>clientToServer Module.ident</TT> declares a type as OK to marshal between clients and servers.  By default, abstract FFI types are not allowed to be marshalled, since your library might be maintaining invariants that the simple serialization code doesn't check.
+</LI>
+<LI><TT>effectful Module.ident</TT> registers a function that can have side effects.  This is the default for <TT>transaction</TT>-based types, and, actually, this directive is mostly present for legacy compatibility reasons, since it used to be required explicitly for each <TT>transaction</TT>al function.
+</LI>
+<LI><TT>ffi FILE.urs</TT> names the file giving your library's signature.  You can include multiple such files in a single <TT>.urp</TT> file, and each file <TT>mod.urp</TT> defines an FFI module <TT>Mod</TT>.
+</LI>
+<LI><TT>include FILE</TT> requests inclusion of a C header file.
+</LI>
+<LI><TT>jsFunc Module.ident=name</TT> gives a mapping from an Ur name for a value to a JavaScript name.
+</LI>
+<LI><TT>link FILE</TT> requests that <TT>FILE</TT> be linked into applications.  It should be a C object or library archive file, and you are responsible for generating it with your own build process.
+</LI>
+<LI><TT>script URL</TT> requests inclusion of a JavaScript source file within application HTML.
+</LI>
+<LI><TT>serverOnly Module.ident</TT> registers a value as being allowed only in server-side code.
+</LI>
+</UL>
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html871"
+  HREF="node57.html">Writing C FFI Code</A>
+<LI><A NAME="tex2html872"
+  HREF="node58.html">Writing JavaScript FFI Code</A>
+<LI><A NAME="tex2html873"
+  HREF="node59.html">Introducing New HTML Tags</A>
+<LI><A NAME="tex2html874"
+  HREF="node60.html">The Less Safe FFI</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html869"
+  HREF="node57.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html865"
+  HREF="manual.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html859"
+  HREF="node55.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html867"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html870"
+  HREF="node57.html">Writing C FFI Code</A>
+<B> Up:</B> <A NAME="tex2html866"
+  HREF="manual.html">The Ur/Web Manual</A>
+<B> Previous:</B> <A NAME="tex2html860"
+  HREF="node55.html">Tasks</A>
+ &nbsp; <B>  <A NAME="tex2html868"
+  HREF="node1.html">Contents</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

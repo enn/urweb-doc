@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Transactions</TITLE>
+<META NAME="description" CONTENT="Transactions">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node35.html">
+<LINK REL="previous" HREF="node33.html">
+<LINK REL="up" HREF="node32.html">
+<LINK REL="next" HREF="node35.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html599"
+  HREF="node35.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html595"
+  HREF="node32.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html589"
+  HREF="node33.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html597"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html600"
+  HREF="node35.html">HTTP</A>
+<B> Up:</B> <A NAME="tex2html596"
+  HREF="node32.html">The Ur/Web Standard Library</A>
+<B> Previous:</B> <A NAME="tex2html590"
+  HREF="node33.html">Monads</A>
+ &nbsp; <B>  <A NAME="tex2html598"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00092000000000000000">
+Transactions</A>
+</H2>
+
+<P>
+Ur is a pure language; we use Haskell's trick to support controlled side effects.  The standard library defines a monad <!-- MATH
+ $\mathsf{transaction}$
+ -->
+<IMG
+ WIDTH="77" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img402.png"
+ ALT="$ \mathsf{transaction}$">
+, meant to stand for actions that may be undone cleanly.  By design, no other kinds of actions are supported.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{con} \; \mathsf{transaction} :: \mathsf{Type} \to \mathsf{Type} \\
+  \mathsf{val} \; \mathsf{transaction\_monad} : \mathsf{monad} \; \mathsf{transaction}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="283" HEIGHT="54" BORDER="0"
+ SRC="img403.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{con} \; \mathsf{transaction} :: \ma...
+...on\_monad} : \mathsf{monad} \; \mathsf{transaction}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+For debugging purposes, a transactional function is provided for outputting a string on the server process' <TT>stderr</TT>.
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{l}
+  \mathsf{val} \; \mathsf{debug} : \mathsf{string} \to \mathsf{transaction} \; \mathsf{unit}
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="243" HEIGHT="39" BORDER="0"
+ SRC="img404.png"
+ ALT="\begin{displaymath}\begin{array}{l}
+\mathsf{val} \; \mathsf{debug} : \mathsf{string} \to \mathsf{transaction} \; \mathsf{unit}
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+<BR><HR>
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

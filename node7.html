@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Tutorial Formatting</TITLE>
+<META NAME="description" CONTENT="Tutorial Formatting">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node8.html">
+<LINK REL="previous" HREF="node6.html">
+<LINK REL="up" HREF="node4.html">
+<LINK REL="next" HREF="node8.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html249"
+  HREF="node8.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html245"
+  HREF="node4.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html239"
+  HREF="node6.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html247"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html250"
+  HREF="node8.html">Run-Time Options</A>
+<B> Up:</B> <A NAME="tex2html246"
+  HREF="node4.html">Command-Line Compiler</A>
+<B> Previous:</B> <A NAME="tex2html240"
+  HREF="node6.html">Building an Application</A>
+ &nbsp; <B>  <A NAME="tex2html248"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00043000000000000000">
+Tutorial Formatting</A>
+</H2>
+
+<P>
+The Ur/Web compiler also supports rendering of nice HTML tutorials from Ur source files, when invoked like <TT>urweb -tutorial DIR</TT>.  The directory <TT>DIR</TT> is examined for files whose names end in <TT>.ur</TT>.  Every such file is translated into a <TT>.html</TT> version.
+
+<P>
+These input files follow normal Ur syntax, with a few exceptions:
+
+<UL>
+<LI>The first line must be a comment like <TT>(* TITLE *)</TT>, where <TT>TITLE</TT> is a string of your choice that will be used as the title of the output page.
+</LI>
+<LI>While most code in the output HTML will be formatted as a monospaced code listing, text in regular Ur comments is formatted as normal English text.
+</LI>
+<LI>A comment like <TT>(* * HEADING *)</TT> introduces a section heading, with text <TT>HEADING</TT> of your choice.
+</LI>
+<LI>To include both a rendering of an Ur expression and a pretty-printed version of its value, bracket the expression with <TT>(* begin eval *)</TT> and <TT>(* end *)</TT>.  The result of expression evaluation is pretty-printed with <TT>show</TT>, so the expression type must belong to that type class.
+</LI>
+<LI>To include code that should not be shown in the tutorial (e.g., to add a <TT>show</TT> instance to use with <TT>eval</TT>), bracket the code with <TT>(* begin hide *)</TT> and <TT>(* end *)</TT>.
+</LI>
+</UL>
+
+<P>
+A word of warning: as for demo generation, tutorial generation calls Emacs to syntax-highlight Ur code.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html249"
+  HREF="node8.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html245"
+  HREF="node4.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html239"
+  HREF="node6.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html247"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html250"
+  HREF="node8.html">Run-Time Options</A>
+<B> Up:</B> <A NAME="tex2html246"
+  HREF="node4.html">Command-Line Compiler</A>
+<B> Previous:</B> <A NAME="tex2html240"
+  HREF="node6.html">Building an Application</A>
+ &nbsp; <B>  <A NAME="tex2html248"
+  HREF="node1.html">Contents</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

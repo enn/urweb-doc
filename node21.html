@@ -1,0 +1,260 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Signature Item Typing</TITLE>
+<META NAME="description" CONTENT="Signature Item Typing">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node22.html">
+<LINK REL="previous" HREF="node20.html">
+<LINK REL="up" HREF="node13.html">
+<LINK REL="next" HREF="node22.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html427"
+  HREF="node22.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html423"
+  HREF="node13.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html417"
+  HREF="node20.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html425"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html428"
+  HREF="node22.html">Signature Compatibility</A>
+<B> Up:</B> <A NAME="tex2html424"
+  HREF="node13.html">Static Semantics</A>
+<B> Previous:</B> <A NAME="tex2html418"
+  HREF="node20.html">Declaration Typing</A>
+ &nbsp; <B>  <A NAME="tex2html426"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00068000000000000000">
+Signature Item Typing</A>
+</H2>
+
+<P>
+We appeal to a signature item analogue of the <!-- MATH
+ $\mathcal O$
+ -->
+<IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img215.png"
+ ALT="$ \mathcal O$">
+ function from the last subsection.
+
+<P>
+This is the first judgment where we deal with constructor classes, for the <!-- MATH
+ $\mathsf{class}$
+ -->
+<IMG
+ WIDTH="35" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img240.png"
+ ALT="$ \mathsf{class}$">
+ forms.  We will omit their special handling in this formal specification.  Section <A HREF="node28.html#typeclasses">6.3</A> gives an informal description of how constructor classes influence type inference.
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \cdot \leadsto \Gamma}{}
+\quad \infer{\Gamma \vdash s, \overline{s} \leadsto \Gamma''}{
+  \Gamma \vdash s \leadsto \Gamma'
+  & \Gamma' \vdash \overline{s} \leadsto \Gamma''
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="262" HEIGHT="70" ALIGN="MIDDLE" BORDER="0"
+ SRC="img241.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \cdot \leadsto \Gamma}{}
+\quad \infer{\Gamma...
+...ma \vdash s \leadsto \Gamma'
+&amp; \Gamma' \vdash \overline{s} \leadsto \Gamma''
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{con} \; x :: \kappa \leadsto \Gamma, x :: \kappa}{}
+\quad \infer{\Gamma \vdash \mathsf{con} \; x :: \kappa = c \leadsto \Gamma, x :: \kappa = c}{
+  \Gamma \vdash c :: \kappa
+}
+\quad \infer{\Gamma \vdash \mathsf{datatype} \; x \; \overline{y} = \overline{dc} \leadsto \Gamma'}{
+  \overline{y}; x; \Gamma, x :: \mathsf{Type}^{\mathsf{len}(\overline y)} \to \mathsf{Type} \vdash \overline{dc} \leadsto \Gamma'
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="701" HEIGHT="88" ALIGN="MIDDLE" BORDER="0"
+ SRC="img242.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{con} \; x :: \kappa \leadsto \Gamma,...
+...sf{len}(\overline y)} \to \mathsf{Type} \vdash \overline{dc} \leadsto \Gamma'
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{datatype} \; x = \mathsf{datatype} \; M.z \leadsto \Gamma'}{
+  \Gamma \vdash M : \mathsf{sig} \; \overline{s} \; \mathsf{end}
+  & \mathsf{proj}(M, \overline{s}, \mathsf{datatype} \; z) = (\overline{y}, \overline{dc})
+  & \overline{y}; x; \Gamma, x :: \mathsf{Type}^{\mathsf{len}(\overline y)} \to \mathsf{Type} = M.z \vdash \overline{dc} \leadsto \Gamma'
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="682" HEIGHT="85" ALIGN="MIDDLE" BORDER="0"
+ SRC="img228.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{datatype} \; x = \mathsf{datatype} \...
+...}(\overline y)} \to \mathsf{Type} = M.z \vdash \overline{dc} \leadsto \Gamma'
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{val} \; x : \tau \leadsto \Gamma, x : \tau}{
+  \Gamma \vdash \tau :: \mathsf{Type}
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="160" HEIGHT="74" ALIGN="MIDDLE" BORDER="0"
+ SRC="img243.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{val} \; x : \tau \leadsto \Gamma, x : \tau}{
+\Gamma \vdash \tau :: \mathsf{Type}
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{structure} \; X : S \leadsto \Gamma, X : S}{
+  \Gamma \vdash S
+}
+\quad \infer{\Gamma \vdash \mathsf{signature} \; X = S \leadsto \Gamma, X = S}{
+  \Gamma \vdash S
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="458" HEIGHT="68" ALIGN="MIDDLE" BORDER="0"
+ SRC="img244.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{structure} \; X : S \leadsto \Gamma,...
+... \vdash \mathsf{signature} \; X = S \leadsto \Gamma, X = S}{
+\Gamma \vdash S
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{include} \; S \leadsto \Gamma, \mathcal O(\overline{s})}{
+  \Gamma \vdash S
+  & \Gamma \vdash S \equiv \mathsf{sig} \; \overline{s} \; \mathsf{end}
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="177" HEIGHT="74" ALIGN="MIDDLE" BORDER="0"
+ SRC="img245.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{include} \; S \leadsto \Gamma, \math...
+...dash S
+&amp; \Gamma \vdash S \equiv \mathsf{sig} \; \overline{s} \; \mathsf{end}
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{constraint} \; c_1 \sim c_2 \leadsto \Gamma, c_1 \sim c_2}{
+  \Gamma \vdash c_1 :: \{\kappa\}
+  & \Gamma \vdash c_2 :: \{\kappa\}
+}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="243" HEIGHT="76" ALIGN="MIDDLE" BORDER="0"
+ SRC="img246.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{constraint} \; c_1 \sim c_2 \leadsto...
+...sim c_2}{
+\Gamma \vdash c_1 :: \{\kappa\}
+&amp; \Gamma \vdash c_2 :: \{\kappa\}
+}$">
+</DIV><P>
+</P>
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\infer{\Gamma \vdash \mathsf{class} \; x :: \kappa = c \leadsto \Gamma, x :: \kappa = c}{
+  \Gamma \vdash c :: \kappa
+}
+\quad \infer{\Gamma \vdash \mathsf{class} \; x :: \kappa \leadsto \Gamma, x :: \kappa}{}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="431" HEIGHT="68" ALIGN="MIDDLE" BORDER="0"
+ SRC="img247.png"
+ ALT="$\displaystyle \infer{\Gamma \vdash \mathsf{class} \; x :: \kappa = c \leadsto \...
+...fer{\Gamma \vdash \mathsf{class} \; x :: \kappa \leadsto \Gamma, x :: \kappa}{}$">
+</DIV><P>
+</P>
+
+<P>
+<BR><HR>
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

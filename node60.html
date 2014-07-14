@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>The Less Safe FFI</TITLE>
+<META NAME="description" CONTENT="The Less Safe FFI">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="previous" HREF="node59.html">
+<LINK REL="up" HREF="node56.html">
+<LINK REL="next" HREF="node61.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html919"
+  HREF="node61.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html915"
+  HREF="node56.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html911"
+  HREF="node59.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html917"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html920"
+  HREF="node61.html">Compiler Phases</A>
+<B> Up:</B> <A NAME="tex2html916"
+  HREF="node56.html">The Foreign Function Interface</A>
+<B> Previous:</B> <A NAME="tex2html912"
+  HREF="node59.html">Introducing New HTML Tags</A>
+ &nbsp; <B>  <A NAME="tex2html918"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000124000000000000000">
+The Less Safe FFI</A>
+</H2>
+
+<P>
+An alternative interface is provided for declaring FFI functions inline within normal Ur/Web modules.  This facility must be opted into with the <TT>lessSafeFfi</TT> <TT>.urp</TT> directive, since it breaks a crucial property, allowing code in a <TT>.ur</TT> file to break basic invariants of the Ur/Web type system.  Without this option, one only needs to audit <TT>.urp</TT> files to be sure an application obeys the type-system rules.  The alternative interface may be more convenient for such purposes as declaring an FFI function typed in terms of some type local to a module.
+
+<P>
+When the less safe mode is enabled, declarations like this one are accepted, at the top level of a <TT>.ur</TT> file:
+<PRE>
+  ffi foo : int -&gt; int
+</PRE>
+
+<P>
+Now <TT>foo</TT> is available as a normal function.  If called in server-side code, and if the above declaration appeared in <TT>bar.ur</TT>, the C function will be linked as <TT>uw_Bar_foo()</TT>.  It is also possible to declare an FFI function to be implemented in JavaScript, using a general facility for including modifiers in an FFI declaration.  The modifiers appear before the colon, separated by spaces.  Here are the available ones, which have the same semantics as corresponding <TT>.urp</TT> directives.
+
+<UL>
+<LI><TT>effectful</TT>
+</LI>
+<LI><TT>benignEffectful</TT>
+</LI>
+<LI><TT>clientOnly</TT>
+</LI>
+<LI><TT>serverOnly</TT>
+</LI>
+<LI><TT>jsFunc "putJsFuncNameHere"</TT>
+</LI>
+</UL>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html919"
+  HREF="node61.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html915"
+  HREF="node56.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html911"
+  HREF="node59.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html917"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html920"
+  HREF="node61.html">Compiler Phases</A>
+<B> Up:</B> <A NAME="tex2html916"
+  HREF="node56.html">The Foreign Function Interface</A>
+<B> Previous:</B> <A NAME="tex2html912"
+  HREF="node59.html">Introducing New HTML Tags</A>
+ &nbsp; <B>  <A NAME="tex2html918"
+  HREF="node1.html">Contents</A></B> 
+<!--End of Navigation Panel-->
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>

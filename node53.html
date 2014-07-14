@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>XML</TITLE>
+<META NAME="description" CONTENT="XML">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="previous" HREF="node49.html">
+<LINK REL="up" HREF="node48.html">
+<LINK REL="next" HREF="node54.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html834"
+  HREF="node54.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/lib/latex2html/icons/next.png"></A> 
+<A NAME="tex2html830"
+  HREF="node48.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/lib/latex2html/icons/up.png"></A> 
+<A NAME="tex2html826"
+  HREF="node52.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/lib/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html832"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="file:/usr/lib/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html835"
+  HREF="node54.html">The Structure of Web</A>
+<B> Up:</B> <A NAME="tex2html831"
+  HREF="node48.html">Ur/Web Syntax Extensions</A>
+<B> Previous:</B> <A NAME="tex2html827"
+  HREF="node52.html">DML</A>
+ &nbsp; <B>  <A NAME="tex2html833"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000102000000000000000">
+XML</A>
+</H2>
+
+<P>
+XML fragments <IMG
+ WIDTH="15" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img555.png"
+ ALT="$ L$">
+ are added to the rules for expressions <IMG
+ WIDTH="11" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img17.png"
+ ALT="$ e$">
+.
+
+<P>
+<P><!-- MATH
+ \begin{displaymath}
+\begin{array}{rrcll}
+  \textrm{XML fragments} & L &::=& \texttt{<xml/>} \mid \texttt{<xml>}l^*\texttt{</xml>} \\
+  \textrm{XML pieces} & l &::=& \textrm{text} & \textrm{cdata} \\
+  &&& \texttt{<}g\texttt{/>} & \textrm{tag with no children} \\
+  &&& \texttt{<}g\texttt{>}l^*\texttt{</}x\texttt{>} & \textrm{tag with children} \\
+  &&& \{e\} & \textrm{computed XML fragment} \\
+  &&& \{[e]\} & \textrm{injection of an Ur expression, via the $\mathsf{Top}.\mathsf{txt}$ function} \\
+  \textrm{Tag} & g &::=& h \; (x = v)^* \\
+  \textrm{Tag head} & h &::=& x & \textrm{tag name} \\
+  &&& h\{c\} & \textrm{constructor parameter} \\
+  \textrm{Attribute value} & v &::=& \ell & \textrm{literal value} \\
+  &&& \{e\} & \textrm{computed value} \\
+\end{array}
+\end{displaymath}
+ -->
+</P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="748" HEIGHT="217" BORDER="0"
+ SRC="img556.png"
+ ALT="\begin{displaymath}\begin{array}{rrcll}
+\textrm{XML fragments} &amp; L &amp;::=&amp; \textt...
+...value} \\
+&amp;&amp;&amp; \{e\} &amp; \textrm{computed value} \\
+\end{array}\end{displaymath}">
+</DIV><P>
+</P>
+
+<P>
+Further, there is a special convenience and compatibility form for setting CSS classes of tags.  If a <TT>class</TT> attribute has a value that is a string literal, the literal is parsed in the usual HTML way and replaced with calls to appropriate Ur/Web combinators.  Any dashes in the text are replaced with underscores to determine Ur identifiers.  The same desugaring can be accessed in a normal expression context by calling the pseudo-function <TT>CLASS</TT> on a string literal.
+
+<P>
+Similar support is provided for <TT>style</TT> attributes.  Normal CSS syntax may be used in string literals that are <TT>style</TT> attribute values, and the desugaring may be accessed elsewhere with the pseudo-function <TT>STYLE</TT>.
+
+<P>
+<BR><HR>
+<ADDRESS>
+
+2014-07-14
+</ADDRESS>
+</BODY>
+</HTML>
